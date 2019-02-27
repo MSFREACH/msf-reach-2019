@@ -6,11 +6,15 @@
         "node": true,
         "jquery": true
     },
-    "extends": "eslint:recommended",
+    "extends": ["eslint:recommended"],
+    "parser": "babel-eslint",
     "parserOptions": {
         "ecmaVersion": 2017,
         "sourceType": "module"
     },
+    "plugins" : [
+      "html", "import", "vue"
+    ],
     "rules": {
         "no-undef": "off",
         "indent": [
@@ -28,6 +32,15 @@
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "no-unused-vars": [
+            "error",
+            {
+                "vars": "all",
+                "args": "after-used",
+                "ignoreRestSiblings": false
+            }
+        ],
+        "no-unsafe-negation": "off"
     }
 }

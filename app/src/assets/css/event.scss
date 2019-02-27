@@ -1,0 +1,148 @@
+@import "./util/colors.scss";
+
+
+.theme--light.v-toolbar{
+    background: $bg-light-mode;
+}
+
+textarea#sharepoint{
+    opacity: 0;
+}
+.event-page{
+    position: absolute;
+    top: 40px;
+    padding: 0;
+}
+@media only screen and (min-width: 960px){
+    .event-page.container {
+        max-width: 780px;
+    }
+}
+@media only screen and (min-width: 1264px){
+    .event-page.container {
+        max-width: 955px;
+    }
+}
+
+@media only screen and (min-width: 1360px){
+    .event-page.container {
+        max-width: 1035px;
+    }
+}
+
+@media only screen and (min-width: 1600px){
+    .event-page.container {
+        max-width: 1205px;
+    }
+}
+
+@media only screen and(min-width: 1920px){
+    .event-page.container{
+        max-width: 1435px;
+    }
+}
+.detail-section{
+    background: $bg-space-grey;
+}
+.first-nav{
+    background: $bg-milk-grey;
+    height: 40px;
+    width: -webkit-fill-available;
+    position: absolute;
+}
+.first-nav-links{
+    color: $text-nav;
+    padding: 9px 23px;
+    display: inline-block;
+    border-bottom: 1px solid $border-gray;
+}
+.first-nav-links.router-link-active{
+    color: $color-active;
+    background: $bg-space-grey;
+    border-bottom: 1px transparent #ccc;
+}
+.second-nav{
+    margin-left: 30px;
+    height: 40px;
+    line-height: 40px;
+}
+.second-nav-links{
+    color: $text-nav;
+    padding: 10px 15px;
+    border-bottom: 1px solid $border-gray;
+}
+.second-nav-links.router-link-exact-active{
+    color: $color-active;
+    font-weight: bold;
+    border-bottom: 1px solid $color-active;
+}
+
+.eventList{
+    top: 64px;
+    position: relative;
+}
+
+.listHeader{
+    z-index:3;
+    display: flex;
+    .v-input{
+
+    }
+    .v-select__selections{
+        font-size: 10px;
+    }
+    .v-text-field{
+        padding-top: 0px;
+    }
+    .v-input__control{
+        border-radius: 20px;
+    }
+    .v-text-field{
+
+        .v-input__control{
+            background: #fff;
+        }
+    }
+
+    .v-select{
+        .v-input__control{
+            background: transparent;
+            border: 1px solid $border-gray;
+            margin-bottom: 0; 
+        }
+    }
+    .v-input__control{
+        padding: 4px 21px;
+        height: 40px;
+    }
+    .v-btn--floating.v-btn--small{
+        background: $text-light-grey;
+    }
+    .v-btn-toggle{
+      display: flex;
+        background: #d0d3da;
+    }
+    .v-list{
+        display: block !important;
+        div{
+            display: block !important;
+        }
+    }
+    .v-menu__content{
+        max-width: 100%;
+    }
+}
+
+.statusWrapper{
+    border: 2px solid $bg-space-grey;
+    background: $bg-space-grey;
+    border-radius: 22px;
+    padding: 0 10px;
+    align-items: center;
+    label{
+        // margin-right: 10px;
+    }
+
+}
+
+@import "msfStatus.scss"; // style cascade, this should come after statusWrapper;

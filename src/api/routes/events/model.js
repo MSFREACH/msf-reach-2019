@@ -19,12 +19,12 @@ export default (config, db, logger) => ({
      * @param {Number} location.lng longitude
      * @param {Number} location.lat latitude
 	 */
-    all: (status, country, location, search) => new Promise((resolve, reject) => {
+    all: (status, country, location, types, search) => new Promise((resolve, reject) => {
         // Construct geom, if exists
         const geom = !!location.lng &&
         !!location.lat && 'POINT(' + location.lng +' '+location.lat +')' || null;
         // Setup query
-        let query = `SELECT id, status, type, created_at, updated_at, report_key as reportkey, metadata, the_geom, subscribers
+        let query = `SELECT id, status, type, created_at, updated_at, report_key as reportkey, metadata, ext_capacity as extCapacity, figures, resources, the_geom
 			FROM ${config.TABLE_EVENTS}
             WHERE ($1 is null or status = $1) AND
                 ($4 is null or
@@ -33,10 +33,13 @@ export default (config, db, logger) => ({
                     type ilike $4 or
                     metadata->>'type' ilike $4 or
                     metadata->>'sub_type' ilike $4)) AND
+                ($5 is null or (type = ANY($5::VARCHAR[])  or
+                metadata->>'type' = ANY($5::VARCHAR[])  or
+                metadata->>'sub_type' = ANY($5::VARCHAR[]) )) AND
                 ($2 is null or metadata->>'country' = $2) AND
                 ($3 is null or ST_DWITHIN(ST_TRANSFORM(the_geom,3857),ST_TRANSFORM(ST_GEOMFROMTEXT($3,4326),3857),${config.DEFAULT_EVENT_SEARCH_DISTANCE}))
             ORDER BY updated_at DESC`;
-        let values = [ status, country, geom, (search ? '%'+search+'%' : null)];
+        let values = [ status, country, geom, (search ? '%'+search+'%' : null), types];
         // Execute
         db.any(query, values).timeout(config.PGTIMEOUT)
             .then((data) => resolve(data))
@@ -50,7 +53,7 @@ export default (config, db, logger) => ({
     byId: (id) => new Promise((resolve, reject) => {
 
         // Setup query
-        let query = `SELECT id, status, type, created_at, updated_at, report_key as reportkey, metadata, the_geom, subscribers
+        let query = `SELECT id, status, type, created_at, updated_at, report_key as reportkey, metadata, ext_capacity as extCapacity, figures, resources, the_geom
       FROM ${config.TABLE_EVENTS}
       WHERE id = $1
       ORDER BY created_at DESC`;
@@ -142,7 +145,7 @@ export default (config, db, logger) => ({
         // Setup query
         let query = `UPDATE ${config.TABLE_EVENTS}
 			SET status = $1,
-      updated_at = now(),
+            updated_at = now(),
             type = $4,
 			metadata = metadata || $2
 			WHERE id = $3
@@ -159,8 +162,63 @@ export default (config, db, logger) => ({
             .catch((err) => reject(err));
     }),
 
-    subscribe: (id, emailsArray) => new Promise((resolve, reject) => {
+    updateEventExtCapacity: (id, body) => new Promise((resolve, reject) => {
+        // Setup query
+        let query = `UPDATE ${config.TABLE_EVENTS}
+            SET updated_at = now(),
+            ext_capacity = $1::jsonb
+            WHERE id = $2
+            RETURNING ext_capacity, updated_at, status`;
 
+        // Setup values
+        let values = [ JSON.stringify(body.extCapacity), id];
+        // Execute
+        logger.debug(query, values);
+        db.oneOrNone(query, values).timeout(config.PGTIMEOUT)
+            .then((data) => resolve({ id: String(id), status: data.status, extCapacity: data.extCapacity }))
+            .catch((err) => reject(err));
+    }),
+
+
+    updateEventFigures: (id, body) => new Promise((resolve, reject) => {
+
+        // Setup query
+        let query = `UPDATE ${config.TABLE_EVENTS}
+            SET updated_at = now(),
+            figures = $1::jsonb
+            WHERE id = $2
+            RETURNING figures, updated_at`;
+
+        // Setup values
+        let values = [ body.figures, id];
+        // Execute
+        logger.debug(query, values);
+        db.oneOrNone(query, values).timeout(config.PGTIMEOUT)
+            .then((data) => resolve({ id: String(id),  figures: data.figures, updated: data.updated_at}))
+            .catch((err) => reject(err));
+    }),
+
+    updateEventResources: (id, body) => new Promise((resolve, reject) => {
+
+        // Setup query
+        let query = `UPDATE ${config.TABLE_EVENTS}
+            SET updated_at = now(),
+            resources =  $1::jsonb
+            WHERE id = $2
+            RETURNING resources, updated_at, status`;
+
+        // Setup values
+        let values = [ body.resources, id];
+
+        // Execute
+        logger.debug(query, values);
+        db.oneOrNone(query, values).timeout(config.PGTIMEOUT)
+            .then((data) => resolve({ id: String(id), status: data.status, resources: data.resources }))
+            .catch((err) => reject(err));
+    }),
+
+
+    activateEvent: (body) => new Promise((resolve, reject) => {
         // Setup query
         let query = `UPDATE ${config.TABLE_EVENTS}
       SET subscribers = array_distinct(subscribers || $1)
@@ -168,7 +226,7 @@ export default (config, db, logger) => ({
       RETURNING id, subscribers`;
 
         // Setup values
-        let values = [ emailsArray, id ];
+        let values = [ body.emailsArray, body.id ];
 
         // Execute
         logger.debug(query);

@@ -19,6 +19,13 @@ import { ensureAuthenticated, ensureAuthenticatedLanding } from './lib/util';
 
 import nocache from 'nocache';
 
+// WEBPACK compiler for VUE conponents
+import webpack from 'webpack';
+import webpackConfig from '../app/build/webpack.dev.conf';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
+
+
 /** Function to initialize the api server config, db, logger
 	* @class - Initialize server
 	* @param {Object} config - server config
@@ -31,6 +38,63 @@ const init = (config, initializeDb, routes, logger) => new Promise((resolve, rej
     // Create the server
     let app = express();
     app.server = http.createServer(app);
+    app.use(bodyParser.urlencoded({extended: true}));
+
+    // Parse body messages into json
+    app.use(bodyParser.json({ limit: config.BODY_LIMIT }));
+
+    // Winston stream function we can plug in to express so we can capture its logs along with our own
+    const winstonStream = {
+        write: function(message) {
+            logger.info(message.slice(0, -1));
+        }
+    };
+
+    // Setup express logger
+    app.use(morgan('combined', { stream: winstonStream }));
+
+    // Compress responses if required but only if caching is disabled
+    if (config.COMPRESS && !config.CACHE) {
+        app.use(compression());
+    }
+
+    if (!config.CACHE) {
+        app.use(nocache());
+    }
+
+    // Provide CORS support (not required if behind API gateway)
+    if (config.CORS) {
+        app.use(cors({ exposedHeaders: config.CORS_HEADERS }));
+    }
+
+    // Provide response time header in response
+    if (config.RESPONSE_TIME) {
+        app.use(responseTime());
+    }
+
+    // Redirect http to https
+    app.use(function redirectHTTP(req, res, next) {
+        if (config.REDIRECT_HTTP && req.headers['x-forwarded-proto'] && req.headers['x-forwarded-proto'].toLowerCase() === 'http') {
+            return res.redirect('https://' + req.headers.host + req.url);
+        }
+        next();
+    });
+
+    // Trust proxy header
+    app.enable('trust proxy');
+
+    // Create webpack compiler
+    var compiler = webpack(webpackConfig);
+    app.use(webpackDevMiddleware(compiler, {quiet: true, publicPath: webpackConfig.output.publicPath}));
+    app.use(webpackHotMiddleware(compiler, {log: console.log, path: '/__webpack_hmr', heartbeat: 2000})); // eslint-disable-line no-console
+
+    // force page reload when html-webpack-plugin template changes
+    compiler.plugin('compilation', function (compilation) {
+        compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
+            webpackHotMiddleware.publish({ action: 'reload' });
+            cb();
+        });
+    });
 
     if (config.SESSION_SECRET) {
         app.use(expressSession({ secret: config.SESSION_SECRET, resave: true, saveUninitialized: false })); //Hopefully this fixes #236 //TODO Need to save sessions to db instead to avoid memory leaks in prod
@@ -111,50 +175,6 @@ const init = (config, initializeDb, routes, logger) => new Promise((resolve, rej
         app.use(passport.session());
     }
 
-    app.use(bodyParser.urlencoded({extended: true}));
-
-    // Parse body messages into json
-    app.use(bodyParser.json({ limit: config.BODY_LIMIT }));
-
-    // Winston stream function we can plug in to express so we can capture its logs along with our own
-    const winstonStream = {
-        write: function(message) {
-            logger.info(message.slice(0, -1));
-        }
-    };
-
-    // Setup express logger
-    app.use(morgan('combined', { stream: winstonStream }));
-
-    // Compress responses if required but only if caching is disabled
-    if (config.COMPRESS && !config.CACHE) {
-        app.use(compression());
-    }
-
-    if (!config.CACHE) {
-        app.use(nocache());
-    }
-
-    // Provide CORS support (not required if behind API gateway)
-    if (config.CORS) {
-        app.use(cors({ exposedHeaders: config.CORS_HEADERS }));
-    }
-
-    // Provide response time header in response
-    if (config.RESPONSE_TIME) {
-        app.use(responseTime());
-    }
-
-    // Redirect http to https
-    app.use(function redirectHTTP(req, res, next) {
-        if (config.REDIRECT_HTTP && req.headers['x-forwarded-proto'] && req.headers['x-forwarded-proto'].toLowerCase() === 'http') {
-            return res.redirect('https://' + req.headers.host + req.url);
-        }
-        next();
-    });
-
-    // Trust proxy header
-    app.enable('trust proxy');
 
     // Try and connect to the db
     initializeDb(config, logger)
@@ -172,7 +192,6 @@ const init = (config, initializeDb, routes, logger) => new Promise((resolve, rej
                 app.post('/auth/openid/return',
                     passport.authenticate('azuread-openidconnect', { failureRedirect: '/login'}),
                     function(req, res, next) { // eslint-disable-line no-unused-vars
-
                         //set a cookie here and then on the static page store it in localstorage
                         res.cookie('userdisplayName', req.user.displayName, { maxAge: 1000 * 60 * 1 }); //1 min cookie age should be enough
                         res.cookie('email', req.user._json.preferred_username);
@@ -204,7 +223,11 @@ const init = (config, initializeDb, routes, logger) => new Promise((resolve, rej
 
             // Mount the API. authentication specified within routes
             app.use('/api', routes({ config, db, logger }));
-            app.use('/', [ensureAuthenticatedLanding, express.static(config.STATIC_PATH)]);
+            app.use('/landing', [ensureAuthenticatedLanding, express.static(config.STATIC_PATH)]);
+
+            // app.use('/vuevue', express.static('app')); // handle authentication & routing in frontend
+
+
 
             // App is ready to go, resolve the promise
             resolve(app);

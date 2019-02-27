@@ -17,6 +17,7 @@ export default ({ config, db, logger }) => {
     const schemaGetAll = Joi.object().keys(
         {
             search: Joi.string().min(1),
+            types: Joi.array().items(Joi.string()),
             geoformat: Joi.any().valid(config.GEO_FORMATS).default(config.GEO_FORMAT_DEFAULT),
             status: Joi.any().valid(config.API_EVENT_STATUS_TYPES),
             country: Joi.string(),
@@ -35,7 +36,8 @@ export default ({ config, db, logger }) => {
                 lng: req.query.lng,
                 lat: req.query.lat
             };
-            events(config, db, logger).all(req.query.status, req.query.country, location, req.query.search)
+
+            events(config, db, logger).all(req.query.status, req.query.country, location, req.query.types, req.query.search)
                 .then((data) => handleGeoResponse(data, req, res, next))
                 .catch((err) => {
                 /* istanbul ignore next */
@@ -153,7 +155,6 @@ export default ({ config, db, logger }) => {
             body: Joi.object().keys({
                 status: Joi.string().valid(config.API_EVENT_STATUS_TYPES).required(),
                 type: Joi.string().required(),
-                // types: Joi.array().items(Joi.string()),
                 report_id: Joi.number().min(1),
                 created_at: Joi.date().iso().required(),
                 metadata: Joi.object().required().keys({
@@ -162,19 +163,31 @@ export default ({ config, db, logger }) => {
                     project_code: Joi.string().allow(''),
                     description: Joi.string().allow(''),
                     sub_type: Joi.string().allow(''), // TODO: change to array later
+                    types: Joi.array().items(Joi.string()),
+                    sub_types: Joi.array().items(Joi.string()),
+                    status_updates: Joi.array().items(Joi.object().keys({
+                        type: Joi.string(),
+                        timestamp: Joi.date().iso()
+                    })),
                     event_datetime: Joi.string().allow(''),
-                    event_status: Joi.string(),
-                    incharge_name: Joi.string().allow(''),
-                    incharge_position: Joi.string().allow(''),
-                    severity: Joi.string().allow(''),
-                    severity_scale: Joi.number().min(1).max(3),
-                    sharepoint_link: Joi.string().allow(''),
+                    event_local_time: Joi.string().allow('', null),
+                    event_local_timezone: Joi.string().allow('', null),
+                    event_local_timezone_abbr: Joi.string().allow('', null),
+                    event_status: Joi.string().valid(config.API_EVENT_STATUSES),
+                    incharge_contact: Joi.object().keys({
+                        local: Joi.object().keys({
+                            name: Joi.string().allow(''),
+                            position: Joi.string().allow('')
+                        }),
+                        operator: Joi.object().keys({
+                            name: Joi.string().allow(''),
+                            position: Joi.string().allow('')
+                        })
+                    }),
+                    sharepoint_link: Joi.string().allow(null),
                     security_details: Joi.string().allow(''),
                     bounds: Joi.object(),
-                    areas: Joi.array().items(Joi.object().keys({
-                        country: Joi.string(),
-                        region: Joi.string()
-                    })),
+                    areas: Joi.array().items(Joi.object()),
                     severity_measures: Joi.array().items(Joi.object().keys({
                         scale: Joi.number().min(1).max(3),
                         description: Joi.string().allow('')
@@ -243,6 +256,81 @@ export default ({ config, db, logger }) => {
         }
     );
 
+    api.put('/:id/extCapacity',ensureAuthenticatedWrite,
+        validate({
+            params: { id: Joi.number().integer().min(1).required() } ,
+            body: Joi.object().keys({
+                extCapacity: Joi.array().items(Joi.object().keys({
+                    type: Joi.string(),
+                    name: Joi.string(),
+                    arrival_date: Joi.date().iso(),
+                    deployment: Joi.string()
+                })),
+            })
+        }),
+        (req, res, next) => {
+            events(config, db, logger).updateEventExtCapacity(req.params.id, req.body)
+                .then((data) => handleResponse(data, req, res, next))
+                .catch((err) => {
+                    logger.error(err);
+                    next(err);
+                });
+        });
+
+    api.put('/:id/figures',ensureAuthenticatedWrite,
+        validate({
+            params: { id: Joi.number().integer().min(1).required() } ,
+            body: Joi.object().keys({
+                figures: Joi.object().keys({
+                    keyFigures: Joi.array().items(Joi.object().keys({
+                        status: Joi.string().valid(config.API_EVENT_STATUSES),
+                        figures: Joi.array().items(Joi.object())
+                    })),
+                    population: Joi.object().allow(null),
+                    statistics: Joi.object().allow(null)
+                })
+            })
+        }),
+        (req, res, next) => {
+            events(config, db, logger).updateEventFigures(req.params.id, req.body)
+                .then((data) => handleResponse(data, req, res, next))
+                .catch((err) => {
+                    logger.error(err);
+                    next(err);
+                });
+        });
+
+    api.put('/:id/resources',ensureAuthenticatedWrite,
+        validate({
+            params: { id: Joi.number().integer().min(1).required() } ,
+            body: Joi.object().keys({
+                resources: Joi.object().keys({
+                    perStatus: Joi.array().items(Joi.object().keys({
+                        status: Joi.string().valid(config.API_EVENT_STATUSES),
+                        staff: Joi.object(),
+                        budget: Joi.object(),
+                        supply_chain: Joi.object()
+                    })),
+                    institutional_donors: Joi.array().items(Joi.object().keys({
+                        from_who: Joi.string().allow(null),
+                        amount: Joi.string().allow(null)
+                    })),
+                    visa_requirement: Joi.array().items(Joi.string()),
+                    vaccination_requirement: Joi.object().keys({
+                        required: Joi.array().items(Joi.string()).allow(null),
+                        recommended: Joi.array().items(Joi.string()).allow(null)
+                    })
+                })
+            })
+        }),
+        (req, res, next) => {
+            events(config, db, logger).updateEventResources(req.params.id, req.body)
+                .then((data) => handleResponse(data, req, res, next))
+                .catch((err) => {
+                    logger.error(err);
+                    next(err);
+                });
+        });
     // Update an event record's location in the database
     api.patch('/updatelocation/:id',ensureAuthenticatedWrite,
         validate({

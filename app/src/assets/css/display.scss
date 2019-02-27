@@ -1,0 +1,395 @@
+@import "msfStatus.scss";
+@import "util/colors.scss";
+
+ul{
+    list-style: none;
+}
+.theme--dark.v-list{
+    background: transparent;
+}
+.create-btn{
+    background: $text-light-grey;
+}
+.eventSubContent{
+    padding: 22px;
+    display: flex;
+    .actions{
+        position: absolute;
+        right: 21px;
+        display: inline-flex;
+        .v-input{
+            margin-top: 0;
+            padding-top: 0;
+        }
+    }
+}
+
+.searchHeader{
+    .v-select__slot{
+      label{
+          top: 7px;
+      }
+    }
+}
+
+.callToActionRed, 
+.offsetTime{
+    color: $warning-red;
+}
+.activeText{
+    color: $color-active !important;
+}
+
+.activeBtn{
+    color: #fff !important;
+    background: $color-active !important;
+}
+.sub-tag{
+  margin-left: 8px;
+}
+.clickable{
+    cursor: pointer;
+}
+.action-link{
+    padding: 28px;
+}
+.edit-wrapper{
+    .cancel{
+        .v-icon{
+            color: $bg-light;
+        }
+    }
+}
+.searchHeader{
+    label{
+        text-transform: capitalize;
+    }
+    .v-input__slot{
+        height: inherit;
+    }
+}
+.SITREP-Container{
+    display: inherit;
+    .searchHeader{
+        display: flex;
+        width: 300px;
+        .v-text-field{
+            padding-top: 0px;
+        }
+        .v-input__control,
+        .v-btn--floating.v-btn--small{
+            background: $bg-light;
+            border-radius: 20px;
+        }
+        .v-input__control{
+            padding: 4px 21px;
+        }
+    }
+    .v-picker{
+        box-shadow: none;
+    }
+
+    .v-expansion-panel{
+        box-shadow: none;
+        margin-left: 5em;
+    }
+}
+.relatedContent{
+    .searchHeader{
+        display: flex;
+        width: 400px;
+        .v-text-field{
+            padding-top: 0px;
+        }
+        .v-input__control,
+        .v-btn{
+            background: $bg-light;
+            border-radius: 20px;
+            height: 40px;
+        }
+        .v-input__control{
+            padding: 4px 21px;
+        }
+    }
+    .v-picker{
+        box-shadow: none;
+    }
+
+    .v-expansion-panel{
+        box-shadow: none;
+        margin-left: 5em;
+    }
+}
+.capacity-rows,
+.notification-rows{
+    // width: 75%;
+    max-width: 1180px;
+    display: block;
+    margin: 0;
+    .searchHeader{
+        width: 400px;
+        margin-bottom: 20px;
+        min-width: 400px;
+        .v-text-field{
+            padding-top: 0px;
+        }
+        .v-input{
+            height: 40px;
+            background: $bg-light;
+            border-radius: 20px;
+            padding: 6px 21px;
+            display: inline-block;
+            vertical-align: top;
+        }
+        .v-text-field--single-line{
+            width: 48%;
+            margin-top: 0;
+        }
+        .v-select{
+            width: 32%;
+            margin: 0 10px;
+        }
+        .v-btn--floating.v-btn--small{
+            background: $bg-light;
+            display: inline-block;
+            margin: 0;
+        }
+        .v-dialog__container{
+            width: auto;
+        }
+    }
+}
+
+.file-attachment.count{
+    background: $bg-space-grey;
+    border-radius:5px;
+    color: $bg-light;
+    width: 30px;
+    height: 30px;
+    margin: 0 auto;
+    text-align: center;
+}
+.full-text-fields{
+    position: relative;
+    margin: 0;
+    border-radius:5px;
+    background: $bg-light;
+    box-shadow: 1px 5px 10px $text-light-grey;
+    padding: 21px;
+    width: calc(100% - 21px);
+}
+.split-text-fields{
+    // max-height: calc(100vh - 200px);
+    // overflow: scroll;
+    position: relative;
+    display: inline-block;
+    width: 68%;
+    margin: 0;
+    border-radius:5px;
+    background: $bg-light;
+    box-shadow: 1px 5px 10px $text-light-grey;
+    padding: 21px;
+    margin-right: 1em;
+    vertical-align: top;
+}
+
+.relatedContent{
+    margin: 80px 30px;
+    padding: 0;
+    // max-width: 100%;
+    embed,
+    img,
+    iframe{
+        border: solid 3px #0374C7;
+        border-radius: 30px;
+    }
+    img{
+        width: 80%;
+        height: auto;
+        margin: auto;
+    }
+    .fileHeader{
+        color: $color-active;
+        font-size: 30px;
+    }
+}
+.CD-drawer {
+    .v-list__tile__title{
+        font-weight: normal;
+        font-size: 16px;
+    }
+
+
+    .v-list__group__header .v-list__group__header__prepend-icon{
+        min-width: inherit;
+        padding: 0;
+        width: 10px;
+    }
+    .v-list__group__items--no-action .v-list__tile{
+        padding-left: 32px;
+        height: 25px;
+    }
+    .form-actions{
+        padding-left: 32px;
+    }
+    .v-list .v-list__group--active:after,
+    .v-list .v-list__group--active:before{
+        background: none;
+    }
+}
+
+.map-annotation{
+    display: inline-block;
+    width: 100%;
+    height: 500px;
+    border-radius: 20px;
+    background: #2C383E;
+    position: relative;
+    overflow: hidden;
+}
+
+.top-level{
+    margin-bottom: 3em;
+    width: 100%;
+    div{
+        display: inline-block;
+        vertical-align: top;
+    }
+}
+.full-width{
+    width: 100%;
+    border-radius: 5px;
+}
+
+.one-half{
+    padding: 10px;
+    border-radius: 5px;
+    width: 48%;
+}
+
+.quarter-width{
+    width: 25%;
+    padding-top: 10px;
+}
+
+.one-third{
+    width: 32.3333%;
+}
+
+
+hr.row-divider{
+    border: .5px solid;
+    width: 100%;
+    margin: 1em 0;
+    height: 1px;
+    color: $border-gray;
+}
+.relatedContent label,
+.eventSubContent label{
+    display: block;
+}
+
+table.v-table tbody tr:hover{
+    background: $bg-space-grey;
+}
+
+tr.v-datatable__expand-row .v-card.expanded-field{
+    background: $bg-space-grey;
+    padding: 40px;
+}
+.label-blocks{
+    display: inline-block;
+}
+.markdown-fields{
+    background: $bg-space-grey;
+    color: #000;
+    overflow-wrap: break-word;
+    width: 100%;
+    height: 100%;
+    border-radius: 2px;
+    padding: 10px;
+    font-size: 16px
+}
+
+.v-dialog .v-dialog--active{
+    background: $color-active;
+    color: $bg-light;
+}
+
+.eventSubContent.statusToggle{
+    padding: 0 22px;
+    // display: inherit;
+}
+
+.statusToggle{
+    .statusTabWrapper{
+        margin: 20px 20px 0;
+        position: absolute;
+    }
+    .map-annotation,
+    .full-text-fields{
+        margin-top: 48px;
+    }
+}
+
+.v-date-picker-table--date td{
+    width: 5px;
+}
+
+
+.monitoringTab{
+    background: $ev-status-monitoring;
+    border: $ev-status-monitoring 2px solid;
+}
+
+.statusTabs{
+    border-bottom: none;
+    color:$bg-light;
+    border-radius: 5px 5px 0 0;
+    padding: 0 20px;
+    margin: 0;
+}
+.statusTabs:first-of-type{
+    background: $bg-light;
+    color: $text-light-grey;
+}
+
+.dateRange{
+    span{
+        display: inline-block;
+        width: 48%;
+    }
+}
+
+.sitrep-rows,
+.notification-rows{
+    .list-actions{
+        float: right;
+    }
+}
+
+.v-expansion-panel__body{
+    background: $bg-space-grey;
+}
+
+
+.no-data-available{
+    opacity: .4;
+    background: $bg-null-grey;
+    border-radius: 10px;
+    margin: 2em auto;
+    position: relative;
+    padding: 5em;
+    border: 1px solid $text-light-grey;
+    color: $text-light-grey;
+}
+
+.lowSeverity{
+    color: $low-severity;
+}
+.mediumSeverity{
+    color: $medium-severity;
+}
+.highSeverity{
+    color: $high-severity;
+}

@@ -547,18 +547,16 @@ var mapAllEvents = function(err, events){
     totalPopulationStr +
     affectedPopulationStr;
 
-        $('#ongoingEventsContainer').append(
-            '<div class="list-group-item cursorPointer" onclick="openEventPopup('+feature.properties.id+')">' +
-      'Name: <a href="/events/?eventId=' + feature.properties.id + '">' + feature.properties.metadata.name + '</a><br>' +
-      'Opened: ' + ((feature.properties.metadata.event_datetime || feature.properties.created_at) ? (new Date(feature.properties.metadata.event_datetime || feature.properties.created_at)).toLocaleString().replace(/:\d{2}$/,'') : '') + '<BR>' +
-      'Last updated at: ' + (new Date(feature.properties.updated_at)).toLocaleString().replace(/:\d{2}$/,'') + '<br>' +
-    'Type(s): ' + typeStr(feature.properties.type, feature.properties.metadata.sub_type) + '<br>' +
-      statusStr +
-      notificationStr +
-      totalPopulationStr +
-      affectedPopulationStr +
-      '</div>'
-        );
+        $('#ongoingEventsContainer').append('<div class="list-group-item cursorPointer" onclick="openEventPopup('+feature.properties.id+')">' +
+            'Name: <a href="/events/?eventId=' + feature.properties.id + '">' + feature.properties.metadata.name + '</a><br>' +
+            'Opened: ' + ((feature.properties.metadata.event_datetime || feature.properties.created_at) ? (new Date(feature.properties.metadata.event_datetime || feature.properties.created_at)).toLocaleString().replace(/:\d{2}$/,'') : '') + '<BR>' +
+            'Last updated at: ' + (new Date(feature.properties.updated_at)).toLocaleString().replace(/:\d{2}$/,'') + '<br>' +
+            'Type(s): ' + typeStr(feature.properties.type, feature.properties.metadata.sub_type) + '<br>' +
+            statusStr +
+            notificationStr +
+            totalPopulationStr +
+            affectedPopulationStr +
+        '</div>');
 
 
         if (feature.properties && feature.properties.popupContent) {
@@ -1995,9 +1993,13 @@ ${localStorage.getItem('username')}
                     if(!Array.isArray(currentEventProperties.metadata.notification)){
                         currentEventProperties.metadata.notification = [];
                     }
-                    currentEventProperties.metadata.notification.push({'notification_time': Date.now()/1000, 'notification': $('#inputNotification').val()});
+                    currentEventProperties.metadata.notification.push({'notification_time': Date.now()/1000,
+                        'notification': $('#inputNotification').val(),
+                        'username': (localStorage.getItem('username')?localStorage.getItem('username') : 'localuser')});
                 } else {
-                    currentEventProperties.metadata.notification = [{'notification_time': Date.now()/1000, 'notification': $('#inputNotification').val()}];
+                    currentEventProperties.metadata.notification = [{'notification_time': Date.now()/1000,
+                        'notification': $('#inputNotification').val(),
+                        'username': (localStorage.getItem('username')?localStorage.getItem('username') : 'localuser')}];
                 }
             }
         },

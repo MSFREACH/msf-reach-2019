@@ -11,6 +11,10 @@ import { version } from '../../package.json';
 
 // Import our routes
 import events from './routes/events';
+import msfResponses from './routes/msfResponses';
+import eventNotifications from './routes/eventNotifications';
+import countryDetails from './routes/countryDetails';
+import sitreps from './routes/sitreps';
 import layers from './routes/layers';
 import reports from './routes/reports';
 import twitter from './routes/twitter';
@@ -32,6 +36,10 @@ export default ({ config, db, logger }) => {
 
     // Mount the various endpoints
     api.use('/events', events({ config, db, logger }));
+    api.use('/msfResponses', msfResponses({ config, db, logger }));
+    api.use('/eventNotifications', eventNotifications({ config, db, logger }));
+    api.use('/countryDetails', countryDetails({ config, db, logger }));
+    api.use('/sitreps', sitreps({ config, db, logger }));
     api.use('/layers', layers({ config, db, logger}));
     api.use('/reports', reports({ config, db, logger }));
     api.use('/twitter', twitter({ logger }));
