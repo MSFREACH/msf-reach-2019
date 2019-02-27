@@ -111,16 +111,43 @@
                     <v-card class="expanded-field" flat :key="props.index" :id="props.index">
                         <v-card-text v-html="mdRender(props.item.description)"></v-card-text>
                         <v-divider light></v-divider>
-                        <v-card v-for="(item, index) in props.item.signedFiles" :key="index" class="file-attachment justone" @click="previewDialog = true">
+                        <v-card v-for="(item, index) in props.item.signedFiles" :key="index" class="file-attachment" @click="showPreview(index, props.item.signedFiles.length)">
                             <img v-if="item.contentType.indexOf('image') != -1" :src="item.url" width="100%" height="100%">
+                            <v-flex v-else-if="(item.contentType == 'application/msword') || (item.contentType.indexOf('text') != -1)" justify-center class="preview-file-icon">
+                                <a :href="item.url" target="_blank"> <v-icon color="grey">{{ allFileIcons[item.contentType] }} </v-icon></a>
+                            </v-flex>
                             <object v-else :data="item.url" :type="item.contentType" width="100%" height="100%">
                                 <embed :src="item.url" width="100%" height="100%"></embed>
                             </object>
                         </v-card>
                         <v-dialog v-model="previewDialog" justify-center max-width="800px" transition="dialog-transition">
-                            <v-carousel hide-controls>
-                                <v-carousel-item  v-for="(item, i) in props.item.signedFiles" :key="i" :src="item.url"></v-carousel-item>
-                            </v-carousel>
+                            <v-card flat tile>
+                                <v-window v-model="previewIndex">
+                                    <v-window-item v-for="(item, n) in props.item.signedFiles" :key="n">
+                                        <v-card>
+                                            <img v-if="item.contentType.indexOf('image') != -1" :src="item.url" width="100%" height="100%" @click="previewDialog = true">
+                                            <object v-else :data="item.url" :type="item.contentType" width="100%" height="100%">
+                                                <embed :src="item.url" width="100%" height="100%"></embed>
+                                            </object>
+                                        </v-card>
+                                    </v-window-item>
+                                </v-window>
+                                <v-card-actions class="justify-space-between" color="primary" v-if="previewLength > 1">
+                                    <v-btn flat @click="prev" >
+                                        <v-icon>mdi-chevron-left</v-icon>
+                                    </v-btn>
+                                    <v-item-group v-model="previewIndex" class="text-xs-center" mandatory >
+                                        <v-item v-for="n in props.item.signedFiles" :key="`btn-${n}`">
+                                            <v-btn slot-scope="{ active, toggle }" :input-value="active" icon @click="toggle" >
+                                                <v-icon>mdi-record</v-icon>
+                                            </v-btn>
+                                        </v-item>
+                                    </v-item-group>
+                                    <v-btn flat @click="next">
+                                        <v-icon>mdi-chevron-right</v-icon>
+                                    </v-btn>
+                                </v-card-actions>
+                            </v-card>
                         </v-dialog>
                         <v-card-actions class="text-xs-right list-actions">
                             <v-switch label='edit' @click="editItem(props.item)"></v-switch>
@@ -151,8 +178,9 @@ import { FETCH_EVENT_NOTIFICATIONS, CREATE_EVENT_NOTIFICATION, EDIT_EVENT_NOTIFI
 import { DEFAULT_EVENT_NOTIFICATION_FIELDS } from '@/common/form-fields';
 import { REQUEST_NOTIFICATION_STATUSES } from '@/common/network-handler';
 // import MarkDownExplain from '@/views/util/MarkdownExplain.vue'
-import MarkdownPanel from '@/views/util/MarkdownPanel.vue'
+import MarkdownPanel from '@/views/util/MarkdownPanel.vue';
 import { UPDATE_EVENTNOTIFICATIONS_SIGNEDURLS } from '@/store/mutations.type';
+import { FILE_ICONS } from '@/common/file-preview.js';
 
 export default {
     name: 'r-event-notifications',
@@ -166,8 +194,11 @@ export default {
             dialog: false,
             showMarkdown: false,
             previewDialog: false,
+            previewIndex: 0,
+            previewLength: 0,
             editing: false,
             allNotificationCategories: EVENT_NOTIFICATION_CATEGORIES,
+            allFileIcons: FILE_ICONS,
             selectedCategory: '',
             headers: EVENT_NOTIFICATION_HEADERS,
             defaultItem: DEFAULT_EVENT_NOTIFICATION_FIELDS,
@@ -175,9 +206,6 @@ export default {
             editIndex: -1,
             search: '',
             readyToUpload: false,
-            sampleFiles:[
-                'https://cdn.vuetifyjs.com/images/cards/halcyon.png'
-            ],
             request: REQUEST_NOTIFICATION_STATUSES,
             previewFileUrls: [],
             signedFileUrls: [],
@@ -260,6 +288,10 @@ export default {
             this.dialog = true;
             this.editIndex = _.findIndex(this.eventNotifications, item);
             this.editedItem = Object.assign({}, item);
+            this.previewFileUrls = item.signedFiles.map(item => {
+                return item.url;
+            });
+            this.signedFileUrls = _.clone(this.previewFileUrls);
         },
         deleteItem (item) {
             const itemIndex = _.findIndex(this.eventNotifications, item);
@@ -327,6 +359,7 @@ export default {
                 params.updated = timeNow;
                 delete params.created;
                 delete params.eventid;
+                delete params.signedFiles;
             }else{
                 params.eventId = parseInt(this.currentEventId);
                 params.created = timeNow;
@@ -380,6 +413,17 @@ export default {
 
             this.editedItem.description = combine;
 
+        },
+        showPreview(index, length){
+            this.previewDialog = true;
+            this.previewIndex = index;
+            this.previewLength = length;
+        },
+        next () {
+            this.previewIndex = this.previewIndex + 1 === this.previewLength ? 0 : this.previewIndex + 1;
+        },
+        prev () {
+            this.previewIndex = this.previewIndex - 1 < 0 ? this.previewLength - 1 : this.previewIndex - 1;
         }
     }
 };
@@ -407,5 +451,13 @@ function getCursorPosEnd(){
         .reminder-notes{
             color: #fff;
         }
+    }
+
+    .preview-file-icon{
+        height: 100%;
+        align-items: center;
+    }
+    .file-attachment{
+        vertical-align: top;
     }
 </style>

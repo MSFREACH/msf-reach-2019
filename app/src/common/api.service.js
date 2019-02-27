@@ -219,9 +219,12 @@ export const CountryDetailsService = {
 
 export const UtilService = {
     getUpload(payload){
+        var cleanFilename = payload.filename.replace(/ /g,'_');
+        cleanFilename = cleanFilename.replace(/[^a-zA-Z0-9\-.]/gi, '');
+
         const params = {
             key: payload.key,
-            filename: payload.filename.replace(/ /g,'_'),
+            filename: cleanFilename,
             index: payload.index
         };
         return ApiService.query('utils/uploadurl', {params: params});
