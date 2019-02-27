@@ -126,7 +126,7 @@
                                     <v-window-item v-for="(item, n) in props.item.signedFiles" :key="n">
                                         <v-card>
                                             <img v-if="item.contentType.indexOf('image') != -1" :src="item.url" width="100%" height="100%" @click="previewDialog = true">
-                                            <object v-else :data="item.url" :type="item.contentType" width="100%" height="100%">
+                                            <object v-else :data="item.url" :type="item.contentType" width="100%" height="100%" style="min-height: 80vh;">
                                                 <embed :src="item.url" width="100%" height="100%"></embed>
                                             </object>
                                         </v-card>

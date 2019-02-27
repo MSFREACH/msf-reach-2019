@@ -97,7 +97,8 @@ export default ({ config, db, logger }) => { // eslint-disable-line no-unused-va
         let s3params = {
             Bucket: config.AWS_S3_BUCKETNAME,
             Key: tmpKey,
-            Expires: 300
+            Expires: 300,
+            ResponseContentType: contentTyp
         };
         s3.getSignedUrl('getObject', s3params, (err, data) => {
             if (err){
