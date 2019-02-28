@@ -129,6 +129,7 @@
                                             <object v-else :data="item.url" :type="item.contentType" width="100%" height="100%" style="min-height: 80vh;">
                                                 <embed :src="item.url" width="100%" height="100%"></embed>
                                             </object>
+                                            {{item.url}}
                                         </v-card>
                                     </v-window-item>
                                 </v-window>
