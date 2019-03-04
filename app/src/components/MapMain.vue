@@ -10,17 +10,17 @@
                                 <img class="menu-icon" :src="'/resources/new_icons/menu_'+item.value+'.svg'">
                             </v-list-tile-action>
                             <v-list-tile-content>
-                                <v-list-tile-title>{{ item.label }}</v-list-tile-title>
+                                <v-list-tile-title>{{ item.name }}</v-list-tile-title>
                             </v-list-tile-content>
                             <v-list-tile-action>
                                 <v-checkbox v-model="checkedSections[item.value]"></v-checkbox>
                             </v-list-tile-action>
                         </v-list-tile>
-                        <v-list-tile v-for="(subItem, i) in item.subItems" :key="i+'i'">
+                        <v-list-tile v-for="(subItem, i) in item.children" :key="i+'i'">
                             <v-list-tile-action>
                                 <img class="menu-icon" :src="'/resources/new_icons/menu_'+item.value+'_'+subItem.value+'.svg'">
                             </v-list-tile-action>
-                            <v-list-tile-title v-text="subItem.label"></v-list-tile-title>
+                            <v-list-tile-title v-text="subItem.name"></v-list-tile-title>
                             <v-list-tile-action>
                                 <v-checkbox v-model="checkedFilters[item.value][i]" :value="subItem.value"></v-checkbox>
                             </v-list-tile-action>
@@ -29,6 +29,34 @@
                     </v-list-group>
                 </v-list>
             </v-navigation-drawer>
+        </v-card>
+        <v-card class="d-inline-block elevation-12">
+            <v-layout row wrap id="filterTree">
+                <v-flex>
+                    <v-card-text>
+                        <v-treeview
+                            v-model="tree"
+                            :items="filterItems"
+                            activatable
+                            active-class="grey lighten-4 blue--text"
+                            selected-color="active"
+                            open-on-click
+                            selectable
+                            expand-icon="keyboard_arrow_down"
+                            on-icon="check_box"
+                            off-icon="check_box_outline_blank"
+                            indeterminate="indeterminate_check_box"
+                        >
+                        <template v-slot:label="{ item }">
+                            <img v-if="item.children" class="menu-icon" :src="'/resources/new_icons/menu_'+item.value+'.svg'">
+                            <img v-else class="menu-icon":src="'/resources/new_icons/menu_'+item.id+'.svg'">
+                            <span>{{item.name}} </span>
+                        </template>
+                        </v-treeview>
+                    </v-card-text>
+                </v-flex>
+            </v-layout>
+
         </v-card>
         <div id="map" class="map"></div>
         <v-layout class="mode-docker">
@@ -99,7 +127,8 @@ export default {
                 reports: [],
                 contacts: [],
                 rssFeeds: []
-            }
+            },
+            tree:[]
         };
     },
     mounted(){
@@ -136,7 +165,25 @@ export default {
             'isLoadingEvent',
             'eventsGeoJson',
             'fetchEventsError'
-        ])
+        ]),
+        selections () {
+          const selections = []
+          var tmpList = [];
+          for(const filters of this.filterItems){
+              tmpList = tmpList.concat(filters.children);
+          };
+
+          for (const leaf of this.tree) {
+            var selection = this.filterItems.find(item => item.id == leaf);
+            if (!selection) {
+                selection = tmpList.find(item => item.id == leaf);
+            }
+            if (!selection) continue;
+            selections.push(selection)
+          }
+
+          return selections
+        }
     },
     methods: {
         fetchEvents() {
@@ -444,4 +491,32 @@ export default {
 
 <style lang='scss'>
 @import '@/assets/css/map.scss';
+@import '@/assets/css/util/colors.scss';
+
+#filterTree{
+    position: absolute;
+    top: 350px;
+    z-index: 10;
+    background: $bg-light-mode;
+    width: 300px;
+}
+
+.v-treeview-node__label{
+    vertical-align: top;
+}
+
+.v-treeview-node__checkbox, .v-treeview-node__toggle{
+    color: $color-active !important;
+}
+.v-treeview-node__content{
+    span{
+        vertical-align: top;
+        margin-left: 12px;
+    }
+}
+
+.v-icon.v-treeview-node__checkbox{
+    position:absolute;
+    right: 21px;
+}
 </style>
