@@ -116,7 +116,12 @@ export default new Router({
     },{
         name: 'contacts',
         path: '/contacts',
-        component: () => import('@/components/Placeholder'),
+        component: () => import('@/components/ContactList'),
+        props: true
+    },{
+        name: 'contactsTree',
+        path: '/contactsTree',
+        component: () => import('@/components/ContactListTree'),
         props: true
     },{
         name: 'reports',

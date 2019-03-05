@@ -63,9 +63,9 @@
 import { mapGetters } from 'vuex';
 import { MAPBOX_STYLES, MAP_FILTERS } from '@/common/map-fields';
 import { STATUS_ICONS } from '@/common/map-icons';
-import { FETCH_EVENTS } from '@/store/actions.type';
-import { getFeatures } from '@/lib/geojson-util';
-import { EVENT_STATUSES } from '@/common/common';
+import { FETCH_EVENTS, FETCH_REPORTS, FETCH_CONTACTS } from '@/store/actions.type';
+import { getFeatures, getEventFeatures } from '@/lib/geojson-util';
+import { EVENT_STATUSES, REPORT_TYPES, CONTACT_TYPES, CONTACT_BOOL } from '@/common/common';
 import moment from 'moment';
 
 var map;
@@ -90,24 +90,14 @@ export default {
             selectedFilters: null,
             filterItems: MAP_FILTERS,
             layerIds: [],
-            allStatuses: EVENT_STATUSES,
-            checkedSections:{
-                events: null,
-                reports: null,
-                contacts: null,
-                rssFeeds: null
-            },
-            checkedFilters: {
-                events: [],
-                reports: [],
-                contacts: [],
-                rssFeeds: []
-            },
+            allEventStatuses: EVENT_STATUSES,
+            allReportTypes: REPORT_TYPES,
+            allContactTypes: CONTACT_TYPES,
             tree:[]
         };
     },
     mounted(){
-        this.fetchEvents();
+        this.fetchData();
     },
     watch: {
         coordinates(newVal){
@@ -117,7 +107,6 @@ export default {
         eventsGeoJson(val){
             if(val){
                 this.initMap();
-                this.loadEventsLayer();
             }
         },
         toggle_mode(val){
@@ -130,12 +119,8 @@ export default {
             }, 500);
 
         },
-        checkedSections(val){
-            console.log(" ------ [checked sections] ::: ", val);
-        },
         selections(val){
             var selectedLayerIds = val.map(item => item.id);
-
             this.layerIds.forEach(function(layerId){
                 map.setLayoutProperty(layerId, 'visibility',
                     selectedLayerIds.indexOf(layerId) > -1 ? 'visible' : 'none');
@@ -147,6 +132,8 @@ export default {
             'eventsCount',
             'isLoadingEvent',
             'eventsGeoJson',
+            'reportsGeoJson',
+            'contactsGeoJson',
             'fetchEventsError'
         ]),
         selections () {
@@ -169,8 +156,10 @@ export default {
         }
     },
     methods: {
-        fetchEvents() {
+        fetchData() {
             this.$store.dispatch(FETCH_EVENTS, {});
+            this.$store.dispatch(FETCH_REPORTS, {});
+            this.$store.dispatch(FETCH_CONTACTS, {});
         },
         initMap(){
             var geojsonEvents = this.eventsGeoJson.objects.output;
@@ -200,6 +189,10 @@ export default {
             map.on('load', function () {
                 vm.loadEventsLayer();
                 vm.appendEventsTooltip();
+                vm.loadReportsLayer();
+
+                vm.loadContactsLayer();
+                vm.appendContactsTooltip()
             });
             map.on('zoom', function(e){
                 // console.log(map.getZoom());
@@ -208,19 +201,18 @@ export default {
         clearLayers(){
             map.removeLayer("events-heat");
             map.removeLayer("events-epicenter");
-            this.allStatuses.forEach(function(item){
+            this.allEventStatuses.forEach(function(item){
                 map.removeLayer('events_'+item.value);
             });
             map.removeLayer('events_assessment');
             map.removeLayer("events-cluster-count");
             map.removeLayer("events-unclustered-point");
             map.removeSource("reach-events");
-
         },
         loadEventsLayer(){
             var vm = this;
-            var featureCollection = getFeatures(this.eventsGeoJson, 'output');
-            vm.allStatuses.forEach(function(item){
+            var featureCollection = getEventFeatures(this.eventsGeoJson, 'output');
+            vm.allEventStatuses.forEach(function(item){
                 var imageId = 'event-'+item.value;
                 var imageKey = `/resources/new_icons/event_${item.value}.png`;
 
@@ -230,7 +222,6 @@ export default {
                         map.addImage(imageId, image);
                     }
                 });
-
             })
 
             if(!map.getSource("reach-events")){
@@ -330,11 +321,8 @@ export default {
                            50  // size greater than or equal to 10
                        ]
                     },
-                    "filter": ["==", "$type", "Point"],
+                    filter: ["==", "$type", "Point"],
                 });
-
-
-
             }
             featureCollection.forEach(function(feature){
                 var status = feature.properties.metadata.event_status.toLowerCase();
@@ -450,21 +438,160 @@ export default {
              //     popup.remove();
              // });
         },
-        filterSections(){
-
-        },
-        filterSubcategory(main, sub){
-            // **** expression for MAPBOX match filter ****
-            // ['match', ['get', property], inputValue, outputValue if match, outputValue if not a match]
-            console.log(main, sub);
-        },
         zoomToEventCenter(){
             var eventObj = this.eventFeatureCollection.filter(item =>{
                 return item.properties.id == this.eventId;
             });
 
             map.flyTo({center: [eventObj.geometry.coordinates]});
-        }
+        },
+        loadReportsLayer(){
+            var vm = this;
+            var featureCollection = getFeatures(this.reportsGeoJson, 'output');
+            vm.allReportTypes.forEach(function(item){
+                var imageId = 'report-'+item.value;
+                var imageKey = `/resources/new_icons/report_${item.toLowerCase()}.png`;
+                map.loadImage(imageKey, function(error, image){
+                    if(!map.hasImage(imageId)){
+                        if(error) throw error;
+                        map.addImage(imageId, image);
+                    }
+                });
+            })
+
+            if(!map.getSource("reach-reports")){
+                map.addSource("reach-reports", {
+                    type: "geojson",
+                    data: {
+                        "type": "FeatureCollection",
+                        "features": featureCollection
+                    },
+                    cluster: true,
+                    clusterMaxZoom: 14,
+                    clusterRadius: 25
+                })
+            }
+
+            if(!map.getLayer("reports-epicenter")){
+                map.addLayer({
+                    id: "reports-epicenter",
+                    type: "circle",
+                    source: "reach-reports",
+                    paint: {
+                        // increase circle size as user zooms from z12 to z22
+                        "circle-radius":{
+                            base: 1.17,
+                            stops: [[12,2], [22, 20]]
+                        },
+                        "circle-color":[
+                            'match',
+                            ['get', 'type'],
+                            'ACCESS', '#F38181',
+                            'CONTACT', '#95E1D3',
+                            'NEED', '#FFB677',
+                            'SECURITY', '#FCE38A',
+                            /* other */ '#fff'
+                        ]
+                    },
+                    filter: ["==", "$type", "Point"]
+                });
+            }
+
+            featureCollection.forEach(function(feature){
+                var type = feature.properties.type;
+            })
+
+
+        },
+        loadContactsLayer(){
+            var vm = this;
+            var featureCollection = getFeatures(this.contactsGeoJson, 'output');
+
+            if(!map.getSource("reach-contacts")){
+                map.addSource("reach-contacts", {
+                    type: "geojson",
+                    data: {
+                        "type": "FeatureCollection",
+                        "features": featureCollection
+                    },
+                    cluster: true,
+                    clusterMaxZoom: 14,
+                    clusterRadius: 25
+                })
+            }
+
+            if(!map.getLayer("contacts-epicenter")){
+                map.addLayer({
+                    id: "contacts-epicenter",
+                    type: "circle",
+                    source: "reach-contacts",
+                    paint: {
+                        // increase circle size as user zooms from z12 to z22
+                        "circle-radius":{
+                            base: 1.17,
+                            stops: [[12,2], [22, 180]]
+                        },
+                        "circle-color":[
+                            'match',
+                            ['get', 'type'],
+                            'ACCESS', '#F38181',
+                            'CONTACT', '#95E1D3',
+                            'NEED', '#FFB677',
+                            'SECURITY', '#FCE38A',
+                            /* other */ '#fff'
+                        ]
+                    },
+                    filter: ["==", "$type", "Point"]
+                });
+            }
+        },
+
+        appendContactsTooltip(){
+            // Create a popup, but don't add it to the map yet.
+            var popup = new mapboxgl.Popup({
+                closeButton: true,
+                closeOnClick: false
+            });
+
+            map.on('mouseenter', 'contacts-epicenter', function(e) {
+                // Change the cursor style as a UI indicator.
+                map.getCanvas().style.cursor = 'pointer';
+                var coordinates = e.features[0].geometry.coordinates.slice();
+                console.log('----- parsed error ------- ', e.features[0].properties);  /// TODO:  cluster points cannot render popups;
+                var properties = JSON.parse(e.features[0].properties.properties);
+                var msfStr = `<div class="bold-text"> ${properties.OC ? properties.OC : ''} </div>
+                <div class="note-text"> ${properties.msf_employment ? properties.msf_employment + ',' : ''} ${properties.msf_additional}</div>`;
+
+                var nonMSFstr = `<div class="bold-text"> ${properties.msf_associate ? 'MSF Associate' : ''} </div>
+                <div class="bold-text"> ${properties.msf_peer ? 'MSF Peer' : ''} </div>
+                <div class="bold-text"> ${properties.employer ? properties.employer : ''} ${properties.division ? properties.division +', ': ''}</div>`;
+
+
+                var contentStr = `<a href="#/contacts/${e.features[0].properties.id}">
+                    <div class="secondary-text">${properties.name}</div>
+                    <div class="specified-text"> ${properties.type}</div>
+                    ${ properties.type == CONTACT_BOOL.internal ? msfStr : nonMSFstr }
+                    <div class="note-text"> ${properties.job_title ? properties.job_title : ''}</div>
+                    <div class="note-text"> ${properties.email}</div>
+                    <div class="note-text"> ${properties.cell}</div>
+                    <div class="note-text"> ${properties.address}</div>
+                    <label></label>
+                    </a> `;
+
+                while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                }
+                popup.setLngLat(coordinates)
+                    .setHTML(contentStr)
+                    .addTo(map);
+            });
+
+            map.on('mouseleave', 'contacts-epicenter', function() {
+                map.getCanvas().style.cursor = '';
+                popup.remove();
+            });
+
+        },
 
     }
 

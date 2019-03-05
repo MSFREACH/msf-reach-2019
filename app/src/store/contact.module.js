@@ -8,6 +8,7 @@ import { FETCH_CONTACTS_START, FETCH_CONTACTS_END, UPDATE_CONTACT_IN_LIST, SET_E
 const state = {
     errors: null,
     contacts: [],
+    contactsGeoJson: [],
     isLoadingContact: true,
     contactsCount: 0
 };
@@ -18,6 +19,9 @@ const getters = {
     },
     contacts(state){
         return state.contacts;
+    },
+    contactsGeoJson(state){
+        return state.contactsGeoJson;
     },
     isLoadingContact(state){
         return state.isLoadingContact;
@@ -48,6 +52,7 @@ const mutations = {
     [FETCH_CONTACTS_END] (state, payload){
         // TODO: // // Add popups see: [mapAllContacts] parse GeoJSON here
         console.log('Fetched contacts ------ ',  payload); //eslint-disable-line no-console
+        state.contactsGeoJson = payload;
         state.contacts = _.map(payload.objects.output.geometries, function(item){
             return item;
         });

@@ -175,8 +175,14 @@ export const COUNTRY_PARAMS = {
 
 export const DEFAULT_CONTACT_TYPE = 'Current MSF Staff';
 
+
+export const CONTACT_BOOL = {
+    internal: 'Current MSF Staff',
+    external: 'others'
+};
+
 export const CONTACT_TYPES =[
-    {text: 'Current MSF Staff', value: 'Current MSF Staff'},
+    {text: 'Current MSF Staff', value: 'msf_staff'},
     {text: 'Former Staff', value: 'msf_peer'},
     {text: 'Association Member', value: 'msf_associate'},
     {text: 'Supplier', value: 'Supplier'},

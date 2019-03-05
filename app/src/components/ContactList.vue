@@ -26,26 +26,26 @@
                     <v-list-tile @click="expanded[props.item.properties.id] = !expanded[props.item.properties.id]">
                         <v-list-tile-title> {{ props.item.properties.properties.name }} </v-list-tile-title>
                         <v-list-tile-sub-title v-show="props.item.properties.properties.type" small outline color="primary"> {{ props.item.properties.properties.type }} </v-list-tile-sub-title>
-                        <v-chip v-if="props.item.properties.properties.speciality"
-                        v-for="(item, index) in props.item.properties.properties.speciality.split(',')"
-                        :key="index" small label> {{ item }} </v-chip>
+                        <v-flex v-if="props.item.properties.properties.speciality">
+                            <v-chip v-for="(item, index) in props.item.properties.properties.speciality.split(',')"
+                            :key="index" small label> {{ item }} </v-chip>
+                        </v-flex>
                     </v-list-tile>
                     <v-list three-line>
                         <v-expansion-panel :key="props.item.properties.id" v-show="expanded[props.item.properties.id]">
                             <v-expansion-panel-content v-model="expanded[props.item.properties.id]">
                                 <v-card>
-                                    <v-card-title>{{ props.item.coordinates }} </v-card-title>
                                     <v-card-text> {{ props.item.properties }} </v-card-text>
                                     <v-card-actions>
                                         <v-icon>phone</v-icon>
                                         <span>Mobile: {{ props.item.properties.properties.cell }} </span>
                                         <span>Work: {{ props.item.properties.properties.work }} </span>
                                         <span>Home: {{ props.item.properties.properties.home }} </span>
-                                        <v-btn v-if="props.item.properties.properties.WhatsApp">
+                                        <v-btn v-if="props.item.properties.properties.WhatsApp" flat fab small>
                                             <span class="mdi mdi-whatsapp" v-if="checkEqual( props.item.properties.properties.cell, props.item.properties.properties.WhatsApp)"></span>
                                             <span class="mdi mdi-whatsapp" v-else> {{props.item.properties.properties.WhatsApp }} </span>
                                         </v-btn>
-                                        <v-btn v-if="props.item.properties.properties.Telegram">
+                                        <v-btn v-if="props.item.properties.properties.Telegram" flat fab small>
                                             <span class="mdi mdi-telegram" v-if="checkEqual( props.item.properties.properties.cell, props.item.properties.properties.Telegram)"> </span>
                                             <span class="mdi mdi-telegram" v-else> else {{ props.item.properties.properties.Telegram }}  </span>
                                         </v-btn>

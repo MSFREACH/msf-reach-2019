@@ -1,6 +1,20 @@
 
 function getFeatures(topoJson, key) {
     return topoJson.objects[key].geometries.map(function(geom) {
+        return {
+            type: 'Feature',
+            id: geom.properties.id,
+            properties: geom.properties || {},
+            geometry: {
+                type: geom.type,
+                coordinates: geom.coordinates
+            }
+        };
+    });
+}
+
+function getEventFeatures(topoJson, key) {
+    return topoJson.objects[key].geometries.map(function(geom) {
         geom.properties.event_status = geom.properties.metadata.event_status.toLowerCase();
         return {
             type: 'Feature',
@@ -14,6 +28,7 @@ function getFeatures(topoJson, key) {
         };
     });
 }
+
 
 
 function getFeaturesFromArcs(topoJson, key){
@@ -31,5 +46,5 @@ function getFeaturesFromArcs(topoJson, key){
 
 
 module.exports = {
-    getFeatures, getFeaturesFromArcs
+    getFeatures, getEventFeatures,  getFeaturesFromArcs
 };

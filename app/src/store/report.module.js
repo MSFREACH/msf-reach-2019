@@ -8,6 +8,7 @@ import { FETCH_REPORTS_START, FETCH_REPORTS_END, UPDATE_REPORT_IN_LIST, SET_ERRO
 const state = {
     errors: null,
     reports: [],
+    reportsGeoJson: [],
     isLoadingReport: true,
     reportsCount: 0
 };
@@ -18,6 +19,9 @@ const getters = {
     },
     reports(state){
         return state.reports;
+    },
+    reportsGeoJson(state){
+        return state.reportsGeoJson;
     },
     isLoadingReport(state){
         return state.isLoadingReport;
@@ -58,6 +62,8 @@ const mutations = {
     [FETCH_REPORTS_END] (state, payload){
         // TODO: // // Add popups see: [mapAllReports] parse GeoJSON here
         console.log(payload); //eslint-disable-line no-console
+        state.reportsGeoJson = payload;
+
         state.reports = _.map(payload.objects.output.geometries, function(item){
             return item.properties;
         });
