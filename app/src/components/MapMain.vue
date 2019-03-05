@@ -3,59 +3,34 @@
         <v-btn id="filterMenu" @click.stop="drawer = !drawer"><v-icon>menu</v-icon></v-btn>
         <v-card class="d-inline-block elevation-12">
             <v-navigation-drawer v-model="drawer" floating app id="filterBar">
-                <v-list>
-                    <v-list-group v-for="(item, i) in filterItems" append-icon="add" :key="i" no-action>
-                        <v-list-tile slot="activator">
-                            <v-list-tile-action>
-                                <img class="menu-icon" :src="'/resources/new_icons/menu_'+item.value+'.svg'">
-                            </v-list-tile-action>
-                            <v-list-tile-content>
-                                <v-list-tile-title>{{ item.name }}</v-list-tile-title>
-                            </v-list-tile-content>
-                            <v-list-tile-action>
-                                <v-checkbox v-model="checkedSections[item.value]"></v-checkbox>
-                            </v-list-tile-action>
-                        </v-list-tile>
-                        <v-list-tile v-for="(subItem, i) in item.children" :key="i+'i'">
-                            <v-list-tile-action>
-                                <img class="menu-icon" :src="'/resources/new_icons/menu_'+item.value+'_'+subItem.value+'.svg'">
-                            </v-list-tile-action>
-                            <v-list-tile-title v-text="subItem.name"></v-list-tile-title>
-                            <v-list-tile-action>
-                                <v-checkbox v-model="checkedFilters[item.value][i]" :value="subItem.value"></v-checkbox>
-                            </v-list-tile-action>
-                        </v-list-tile>
-
-                    </v-list-group>
-                </v-list>
+                <v-layout row wrap>
+                    <v-flex>
+                        <v-card-text>
+                            <v-treeview
+                                v-model="tree"
+                                :items="filterItems"
+                                activatable
+                                active-class="grey lighten-4 blue--text"
+                                selected-color="active"
+                                open-on-click
+                                selectable
+                                expand-icon="expand_more"
+                                on-icon="check_box"
+                                off-icon="check_box_outline_blank"
+                                indeterminate="indeterminate_check_box"
+                            >
+                            <template v-slot:label="{ item }">
+                                <img v-if="item.children" class="menu-icon" :src="'/resources/new_icons/menu_'+item.value+'.svg'">
+                                <img v-else class="menu-icon":src="'/resources/new_icons/menu_'+item.id+'.svg'">
+                                <span>{{item.name}} </span>
+                            </template>
+                            </v-treeview>
+                        </v-card-text>
+                    </v-flex>
+                </v-layout>
             </v-navigation-drawer>
         </v-card>
         <v-card class="d-inline-block elevation-12">
-            <v-layout row wrap id="filterTree">
-                <v-flex>
-                    <v-card-text>
-                        <v-treeview
-                            v-model="tree"
-                            :items="filterItems"
-                            activatable
-                            active-class="grey lighten-4 blue--text"
-                            selected-color="active"
-                            open-on-click
-                            selectable
-                            expand-icon="keyboard_arrow_down"
-                            on-icon="check_box"
-                            off-icon="check_box_outline_blank"
-                            indeterminate="indeterminate_check_box"
-                        >
-                        <template v-slot:label="{ item }">
-                            <img v-if="item.children" class="menu-icon" :src="'/resources/new_icons/menu_'+item.value+'.svg'">
-                            <img v-else class="menu-icon":src="'/resources/new_icons/menu_'+item.id+'.svg'">
-                            <span>{{item.name}} </span>
-                        </template>
-                        </v-treeview>
-                    </v-card-text>
-                </v-flex>
-            </v-layout>
 
         </v-card>
         <div id="map" class="map"></div>
@@ -157,6 +132,14 @@ export default {
         },
         checkedSections(val){
             console.log(" ------ [checked sections] ::: ", val);
+        },
+        selections(val){
+            var selectedLayerIds = val.map(item => item.id);
+
+            this.layerIds.forEach(function(layerId){
+                map.setLayoutProperty(layerId, 'visibility',
+                    selectedLayerIds.indexOf(layerId) > -1 ? 'visible' : 'none');
+            });
         }
     },
     computed: {
@@ -219,7 +202,7 @@ export default {
                 vm.appendEventsTooltip();
             });
             map.on('zoom', function(e){
-                console.log(map.getZoom());
+                // console.log(map.getZoom());
             });
         },
         clearLayers(){
@@ -511,7 +494,7 @@ export default {
 .v-treeview-node__content{
     span{
         vertical-align: top;
-        margin-left: 12px;
+        margin-left: 8px;
     }
 }
 
