@@ -25,14 +25,22 @@ ul{
 }
 
 .searchHeader{
+    display: flex;
+    width: 300px;
     .v-select__slot{
       label{
           top: 7px;
       }
     }
+    label{
+        text-transform: capitalize;
+    }
+    .v-input__slot{
+        height: inherit;
+    }
 }
 
-.callToActionRed, 
+.callToActionRed,
 .offsetTime{
     color: $warning-red;
 }
@@ -60,19 +68,10 @@ ul{
         }
     }
 }
-.searchHeader{
-    label{
-        text-transform: capitalize;
-    }
-    .v-input__slot{
-        height: inherit;
-    }
-}
+
 .SITREP-Container{
     display: inherit;
     .searchHeader{
-        display: flex;
-        width: 300px;
         .v-text-field{
             padding-top: 0px;
         }

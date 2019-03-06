@@ -119,11 +119,6 @@ export default new Router({
         component: () => import('@/components/ContactList'),
         props: true
     },{
-        name: 'contactsTree',
-        path: '/contactsTree',
-        component: () => import('@/components/ContactListTree'),
-        props: true
-    },{
         name: 'reports',
         path: '/reports',
         component: () => import('@/components/Placeholder'),

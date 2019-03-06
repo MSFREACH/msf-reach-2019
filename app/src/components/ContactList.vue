@@ -1,97 +1,100 @@
 <template>
-    <v-layout row app xs12 :clipped="$vuetify.breakpoint.mdAndUp">
+    <v-container row app class="listContainer">
         <v-card v-if="isLoadingContact" class="event-preview">
               Loading events...
         </v-card>
-        <v-container v-else>
-            <v-data-iterator :items="contacts"
-            content-tag="v-layout"
-            :rows-per-page-items="rowsPerPageItems"
-            :pagination.sync="pagination"
-            no-data-text="No events found"
-            :search="search"
-            :filter="filterByType"
-            row wrap>
-                <v-toolbar slot="header" mt0 flat>
-                    <v-toolbar-title> Contacts </v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-flex xs6 md4 lg3>
-                        <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
-                    </v-flex>
-                    <v-flex xs6 md4 lg3>
-                        <v-select v-model="filterType" :items="allTypes" attach chips label="filter by type"></v-select>
-                    </v-flex>
-                </v-toolbar>
-                <v-flex slot="item" slot-scope="props" xs12>
-                    <v-list-tile @click="expanded[props.item.properties.id] = !expanded[props.item.properties.id]">
-                        <v-list-tile-title> {{ props.item.properties.properties.name }} </v-list-tile-title>
-                        <v-list-tile-sub-title v-show="props.item.properties.properties.type" small outline color="primary"> {{ props.item.properties.properties.type }} </v-list-tile-sub-title>
-                        <v-flex v-if="props.item.properties.properties.speciality">
-                            <v-chip v-for="(item, index) in props.item.properties.properties.speciality.split(',')"
-                            :key="index" small label> {{ item }} </v-chip>
+        <div class="searchHeader">
+            <v-text-field v-model="search" label="Search" single-line hide-details xs10></v-text-field>
+            <v-select v-model="filterType" :items="allTypes" label="Type" round clearable></v-select>
+        </div>
+
+        <v-layout justify-space-between row wrap>
+            <v-flex xs3 class="treeNav">
+                <v-treeview
+                    :active.sync="active"
+                    :items="items"
+                    :load-children="fetchContacts"
+                    :open.sync="open"
+                    activatable
+                    active-class="primary--text"
+                    class="grey lighten-5"
+                    open-on-click
+                    transition
+                >
+                    <template v-slot:prepend="{item, active}">
+                        <v-icon v-if="!item.children" :color="active? 'primary' : ''"> mdi-account </v-icon>
+                    </template>
+                    <template v-slot:label="{item}">
+                        {{item.name}}
+                        <span class="count" v-if="item.children">{{ item.children.length }}</span>
+                    </template>
+                </v-treeview>
+            </v-flex>
+            <v-flex xs9 text-xs-center>
+                <v-scroll-y-transition mode="out-in">
+                    <div v-if="!selected" class="title grey--text">
+                        Select Contact
+                    </div>
+                    <v-card v-else :key="selected.id" class="pt-4 mx-auto" flat max-widtd="400">
+                        <h3>{{selected.properties.properties.name}}</h3>
+                        <v-card-text v-if="selected.properties.properties.type == defaultType">
+                            {{selected.properties.properties.OC}}
+                            {{selected.properties.properties.employment}}
+                            {{selected.properties.properties.additional}}
+                            {{selected.properties.properties.job_title}}
+                        </v-card-text>
+                        <v-card-text else>
+                            <v-chip label v-show="selected.properties.properties.msf_associate">MSF Associate </v-chip>
+                            <v-chip label v-show="selected.properties.properties.msf_peer"> MSF Peer </v-chip>
+                            {{selected.properties.properties.employer}}
+                            {{selected.properties.properties.job_title}}
+                            {{selected.properties.properties.division}}
+                        </v-card-text>
+
+                        <v-divider></v-divider>
+                        <v-layout tag="v-card-text" text-xs-left wrap d-flex>
+                            <v-flex tag="strong" xs5 text-xs-right mr-3 mb-2 v-show="selected.properties.properties.cell">Mobile:</v-flex>
+                            <v-flex>{{ selected.properties.properties.cell }}</v-flex>
+                            <v-flex tag="strong" xs5 text-xs-right mr-3 mb-2 v-show="selected.properties.properties.work">Work:</v-flex>
+                            <v-flex>
+                                {{ selected.properties.properties.work }}
+                            </v-flex>
+                            <v-flex tag="strong" xs5 text-xs-right mr-3 mb-2 v-show="selected.properties.properties.home">Home:</v-flex>
+                            <v-flex>{{ selected.properties.properties.home }}</v-flex>
+                            <v-flex tag="strong" xs5 text-xs-right mr-3 mb-2><v-icon>mail</v-icon></v-flex>
+                            <v-flex>
+                                <div> {{ selected.properties.properties.email }} </div>
+                                <div v-show="selected.properties.properties.email2"> {{ selected.properties.properties.email2 }} </div>
+                            </v-flex>
+                        </v-layout>
+                        <v-layout>
+                            <v-flex>
+                                <span class="mdi mdi-whatsapp" v-if="checkEqual( selected.properties.properties.cell, selected.properties.properties.WhatsApp)"></span>
+                                <span class="mdi mdi-whatsapp" v-else> {{selected.properties.properties.WhatsApp }} </span>
+                            </v-flex>
+                            <v-flex>
+                                    <span class="mdi mdi-telegram" v-if="checkEqual( selected.properties.properties.cell, selected.properties.properties.Telegram)"> </span>
+                                    <span class="mdi mdi-telegram" v-else> {{ selected.properties.properties.Telegram }}  </span>
+                            </v-flex>
+                            <v-flex v-show="selected.properties.properties.skype">
+                                <span class="mdi mdi-skype"></span>
+                                <span> {{ selected.properties.properties.skype }} </span>
+                            </v-flex>
+                            <v-flex v-show="selected.properties.properties.Instagram">
+                                <span class="mdi mdi-instagram"></span>
+                                <span> {{ selected.properties.properties.Instagram }} </span>
+                            </v-flex>
+
+                        </v-layout>
+                        <v-flex xs12 v-show="selected.properties.properties.address">
+                            <v-icon>location_on</v-icon>
+                            <span> {{ selected.properties.properties.address }} </span>
                         </v-flex>
-                    </v-list-tile>
-                    <v-list three-line>
-                        <v-expansion-panel :key="props.item.properties.id" v-show="expanded[props.item.properties.id]">
-                            <v-expansion-panel-content v-model="expanded[props.item.properties.id]">
-                                <v-card>
-                                    <v-card-text> {{ props.item.properties }} </v-card-text>
-                                    <v-card-actions>
-                                        <v-icon>phone</v-icon>
-                                        <span>Mobile: {{ props.item.properties.properties.cell }} </span>
-                                        <span>Work: {{ props.item.properties.properties.work }} </span>
-                                        <span>Home: {{ props.item.properties.properties.home }} </span>
-                                        <v-btn v-if="props.item.properties.properties.WhatsApp" flat fab small>
-                                            <span class="mdi mdi-whatsapp" v-if="checkEqual( props.item.properties.properties.cell, props.item.properties.properties.WhatsApp)"></span>
-                                            <span class="mdi mdi-whatsapp" v-else> {{props.item.properties.properties.WhatsApp }} </span>
-                                        </v-btn>
-                                        <v-btn v-if="props.item.properties.properties.Telegram" flat fab small>
-                                            <span class="mdi mdi-telegram" v-if="checkEqual( props.item.properties.properties.cell, props.item.properties.properties.Telegram)"> </span>
-                                            <span class="mdi mdi-telegram" v-else> else {{ props.item.properties.properties.Telegram }}  </span>
-                                        </v-btn>
-                                    </v-card-actions>
-                                    <v-card-text v-if="props.item.properties.properties.type == defaultType">
-                                        {{props.item.properties.properties.OC}}
-                                        {{props.item.properties.properties.employment}}
-                                        {{props.item.properties.properties.additional}}
-                                        {{props.item.properties.properties.job_title}}
-                                    </v-card-text>
-                                    <v-card-text else>
-                                        <v-chip label v-show="props.item.properties.properties.msf_associate">MSF Associate </v-chip>
-                                        <v-chip label v-show="props.item.properties.properties.msf_peer"> MSF Peer </v-chip>
-                                        {{props.item.properties.properties.employer}}
-                                        {{props.item.properties.properties.job_title}}
-                                        {{props.item.properties.properties.division}}
-                                    </v-card-text>
-                                    <v-card-actions>
-                                        <v-icon>mail</v-icon>
-                                        <span> {{ props.item.properties.properties.email }} </span>
-                                        <span v-show="props.item.properties.properties.email2"> {{ props.item.properties.properties.email2 }} </span>
-                                    </v-card-actions>
-                                    <v-card-actions v-show="props.item.properties.properties.skype">
-                                        <span class="mdi mdi-skype"></span>
-                                        <span> {{ props.item.properties.properties.skype }} </span>
-                                    </v-card-actions>
-                                    <v-card-actions v-show="props.item.properties.properties.Instagram">
-                                        <span class="mdi mdi-instagram"></span>
-                                        <span> {{ props.item.properties.properties.Instagram }} </span>
-                                    </v-card-actions>
-                                    <v-card-actions v-show="props.item.properties.properties.address">
-                                        <v-icon>location_on</v-icon>
-                                        <span> {{ props.item.properties.properties.address }} </span>
-                                    </v-card-actions>
-                                </v-card>
-                            </v-expansion-panel-content>
-                        </v-expansion-panel>
-                    </v-list>
-                    <v-divider></v-divider>
-                </v-flex>
-                <v-alert slot="no-results" :value="true" color="error" icon="warning">
-                    Your search for "{{ search }}" found no results.
-                </v-alert>
-            </v-data-iterator>
-        </v-container>
-    </v-layout>
+                    </v-card>
+                </v-scroll-y-transition>
+            </v-flex>
+        </v-layout>
+    </v-container>
 </template>
 <script>
 /*eslint no-debugger: off*/
@@ -114,11 +117,9 @@ export default {
     },
     data(){
         return {
-            rowsPerPageItems: [4, 8, 12],
-            pagination: {
-                rowsPerPage: 4
-            },
             search: '',
+            active: [],
+            open: [],
             expanded: {},
             defaultType: DEFAULT_CONTACT_TYPE,
             allTypes: CONTACT_TYPES,
@@ -130,11 +131,39 @@ export default {
             'contactsCount',
             'isLoadingContact',
             'contacts'
-        ])
+        ]),
+        items () {
+            const children = this.allTypes.map(type => ({
+                id: type.value,
+                name: this.getName(type.text),
+                children: this.getChildren(type.text)
+            }))
+            var tmpTypeLabel = this.allTypes.map(type => {
+                return type.text;
+            });
+
+            var others = this.contacts.filter(contact => {
+                return (tmpTypeLabel.indexOf(contact.properties.properties.type) == -1);
+            });
+
+            var orderedList = _.clone(children);
+            orderedList.push({
+                id: 2,
+                name: 'Uncategorized',
+                children: this.getOtherChildren(others)
+            });
+
+            return orderedList;
+        },
+        selected () {
+            if (!this.active.length) return undefined;
+            const id = this.active[0];
+            return this.contacts.find(contact => contact.properties.id === id);
+        }
     },
     watch:{
-        contacts(newValue){
-            newValue.forEach( i => {
+        contacts(val){
+            val.forEach( i => {
                 this.$set(this.expanded, i.properties.id, false);
             });
         }
@@ -152,6 +181,40 @@ export default {
         filterByType(contact){
             console.log('CONTACT LIST --- ', contact);
             return contact.properties.properties.type == this.filterType;
+        },
+        getChildren (type) {
+            const contacts = []
+
+            for (const contact of this.contacts) {
+                if (contact.properties.properties.type !== type) continue
+                contacts.push({
+                ...contact,
+                id: contact.properties.id,
+                name: this.getName(contact.properties.properties.name)
+                })
+            }
+
+            return contacts.sort((a, b) => {
+                return a.properties.properties.name > b.properties.properties.name ? 1 : -1
+            })
+        },
+        getOtherChildren(others){
+            const contacts = []
+
+            for (const contact of others) {
+                contacts.push({
+                ...contact,
+                name: this.getName(contact.properties.properties.name)
+                })
+            }
+
+            return contacts.sort((a, b) => {
+                return a.properties.properties.name > b.properties.properties.name ? 1 : -1
+            })
+        },
+
+        getName (name) {
+            return `${name.charAt(0).toUpperCase()}${name.slice(1)}`
         }
     }
 
@@ -160,4 +223,20 @@ export default {
 
 <style lang="scss">
 @import '@/assets/css/lists.scss';
+@import '@/assets/css/display.scss';
+@import '@/assets/css/edit.scss';
+.count{
+    color: #ccc;
+    font-size: 10px;
+}
+.treeNav{
+    height: calc(100vh - 120px);
+    overflow: scroll;
+}
+
+.listContainer{
+    top: 60px;
+    position: relative;
+    max-width: unset;
+}
 </style>
