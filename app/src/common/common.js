@@ -190,8 +190,13 @@ export const CONTACT_TYPES =[
     {text: 'Government', value: 'Government'},
     {text: 'Other NGO', value: 'Other NGO'},
     {text: 'Academic', value: 'Academic'},
-    {text: 'Private Medical Practice', value: 'Private Medical Practice'}
+    {text: 'Private Medical Practice', value: 'Private Medical Practice'},
+    {text: 'Other', value: 'Other'}
+
 ];
+
+export const CONTACT_MSF_EMPLOY_STATUS = [ 'Field worker (national)', 'Field worker (international)', 'HQ staff (OC/PS)'];
+export const CONTACT_OCS = ['OCA', 'OCB', 'OCBA', 'OCG', 'OCP', 'Inter-section', 'IO'];
 
 export const REPORT_STATUSES = ['confirmed', 'unconfirmed', 'ignored'];
 export const REPORT_TYPES = ['ACCESS', 'NEEDS', 'CONTACTS', 'SECURITY'];

@@ -7,7 +7,7 @@
             <v-text-field v-model="search" label="Search" single-line hide-details xs10></v-text-field>
             <v-select v-model="filterType" :items="allTypes" label="Type" round clearable></v-select>
         </div>
-
+        <new-contact></new-contact>
         <v-layout justify-space-between row wrap>
             <v-flex xs3 class="treeNav">
                 <v-treeview
@@ -103,6 +103,8 @@
 import { mapGetters } from 'vuex';
 import { FETCH_CONTACTS } from '@/store/actions.type';
 import { DEFAULT_CONTACT_TYPE, CONTACT_TYPES} from '@/common/common';
+import NewContact from '@/views/New/NewContact.vue';
+
 export default {
     name: 'ContactList',
     props: {
@@ -125,6 +127,9 @@ export default {
             allTypes: CONTACT_TYPES,
             filterType: ''
         };
+    },
+    components:{
+        NewContact
     },
     computed: {
         ...mapGetters([
