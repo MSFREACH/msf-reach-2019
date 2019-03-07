@@ -518,7 +518,6 @@ describe('Cognicity Server Testing Harness', function() {
                                 'address': '1 The Street',
                                 'title': 'King',
                                 'name': 'Joe Bloggs',
-                                'gender': 'Male',
                                 'cell': '+1 234',
                                 'email': 'joe@email.com',
                                 'msf_entered': true
@@ -551,7 +550,6 @@ describe('Cognicity Server Testing Harness', function() {
                                 'address': '1 The Street',
                                 'title': 'King',
                                 'name': 'Joe Bloggs',
-                                'gender': 'Male',
                                 'cell': '+1 234',
                                 'email': 'joe@email.com'
                             },
