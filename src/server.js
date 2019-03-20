@@ -184,11 +184,23 @@ const init = (config, initializeDb, routes, logger) => new Promise((resolve, rej
 
             // Mount the routes
             if(config.AZURE_AD_TENANT_NAME){
-                app.get('/login',
-                    passport.authenticate('azuread-openidconnect', { failureRedirect: '/login'}),
-                    function(req, res) {
-                        res.redirect('/');
+                // app.get('/login',
+                //     passport.authenticate('azuread-openidconnect', { failureRedirect: '/login'}),
+                //     function(req, res) {
+                //         res.redirect('/');
+                //     });
+
+                /// Documented here: http://www.passportjs.org/docs/authenticate/
+                app.get('/login', function(req, res, next){
+                    passport.authenticate('azuread-openidconnect', function(err, user){
+                        if(err) { return next(err); }
+                        if(!user) { return res.redirect('/login'); }
+                        req.logIn(user, function(err) {
+                            if(err) { return next(err); }
+                            return res.redirect('/users/' +user.username);
+                        });
                     });
+                });
                 app.post('/auth/openid/return',
                     passport.authenticate('azuread-openidconnect', { failureRedirect: '/login'}),
                     function(req, res, next) { // eslint-disable-line no-unused-vars
@@ -201,8 +213,9 @@ const init = (config, initializeDb, routes, logger) => new Promise((resolve, rej
                 app.use('/landing', express.static('public/landing'));
                 // app.use('/authreturn', [ensureAuthenticated, express.static(config.STATIC_AUTH_RETURN_PATH)]);//Page used to store our user in localstorage and redirect to / after auth return from azure
                 app.use('/authreturn', ensureAuthenticated, function(req, res){
-                    res.redirect('/'); /// here should bounce to vue app
+                    res.redirect('/'); /// here should bounce to vue app ** need to pass it a TOKEN ..... somehow ...
                 });
+
             } else {
                 app.use('/login', express.static(config.STATIC_AUTH_PATH));
             }
