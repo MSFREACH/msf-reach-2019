@@ -199,7 +199,10 @@ const init = (config, initializeDb, routes, logger) => new Promise((resolve, rej
                         res.redirect('/authreturn');
                     });
                 app.use('/landing', express.static('public/landing'));
-                app.use('/authreturn', [ensureAuthenticated, express.static(config.STATIC_AUTH_RETURN_PATH)]);//Page used to store our user in localstorage and redirect to / after auth return from azure
+                // app.use('/authreturn', [ensureAuthenticated, express.static(config.STATIC_AUTH_RETURN_PATH)]);//Page used to store our user in localstorage and redirect to / after auth return from azure
+                app.use('/authreturn', ensureAuthenticated, function(req, res){
+                        res.redirect('/'); /// here should bounce to vue app
+                });
             } else {
                 app.use('/login', express.static(config.STATIC_AUTH_PATH));
             }
