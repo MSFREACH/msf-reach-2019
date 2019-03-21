@@ -184,22 +184,22 @@ const init = (config, initializeDb, routes, logger) => new Promise((resolve, rej
 
             // Mount the routes
             if(config.AZURE_AD_TENANT_NAME){
-                // app.get('/login',
-                //     passport.authenticate('azuread-openidconnect', { failureRedirect: '/login'}),
-                //     function(req, res) {
-                //         res.redirect('/');
-                //     });
-                /// Documented here: http://www.passportjs.org/docs/authenticate/
-                app.get('/login', function(req, res, next){
-                    passport.authenticate('azuread-openidconnect', function(err, user){
-                        if(err) { return next(err); }
-                        if(!user) { return res.redirect('/login'); }
-                        req.logIn(user, function(err) {
-                            if(err) { return next(err); }
-                            return res.redirect('/users/' +user.username);
-                        });
-                    });
+                app.get('/login',
+                    passport.authenticate('azuread-openidconnect', { failureRedirect: '/login'}),
+                    function(req, res) {
+                        res.redirect('/');
                 });
+                /// Documented here: http://www.passportjs.org/docs/authenticate/
+                // app.get('/login', function(req, res, next){
+                //     passport.authenticate('azuread-openidconnect', function(err, user){
+                //         if(err) { return next(err); }
+                //         if(!user) { return res.redirect('/login'); }
+                //         req.logIn(user, function(err) {
+                //             if(err) { return next(err); }
+                //             return res.redirect('/users/' +user.username);
+                //         });
+                //     });
+                // });
                 app.post('/auth/openid/return',
                     passport.authenticate('azuread-openidconnect', { failureRedirect: '/login'}),
                     function(req, res, next) { // eslint-disable-line no-unused-vars
