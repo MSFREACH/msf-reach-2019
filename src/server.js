@@ -189,7 +189,6 @@ const init = (config, initializeDb, routes, logger) => new Promise((resolve, rej
                 //     function(req, res) {
                 //         res.redirect('/');
                 //     });
-
                 /// Documented here: http://www.passportjs.org/docs/authenticate/
                 app.get('/login', function(req, res, next){
                     passport.authenticate('azuread-openidconnect', function(err, user){
