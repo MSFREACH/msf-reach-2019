@@ -248,46 +248,7 @@ export default {
             height: 100vh;
         }
     }
-    .listHeader{
-      height: 128px;
-      label{
-          text-transform: capitalize;
-      }
-      .v-select__slot{
-        label{
-            top: 7px;
-        }
-      }
-      .v-toolbar__content{
-        height: 128px;
-        display: block;
-        padding: 0;
-        margin: 0 auto;
-        width: 95%;
-        align-items: center;
-        .v-text-field{
-            width: 100%;
-        }
-      }
 
-      .v-toolbar__content div{
-        display: inline-flex;
-      }
-      .v-list,
-      .v-select-list{
-          width: 100%;
-      }
-      .v-select.v-select--chips .v-select__selections{
-          min-height: inherit;
-      }
-      .v-select__selections div{
-          display: block;
-      }
-      .v-menu__content{
-          max-height: unset !important;
-          min-width: 280px !important;
-      }
-    }
     .v-menu{
         .v-list{
             display: block !important;

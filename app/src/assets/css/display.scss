@@ -24,9 +24,27 @@ ul{
     }
 }
 
+.v-picker{
+    box-shadow: none;
+}
+.v-expansion-panel{
+    box-shadow: none;
+    margin-left: 5em;
+}
 .searchHeader{
     display: flex;
     width: 300px;
+    .v-text-field{
+        padding-top: 0px;
+    }
+    .v-input__control,
+    .v-btn{
+        background: $bg-light;
+        border-radius: 20px;
+    }
+    .v-input__control{
+        padding: 4px 21px;
+    }
     .v-select__slot{
       label{
           top: 7px;
@@ -37,6 +55,96 @@ ul{
     }
     .v-input__slot{
         height: inherit;
+    }
+}
+.listHeader{
+  height: 128px;
+  label{
+      text-transform: capitalize;
+  }
+  .v-select__slot{
+    label{
+        top: 7px;
+    }
+  }
+  .v-toolbar__content{
+    height: 128px;
+    display: block;
+    padding: 0;
+    margin: 0 auto;
+    width: 95%;
+    align-items: center;
+    .v-text-field{
+        width: 100%;
+    }
+  }
+
+  .v-toolbar__content div{
+    display: inline-flex;
+  }
+  .v-list,
+  .v-select-list{
+      width: 100%;
+  }
+  .v-select.v-select--chips .v-select__selections{
+      min-height: inherit;
+  }
+  .v-select__selections div{
+      display: block;
+  }
+  .v-menu__content{
+      max-height: unset !important;
+      min-width: 280px !important;
+  }
+}
+
+.listHeader{
+    z-index:3;
+    display: flex;
+    .v-input{
+
+    }
+    .v-select__selections{
+        font-size: 10px;
+    }
+    .v-text-field{
+        padding-top: 0px;
+    }
+    .v-input__control{
+        border-radius: 20px;
+    }
+    .v-text-field{
+        .v-input__control{
+            background: #fff;
+        }
+    }
+
+    .v-select{
+        .v-input__control{
+            background: transparent;
+            border: 1px solid $border-gray;
+            margin-bottom: 0;
+        }
+    }
+    .v-input__control{
+        padding: 4px 21px;
+        height: 40px;
+    }
+    .v-btn--floating.v-btn--small{
+        background: $text-light-grey;
+    }
+    .v-btn-toggle{
+      display: flex;
+        background: #d0d3da;
+    }
+    .v-list{
+        display: block !important;
+        div{
+            display: block !important;
+        }
+    }
+    .v-menu__content{
+        max-width: 100%;
     }
 }
 
@@ -71,52 +179,15 @@ ul{
 
 .SITREP-Container{
     display: inherit;
-    .searchHeader{
-        .v-text-field{
-            padding-top: 0px;
-        }
-        .v-input__control,
-        .v-btn--floating.v-btn--small{
-            background: $bg-light;
-            border-radius: 20px;
-        }
-        .v-input__control{
-            padding: 4px 21px;
-        }
-    }
-    .v-picker{
-        box-shadow: none;
-    }
-
-    .v-expansion-panel{
-        box-shadow: none;
-        margin-left: 5em;
-    }
 }
 .relatedContent{
     .searchHeader{
         display: flex;
         width: 400px;
-        .v-text-field{
-            padding-top: 0px;
-        }
         .v-input__control,
         .v-btn{
-            background: $bg-light;
-            border-radius: 20px;
             height: 40px;
         }
-        .v-input__control{
-            padding: 4px 21px;
-        }
-    }
-    .v-picker{
-        box-shadow: none;
-    }
-
-    .v-expansion-panel{
-        box-shadow: none;
-        margin-left: 5em;
     }
 }
 .capacity-rows,
@@ -139,6 +210,10 @@ ul{
             padding: 6px 21px;
             display: inline-block;
             vertical-align: top;
+        }
+        .v-input__control{
+            padding: 0;
+            height: -webkit-fill-available;
         }
         .v-text-field--single-line{
             width: 48%;

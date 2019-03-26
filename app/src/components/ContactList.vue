@@ -1,15 +1,29 @@
 <template>
-    <v-container row app class="listContainer">
+    <v-layout row app class="listContainer">
         <v-card v-if="isLoadingContact" class="event-preview">
-              Loading events...
+              Loading contacts...
         </v-card>
-        <div class="searchHeader">
-            <v-text-field v-model="search" label="Search" single-line hide-details xs10></v-text-field>
-            <v-select v-model="filterType" :items="allTypes" label="Type" round clearable></v-select>
-        </div>
-        <new-contact></new-contact>
+
         <v-layout justify-space-between row wrap>
-            <v-flex xs3 class="treeNav">
+            <v-flex xs3 class="contactListPanel">
+                <v-toolbar class="listHeader" slot="header" flat>
+                    <div class="full-width">
+                        <v-text-field v-model="search" label="Search" single-line hide-details></v-text-field>
+                        <new-contact></new-contact>
+                    </div>
+                    <v-divider></v-divider>
+                    <v-layout row wrap>
+                        <v-flex xs6>
+                            <v-btn-toggle v-model="isOrganization">
+                                <v-btn flat value="false">Contact</v-btn>
+                                <v-btn flat value="true">Organisation</v-btn>
+                            </v-btn-toggle>
+                        </v-flex>
+                        <v-flex xs6>
+                            <v-select v-model="filterType" :items="allTypes" label="Type" round clearable></v-select>
+                        </v-flex>
+                    </v-layout>
+                </v-toolbar>
                 <v-treeview
                     :active.sync="active"
                     :items="items"
@@ -17,7 +31,6 @@
                     :open.sync="open"
                     activatable
                     active-class="primary--text"
-                    class="grey lighten-5"
                     open-on-click
                     transition
                 >
@@ -94,7 +107,7 @@
                 </v-scroll-y-transition>
             </v-flex>
         </v-layout>
-    </v-container>
+    </v-layout>
 </template>
 <script>
 /*eslint no-debugger: off*/
@@ -125,7 +138,8 @@ export default {
             expanded: {},
             defaultType: DEFAULT_CONTACT_TYPE,
             allTypes: CONTACT_TYPES,
-            filterType: ''
+            filterType: '',
+            isOrganization: false
         };
     },
     components:{
@@ -234,13 +248,16 @@ export default {
     color: #ccc;
     font-size: 10px;
 }
-.treeNav{
-    height: calc(100vh - 120px);
+.contactListPanel{
+    background: $bg-milk-grey;
+    height: calc(100vh - 64px);
     overflow: scroll;
 }
-
+.theme--light.v-btn-toggle{
+    background: none;
+}
 .listContainer{
-    top: 60px;
+    top: 64px;
     position: relative;
     max-width: unset;
 }
