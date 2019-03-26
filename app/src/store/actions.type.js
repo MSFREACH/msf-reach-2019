@@ -45,7 +45,7 @@ export const FETCH_UPLOAD_URL = 'fetchUploadUrl';
 export const PUT_SIGNED_REQUEST = 'putSignedRequest';
 export const FETCH_DOWNLOAD_URL = 'fetchDownloadUrl';
 export const DOWNLOAD_OBJECT = 'downloadObject';
-export const FETCH_BUCKET_URLS = 'fetchBucketUrls'; 
+export const FETCH_BUCKET_URLS = 'fetchBucketUrls';
 
 export const FETCH_MSF_RESPONSES = 'fetchMSFResponses';
 export const CREATE_MSF_RESPONSE = 'createMSFResponse';
@@ -74,3 +74,7 @@ export const FETCH_COUNTRY_DETAILS = 'fetchCountryDetails';
 export const CREATE_COUNTRY_DETAILS = 'createCountryDetails';
 export const EDIT_COUNTRY_DETAILS = 'editCountryDetails';
 export const DELETE_COUNTRY_DETAILS = 'deleteCountryDetails';
+
+export const SEARCH_TWEETS = 'SEARCH_TWEETS';
+export const APPEND_TWEETS = 'APPEND_TWEETS';
+
