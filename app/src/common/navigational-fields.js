@@ -8,9 +8,15 @@ export const EVENT_DETAIL_NAVIGATIONS = [
     { icon: 'all_inclusive', name: 'SITREP', component: 'event-sitrep', route: '/sitrep'}
 ];
 
+export const EVENT_NEWSFEED_NAVIGATIONS = [
+    { icon: 'dashboard', name: 'Twitter', component: 'event-twitter', route: '/newsfeed/twitter'},
+    { icon: 'event_note', name: 'RSS Feeds', component: 'event-rss', route: '/newsfeed/rss'},
+    { icon: 'track_changes', name: 'Related Reports', component: 'event-related-reports', route: '/newsfeed/relatedReports'},
+];
+
 export const EVENT_TOP_NAVIGATIONS = [
     { name: 'Event Details', component: 'event-general'},
-    { name: 'News Feed', component: 'placeholder'},
+    { name: 'News Feed', component: 'newsfeed'},
     { name: 'Related Contacts', component: 'placeholder'},
     { name: 'Country Details', component: 'country-details'},
     { name: 'Related Events', component: 'related-events'}
