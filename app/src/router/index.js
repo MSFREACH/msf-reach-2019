@@ -74,27 +74,26 @@ export default new Router({
                     }
                 ]
             },
-            // , {
-            //     name: 'newsfeed',
-            //     path: ':slug/newsfeed',
-            //     component: () => import('@/components/NewsFeed'),
-            //     props: true,
-            //     children:[{
-            //             path: '',
-            //             name: 'twitter-feed',
-            //             component: () => import('@/views/NewsFeed/Twitter')
-            //         }, {
-            //             path: '',
-            //             name: 'rss-feed',
-            //             component: () => import('@/views/NewsFeed/RssFeed')
-            //         }, {
-            //             path: '',
-            //             name: 'related-reports',
-            //             component: () => import('@/views/Reports/EventRelated')
-            //         }
-            //     ]
-            // },
-
+            , {
+                name: 'newsfeed',
+                path: ':slug/newsfeed',
+                component: () => import('@/components/NewsFeed'),
+                props: true,
+                children:[{
+                    path: 'twitter',
+                    name: 'event-twitter',
+                    component: () => import('@/views/NewsFeed/Twitter')
+                }, {
+                    path: 'rss',
+                    name: 'event-rss',
+                    component: () => import('@/views/NewsFeed/RssFeed')
+                }, {
+                    path: 'relatedReports',
+                    name: 'event-related-reports',
+                    component: () => import('@/views/NewsFeed/RelatedReports')
+                },
+                ]
+            },
             {
                 name: 'country-details',
                 path: ':slug/country-details/',
