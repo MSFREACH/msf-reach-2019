@@ -284,3 +284,9 @@ export const UtilService = {
         return axios.get(url, {params: {access_token: mapboxgl.accessToken}, withCredentials: false});
     }
 };
+
+export const TwitterService = {
+    searchTweets(params) {
+        return ApiService.query('twitter', {params});
+    },
+};

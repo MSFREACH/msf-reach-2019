@@ -200,3 +200,124 @@ export const CONTACT_OCS = ['OCA', 'OCB', 'OCBA', 'OCG', 'OCP', 'Inter-section',
 
 export const REPORT_STATUSES = ['confirmed', 'unconfirmed', 'ignored'];
 export const REPORT_TYPES = ['ACCESS', 'NEEDS', 'CONTACTS', 'SECURITY'];
+
+// these language options could also be dynamically fetched
+// from here https://developer.twitter.com/en/docs/developer-utilities/supported-languages/api-reference/get-help-languages.html
+export const TWITTER_LANGUAGE_OPTIONS = [
+    {
+        'code': 'fr',
+        'name': 'French'
+    },
+    {
+        'code': 'en',
+        'name': 'English'
+    },
+    {
+        'code': 'ar',
+        'name': 'Arabic'
+    },
+    {
+        'code': 'ja',
+        'name': 'Japanese'
+    },
+    {
+        'code': 'es',
+        'name': 'Spanish'
+    },
+    {
+        'code': 'de',
+        'name': 'German'
+    },
+    {
+        'code': 'it',
+        'name': 'Italian'
+    },
+    {
+        'code': 'id',
+        'name': 'Indonesian'
+    },
+    {
+        'code': 'pt',
+        'name': 'Portuguese'
+    },
+    {
+        'code': 'ko',
+        'name': 'Korean'
+    },
+    {
+        'code': 'tr',
+        'name': 'Turkish'
+    },
+    {
+        'code': 'ru',
+        'name': 'Russian'
+    },
+    {
+        'code': 'nl',
+        'name': 'Dutch'
+    },
+    {
+        'code': 'fil',
+        'name': 'Filipino'
+    },
+    {
+        'code': 'msa',
+        'name': 'Malay'
+    },
+    {
+        'code': 'zh-tw',
+        'name': 'Traditional Chinese'
+    },
+    {
+        'code': 'zh-cn',
+        'name': 'Simplified Chinese'
+    },
+    {
+        'code': 'hi',
+        'name': 'Hindi'
+    },
+    {
+        'code': 'no',
+        'name': 'Norwegian'
+    },
+    {
+        'code': 'sv',
+        'name': 'Swedish'
+    },
+    {
+        'code': 'fi',
+        'name': 'Finnish'
+    },
+    {
+        'code': 'da',
+        'name': 'Danish'
+    },
+    {
+        'code': 'pl',
+        'name': 'Polish'
+    },
+    {
+        'code': 'hu',
+        'name': 'Hungarian'
+    },
+    {
+        'code': 'fa',
+        'name': 'Farsi'
+    },
+    {
+        'code': 'he',
+        'name': 'Hebrew'
+    },
+    {
+        'code': 'ur',
+        'name': 'Urdu'
+    },
+    {
+        'code': 'th',
+        'name': 'Thai'
+    },
+    {
+        'code': 'en-gb',
+        'name': 'English UK'
+    }
+];
