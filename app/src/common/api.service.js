@@ -290,3 +290,9 @@ export const TwitterService = {
         return ApiService.query('twitter', {params});
     },
 };
+
+export const RssService = {
+    fetchFeed(params) {
+        return ApiService.query('rss', {params});
+    },
+};

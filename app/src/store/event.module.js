@@ -3,8 +3,8 @@
 
 import _ from 'lodash';
 import Vue from 'vue';
-import { EventsService, TwitterService } from '@/common/api.service';
-import { SEARCH_TWEETS, APPEND_TWEETS, FETCH_EVENT, CREATE_EVENT, EDIT_EVENT, DELETE_EVENT, ARCHIVE_EVENT, RESET_EVENT_STATE,
+import { EventsService, RssService, TwitterService } from '@/common/api.service';
+import { FETCH_RSS, SEARCH_TWEETS, APPEND_TWEETS, FETCH_EVENT, CREATE_EVENT, EDIT_EVENT, DELETE_EVENT, ARCHIVE_EVENT, RESET_EVENT_STATE,
     EDIT_EVENT_RESPONSES, EDIT_EVENT_EXT_CAPACITY, EDIT_EVENT_FIGURES, EDIT_EVENT_RESOURCES } from './actions.type';
 import { RESET_STATE, SET_EVENT, ADD_EVENT_EXT_CAPACITY, UPDATE_EVENT_EXT_CAPACITY, UPDATE_EVENT_FIGURES, UPDATE_EVENT_RESOURCES, UPDATE_KEY_FIGURES } from './mutations.type';
 
@@ -26,6 +26,7 @@ const initialState = {
     },
     keyFigures: [],
     tweets: [],
+    rssFeedItems: [],
 };
 
 const state = Object.assign({}, initialState);
@@ -36,6 +37,12 @@ const actions = {
             .then(({data}) => {
                 context.commit(APPEND_TWEETS, data);
                 return data;
+            });
+    },
+    [FETCH_RSS] (context, params){
+        return RssService.fetchFeed(params)
+            .then(({data}) => {
+                state.rssFeedItems = data.result;
             });
     },
     [FETCH_EVENT] (context, eventSlug, prevEvent){
@@ -347,6 +354,9 @@ const getters ={
     tweets(state){
         return state.tweets;
     },
+    rssFeedItems(state) {
+        return state.rssFeedItems;
+    }
 };
 
 export default {
