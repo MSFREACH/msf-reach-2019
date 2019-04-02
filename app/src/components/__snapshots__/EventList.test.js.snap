@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EventList loads events when mounted 1`] = `
+<v-layout-stub tag="div" app="" class="eventList">
+  <v-flex-stub tag="div" xs3="" class="event-preview">
+    Loading events...
+    <v-progress-circular-stub color="active" indeterminate="true" rotate="0" size="50" width="4" value="0"></v-progress-circular-stub>
+  </v-flex-stub>
+  <event-nav-stub></event-nav-stub>
+</v-layout-stub>
+`;

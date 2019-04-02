@@ -37,6 +37,8 @@ import { UPDATE_RESPONSE_AREA_GEOMETRY } from '@/store/mutations.type';
 
 import { mapGetters } from 'vuex';
 import $ from 'jquery';
+import _ from 'lodash';
+
 /*eslint no-console: off*/
 var map;
 var geocoder;

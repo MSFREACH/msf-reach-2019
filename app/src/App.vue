@@ -10,8 +10,6 @@
 import RHeader from '@/components/RHeader';
 import RFooter from '@/components/RFooter';
 
-/*eslint no-debugger: off*/
-
 export default {
     name: 'App',
     components:{
@@ -19,10 +17,8 @@ export default {
     },
     message: 'Hello Vue!'
 };
-
 </script>
 
 <style lang="scss">
     @import '@/assets/css/main.scss';
-
 </style>
