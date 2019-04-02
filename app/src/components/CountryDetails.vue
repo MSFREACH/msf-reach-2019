@@ -90,9 +90,9 @@
 
 <script>
 /*eslint no-debugger: off*/
-/*eslint no-console: off*/
 
 import $ from 'jquery';
+import _ from 'lodash';
 import { mapGetters } from 'vuex';
 import { FETCH_EVENT, FETCH_COUNTRY_DETAILS, CREATE_COUNTRY_DETAILS, EDIT_COUNTRY_DETAILS, DELETE_COUNTRY_DETAILS, FETCH_UPLOAD_URL, PUT_SIGNED_REQUEST, FETCH_DOWNLOAD_URL, DOWNLOAD_OBJECT } from '@/store/actions.type';
 import { OPERATIONAL_CENTERS } from '@/common/response-fields';
@@ -156,7 +156,6 @@ export default {
             var isoCC = this.selectedCountry ? this.selectedCountry : this.eventAreas[0].country_code;
             var gecCode = this.iso2gecCodes[isoCC].GEC;
             var url = `https://www.cia.gov/library/publications/the-world-factbook/geos/${gecCode.toLowerCase()}.html`;
-            console.log(url);
             return url
         }
     },
@@ -254,7 +253,6 @@ export default {
             params.metadata = _.pickBy(params.metadata, _.identity);
 
             this.$store.dispatch(CREATE_COUNTRY_DETAILS, params).then((payload) =>{
-                console.log(payload);
                 setTimeout(() => this.close(), 1000);
             });
         },

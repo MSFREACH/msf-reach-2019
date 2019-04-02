@@ -33,12 +33,8 @@
         </v-container>
     </v-content>
 </template>
+
 <script>
-
-/* eslint no-debugger: off */
-/* eslint no-console: off */
-/*eslint no-unused-vars :off*/
-
 import { mapGetters, mapState } from 'vuex';
 import { LOGIN, PASSWORD_CHALLENGE, NEW_PASSWORD_REQUIRED } from '@/store/actions.type';
 
