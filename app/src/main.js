@@ -9,18 +9,18 @@ import Amplify from 'aws-amplify';
 // import Adal from 'vue-adal';
 import config from '@/common/config.js';
 
-Amplify.configure({
-    Auth: {
-        mandatorySignIn: false,
-        region: config.cognito.REGION,
-        userPoolId: config.cognito.USER_POOL_ID,
-        userPoolWebClientId: config.cognito.APP_CLIENT_ID
-    }
-});
-
 import ApiService from '@/common/api.service';
 import DateFilter from '@/common/date.filter';
 import TextFilter from '@/common/text.filter';
+
+Amplify.configure({
+  Auth: {
+    mandatorySignIn: false,
+    region: config.cognito.REGION,
+    userPoolId: config.cognito.USER_POOL_ID,
+    userPoolWebClientId: config.cognito.APP_CLIENT_ID
+  }
+});
 
 Vue.config.productionTip = false;
 Vue.filter('date', DateFilter.dateOnly);
@@ -40,17 +40,17 @@ Vue.filter('renderMarkdown', TextFilter.renderMarkdown);
 Vue.filter('snippetNoMarkdown', TextFilter.snippetNoMarkdown);
 
 Vue.use(Vuetify, {
-    theme: {
-        primary: '#EEEEEE',
-        secondary: '#D0D3DA',
-        accent: '#0374C7',
-        error: '#EE0000',
-        editing: '#0374C7',
-        // success: '#4CAF50',
-        btnGray: '#707070',
-        warning: '#EE0000',
-        warningRed: '#F38181'
-    }
+  theme: {
+    primary: '#EEEEEE',
+    secondary: '#D0D3DA',
+    accent: '#0374C7',
+    error: '#EE0000',
+    editing: '#0374C7',
+    // success: '#4CAF50',
+    btnGray: '#707070',
+    warning: '#EE0000',
+    warningRed: '#F38181'
+  }
 });
 
 // Vue.use(Adal, {
@@ -69,19 +69,15 @@ Vue.use(Vuetify, {
 
 ApiService.init();
 
-router.beforeEach(
-    (to, from, next) => {
-        return Promise
-            .all([store.dispatch(CHECK_AUTH)])
-            .then(next);
-    }
-);
+router.beforeEach((to, from, next) => {
+  return Promise.all([store.dispatch(CHECK_AUTH)]).then(next);
+});
 
 /* eslint-disable no-new */
 new Vue({
-    el: '#app',
-    router,
-    store,
-    template: '<App/>',
-    components: { App }
+  el: '#app',
+  router,
+  store,
+  components: { App },
+  template: '<App/>'
 });

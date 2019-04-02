@@ -1,11 +1,11 @@
 // This is the webpack config used for unit tests.
 
-var utils = require('./utils')
-var webpack = require('webpack')
-var merge = require('webpack-merge')
-var baseConfig = require('./webpack.base.conf')
+const webpack = require('webpack');
+const merge = require('webpack-merge');
+const utils = require('./utils');
+const baseConfig = require('./webpack.base.conf');
 
-var webpackConfig = merge(baseConfig, {
+const webpackConfig = merge(baseConfig, {
   // use inline sourcemap for karma-sourcemap-loader
   module: {
     rules: utils.styleLoaders()
@@ -23,9 +23,9 @@ var webpackConfig = merge(baseConfig, {
       'process.env': require('../config/test.env')
     })
   ]
-})
+});
 
 // no need for app entry during tests
-delete webpackConfig.entry
+delete webpackConfig.entry;
 
-module.exports = webpackConfig
+module.exports = webpackConfig;

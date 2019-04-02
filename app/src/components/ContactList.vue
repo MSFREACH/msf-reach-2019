@@ -1,160 +1,257 @@
 <template>
-    <v-layout row app xs12 :clipped="$vuetify.breakpoint.mdAndUp">
-        <v-card v-if="isLoadingContact" class="event-preview">
-              Loading events...
-        </v-card>
-        <v-container v-else>
-            <v-data-iterator :items="contacts"
-            content-tag="v-layout"
-            :rows-per-page-items="rowsPerPageItems"
-            :pagination.sync="pagination"
-            no-data-text="No events found"
-            :search="search"
-            :filter="filterByType"
-            row wrap>
-                <v-toolbar slot="header" mt0 flat>
-                    <v-toolbar-title> Contacts </v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-flex xs6 md4 lg3>
-                        <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
-                    </v-flex>
-                    <v-flex xs6 md4 lg3>
-                        <v-select v-model="filterType" :items="allTypes" attach chips label="filter by type"></v-select>
-                    </v-flex>
-                </v-toolbar>
-                <v-flex slot="item" slot-scope="props" xs12>
-                    <v-list-tile @click="expanded[props.item.properties.id] = !expanded[props.item.properties.id]">
-                        <v-list-tile-title> {{ props.item.properties.properties.name }} </v-list-tile-title>
-                        <v-list-tile-sub-title v-show="props.item.properties.properties.type" small outline color="primary"> {{ props.item.properties.properties.type }} </v-list-tile-sub-title>
-                        <v-chip v-if="props.item.properties.properties.speciality"
-                        v-for="(item, index) in props.item.properties.properties.speciality.split(',')"
-                        :key="index" small label> {{ item }} </v-chip>
-                    </v-list-tile>
-                    <v-list three-line>
-                        <v-expansion-panel :key="props.item.properties.id" v-show="expanded[props.item.properties.id]">
-                            <v-expansion-panel-content v-model="expanded[props.item.properties.id]">
-                                <v-card>
-                                    <v-card-title>{{ props.item.coordinates }} </v-card-title>
-                                    <v-card-text> {{ props.item.properties }} </v-card-text>
-                                    <v-card-actions>
-                                        <v-icon>phone</v-icon>
-                                        <span>Mobile: {{ props.item.properties.properties.cell }} </span>
-                                        <span>Work: {{ props.item.properties.properties.work }} </span>
-                                        <span>Home: {{ props.item.properties.properties.home }} </span>
-                                        <v-btn v-if="props.item.properties.properties.WhatsApp">
-                                            <span class="mdi mdi-whatsapp" v-if="checkEqual( props.item.properties.properties.cell, props.item.properties.properties.WhatsApp)"></span>
-                                            <span class="mdi mdi-whatsapp" v-else> {{props.item.properties.properties.WhatsApp }} </span>
-                                        </v-btn>
-                                        <v-btn v-if="props.item.properties.properties.Telegram">
-                                            <span class="mdi mdi-telegram" v-if="checkEqual( props.item.properties.properties.cell, props.item.properties.properties.Telegram)"> </span>
-                                            <span class="mdi mdi-telegram" v-else> else {{ props.item.properties.properties.Telegram }}  </span>
-                                        </v-btn>
-                                    </v-card-actions>
-                                    <v-card-text v-if="props.item.properties.properties.type == defaultType">
-                                        {{props.item.properties.properties.OC}}
-                                        {{props.item.properties.properties.employment}}
-                                        {{props.item.properties.properties.additional}}
-                                        {{props.item.properties.properties.job_title}}
-                                    </v-card-text>
-                                    <v-card-text else>
-                                        <v-chip label v-show="props.item.properties.properties.msf_associate">MSF Associate </v-chip>
-                                        <v-chip label v-show="props.item.properties.properties.msf_peer"> MSF Peer </v-chip>
-                                        {{props.item.properties.properties.employer}}
-                                        {{props.item.properties.properties.job_title}}
-                                        {{props.item.properties.properties.division}}
-                                    </v-card-text>
-                                    <v-card-actions>
-                                        <v-icon>mail</v-icon>
-                                        <span> {{ props.item.properties.properties.email }} </span>
-                                        <span v-show="props.item.properties.properties.email2"> {{ props.item.properties.properties.email2 }} </span>
-                                    </v-card-actions>
-                                    <v-card-actions v-show="props.item.properties.properties.skype">
-                                        <span class="mdi mdi-skype"></span>
-                                        <span> {{ props.item.properties.properties.skype }} </span>
-                                    </v-card-actions>
-                                    <v-card-actions v-show="props.item.properties.properties.Instagram">
-                                        <span class="mdi mdi-instagram"></span>
-                                        <span> {{ props.item.properties.properties.Instagram }} </span>
-                                    </v-card-actions>
-                                    <v-card-actions v-show="props.item.properties.properties.address">
-                                        <v-icon>location_on</v-icon>
-                                        <span> {{ props.item.properties.properties.address }} </span>
-                                    </v-card-actions>
-                                </v-card>
-                            </v-expansion-panel-content>
-                        </v-expansion-panel>
-                    </v-list>
-                    <v-divider></v-divider>
-                </v-flex>
-                <v-alert slot="no-results" :value="true" color="error" icon="warning">
-                    Your search for "{{ search }}" found no results.
-                </v-alert>
-            </v-data-iterator>
-        </v-container>
-    </v-layout>
+  <v-layout row app :clipped="$vuetify.breakpoint.mdAndUp" xs12>
+    <v-card v-if="isLoadingContact" class="event-preview">
+      Loading events...
+    </v-card>
+    <v-container v-else>
+      <v-data-iterator
+        :items="contacts"
+        :rows-per-page-items="rowsPerPageItems"
+        :pagination.sync="pagination"
+        :search="search"
+        :filter="filterByType"
+        content-tag="v-layout"
+        no-data-text="No events found"
+        row
+        wrap
+      >
+        <v-toolbar slot="header" mt0 flat>
+          <v-toolbar-title> Contacts </v-toolbar-title>
+          <v-spacer />
+          <v-flex xs6 md4 lg3>
+            <v-text-field
+              v-model="search"
+              append-icon="search"
+              label="Search"
+              single-line
+              hide-details
+            />
+          </v-flex>
+          <v-flex xs6 md4 lg3>
+            <v-select
+              v-model="filterType"
+              :items="allTypes"
+              attach
+              chips
+              label="filter by type"
+            />
+          </v-flex>
+        </v-toolbar>
+        <v-flex slot="item" slot-scope="props" xs12>
+          <v-list-tile
+            @click="
+              expanded[props.item.properties.id] = !expanded[
+                props.item.properties.id
+              ]
+            "
+          >
+            <v-list-tile-title>
+              {{ props.item.properties.properties.name }}
+            </v-list-tile-title>
+            <v-list-tile-sub-title
+              v-show="props.item.properties.properties.type"
+              small
+              outline
+              color="primary"
+            >
+              {{ props.item.properties.properties.type }}
+            </v-list-tile-sub-title>
+            <v-chip
+              v-for="(item,
+              index) in props.item.properties.properties.speciality.split(',')"
+              v-if="props.item.properties.properties.speciality"
+              :key="index"
+              small
+              label
+            >
+              {{ item }}
+            </v-chip>
+          </v-list-tile>
+          <v-list three-line>
+            <v-expansion-panel
+              v-show="expanded[props.item.properties.id]"
+              :key="props.item.properties.id"
+            >
+              <v-expansion-panel-content
+                v-model="expanded[props.item.properties.id]"
+              >
+                <v-card>
+                  <v-card-title>{{ props.item.coordinates }} </v-card-title>
+                  <v-card-text>
+                    {{ props.item.properties }}
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-icon>phone</v-icon>
+                    <span
+                      >Mobile:
+                      {{ props.item.properties.properties.cell }}
+                    </span>
+                    <span
+                      >Work:
+                      {{ props.item.properties.properties.work }}
+                    </span>
+                    <span
+                      >Home:
+                      {{ props.item.properties.properties.home }}
+                    </span>
+                    <v-btn v-if="props.item.properties.properties.WhatsApp">
+                      <span
+                        v-if="
+                          checkEqual(
+                            props.item.properties.properties.cell,
+                            props.item.properties.properties.WhatsApp
+                          )
+                        "
+                        class="mdi mdi-whatsapp"
+                      />
+                      <span v-else class="mdi mdi-whatsapp">
+                        {{ props.item.properties.properties.WhatsApp }}
+                      </span>
+                    </v-btn>
+                    <v-btn v-if="props.item.properties.properties.Telegram">
+                      <span
+                        v-if="
+                          checkEqual(
+                            props.item.properties.properties.cell,
+                            props.item.properties.properties.Telegram
+                          )
+                        "
+                        class="mdi mdi-telegram"
+                      />
+                      <span v-else class="mdi mdi-telegram">
+                        else
+                        {{ props.item.properties.properties.Telegram }}
+                      </span>
+                    </v-btn>
+                  </v-card-actions>
+                  <v-card-text
+                    v-if="props.item.properties.properties.type == defaultType"
+                  >
+                    {{ props.item.properties.properties.OC }}
+                    {{ props.item.properties.properties.employment }}
+                    {{ props.item.properties.properties.additional }}
+                    {{ props.item.properties.properties.job_title }}
+                  </v-card-text>
+                  <v-card-text else>
+                    <v-chip
+                      v-show="props.item.properties.properties.msf_associate"
+                      label
+                      >MSF Associate
+                    </v-chip>
+                    <v-chip
+                      v-show="props.item.properties.properties.msf_peer"
+                      label
+                    >
+                      MSF Peer
+                    </v-chip>
+                    {{ props.item.properties.properties.employer }}
+                    {{ props.item.properties.properties.job_title }}
+                    {{ props.item.properties.properties.division }}
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-icon>mail</v-icon>
+                    <span>
+                      {{ props.item.properties.properties.email }}
+                    </span>
+                    <span v-show="props.item.properties.properties.email2">
+                      {{ props.item.properties.properties.email2 }}
+                    </span>
+                  </v-card-actions>
+                  <v-card-actions
+                    v-show="props.item.properties.properties.skype"
+                  >
+                    <span class="mdi mdi-skype" />
+                    <span>
+                      {{ props.item.properties.properties.skype }}
+                    </span>
+                  </v-card-actions>
+                  <v-card-actions
+                    v-show="props.item.properties.properties.Instagram"
+                  >
+                    <span class="mdi mdi-instagram" />
+                    <span>
+                      {{ props.item.properties.properties.Instagram }}
+                    </span>
+                  </v-card-actions>
+                  <v-card-actions
+                    v-show="props.item.properties.properties.address"
+                  >
+                    <v-icon>location_on</v-icon>
+                    <span>
+                      {{ props.item.properties.properties.address }}
+                    </span>
+                  </v-card-actions>
+                </v-card>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-list>
+          <v-divider />
+        </v-flex>
+        <v-alert slot="no-results" :value="true" color="error" icon="warning">
+          Your search for "{{ search }}" found no results.
+        </v-alert>
+      </v-data-iterator>
+    </v-container>
+  </v-layout>
 </template>
+
 <script>
-/*eslint no-debugger: off*/
-/*eslint no-console: off*/
-/*eslint no-unused-vars: off*/
 import { mapGetters } from 'vuex';
 import { FETCH_CONTACTS } from '@/store/actions.type';
-import { DEFAULT_CONTACT_TYPE, CONTACT_TYPES} from '@/common/common';
-export default {
-    name: 'ContactList',
-    props: {
-        private: { // This is My contacts
-            type: Boolean,
-            required: false
-        },
-        assigned: { // This is Assigned to me
-            type: Boolean,
-            required: false
-        }
-    },
-    data(){
-        return {
-            rowsPerPageItems: [4, 8, 12],
-            pagination: {
-                rowsPerPage: 4
-            },
-            search: '',
-            expanded: {},
-            defaultType: DEFAULT_CONTACT_TYPE,
-            allTypes: CONTACT_TYPES,
-            filterType: ''
-        };
-    },
-    computed: {
-        ...mapGetters([
-            'contactsCount',
-            'isLoadingContact',
-            'contacts'
-        ])
-    },
-    watch:{
-        contacts(newValue){
-            newValue.forEach( i => {
-                this.$set(this.expanded, i.properties.id, false);
-            });
-        }
-    },
-    mounted() {
-        this.fetchContacts();
-    },
-    methods: {
-        fetchContacts(){
-            this.$store.dispatch(FETCH_CONTACTS);
-        },
-        checkEqual(one, two){
-            return one.replace(/[^0-9]/ig, '') == two.replace(/[^0-9]/ig, '');
-        },
-        filterByType(contact){
-            console.log('CONTACT LIST --- ', contact);
-            return contact.properties.properties.type == this.filterType;
-        }
-    }
+import { DEFAULT_CONTACT_TYPE, CONTACT_TYPES } from '@/common/common';
 
+export default {
+  name: 'ContactList',
+  props: {
+    private: {
+      // This is My contacts
+      type: Boolean,
+      required: false
+    },
+    assigned: {
+      // This is Assigned to me
+      type: Boolean,
+      required: false
+    }
+  },
+  data() {
+    return {
+      rowsPerPageItems: [4, 8, 12],
+      pagination: {
+        rowsPerPage: 4
+      },
+      search: '',
+      expanded: {},
+      defaultType: DEFAULT_CONTACT_TYPE,
+      allTypes: CONTACT_TYPES,
+      filterType: ''
+    };
+  },
+  computed: {
+    ...mapGetters(['contactsCount', 'isLoadingContact', 'contacts'])
+  },
+  watch: {
+    contacts(newValue) {
+      newValue.forEach(i => {
+        this.$set(this.expanded, i.properties.id, false);
+      });
+    }
+  },
+  mounted() {
+    this.fetchContacts();
+  },
+  methods: {
+    fetchContacts() {
+      this.$store.dispatch(FETCH_CONTACTS);
+    },
+    checkEqual(one, two) {
+      return one.replace(/[^0-9]/gi, '') == two.replace(/[^0-9]/gi, '');
+    },
+    filterByType(contact) {
+      console.log('CONTACT LIST --- ', contact);
+      return contact.properties.properties.type == this.filterType;
+    }
+  }
 };
 </script>
 

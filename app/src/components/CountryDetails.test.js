@@ -9,7 +9,7 @@ import ISO2GEC from '@/common/iso2gec_countryCodes.json';
 
 jest.mock('@/common/iso2gec_countryCodes.json', () => ({
   ID: { GEC: 'TEST-ID-GEC' },
-  PH: { GEC: 'TEST-PH-GEC' },
+  PH: { GEC: 'TEST-PH-GEC' }
 }));
 
 const localVue = createLocalVue();
@@ -31,7 +31,7 @@ describe('CountryDetails', () => {
       localVue,
       router,
       store,
-      stubs,
+      stubs
     });
   }
 
@@ -39,18 +39,18 @@ describe('CountryDetails', () => {
     router = new VueRouter();
 
     actions = {
-      fetchEvent: jest.fn(),
+      fetchEvent: jest.fn()
     };
 
     getters = {
       eventAreas: jest.fn().mockReturnValue([]),
       countryDetails: jest.fn().mockReturnValue(null),
-      uploadingFile: jest.fn().mockReturnValue(false),
+      uploadingFile: jest.fn().mockReturnValue(false)
     };
 
     store = new Vuex.Store({
       actions,
-      getters,
+      getters
     });
   });
 
@@ -60,23 +60,43 @@ describe('CountryDetails', () => {
   });
 
   it('renders the factbook info for the first country by default', () => {
-    getters.eventAreas.mockReturnValue([{ region: 'Metro Manila', country: 'Philippines', country_code: 'PH' }]);
+    getters.eventAreas.mockReturnValue([
+      {
+        region: 'Metro Manila',
+        country: 'Philippines',
+        country_code: 'PH'
+      }
+    ]);
     const wrapper = subject();
-    expect(wrapper.find('iframe').element.src).toBe('https://www.cia.gov/library/publications/the-world-factbook/geos/test-ph-gec.html');
+    expect(wrapper.find('iframe').element.src).toBe(
+      'https://www.cia.gov/library/publications/the-world-factbook/geos/test-ph-gec.html'
+    );
   });
 
   it('renders the factbook info for the selected country', () => {
     getters.eventAreas.mockReturnValue([
-      { region: 'Metro Manila', country: 'Philippines', country_code: 'PH' },
-      { region: 'Sulawesi Tengah', country: 'Indonesia', country_code: 'ID'}
+      {
+        region: 'Metro Manila',
+        country: 'Philippines',
+        country_code: 'PH'
+      },
+      {
+        region: 'Sulawesi Tengah',
+        country: 'Indonesia',
+        country_code: 'ID'
+      }
     ]);
 
     const wrapper = subject();
 
-    expect(wrapper.find('iframe').element.src).toBe('https://www.cia.gov/library/publications/the-world-factbook/geos/test-ph-gec.html');
+    expect(wrapper.find('iframe').element.src).toBe(
+      'https://www.cia.gov/library/publications/the-world-factbook/geos/test-ph-gec.html'
+    );
 
     wrapper.setData({ selectedCountry: 'ID' });
 
-    expect(wrapper.find('iframe').element.src).toBe('https://www.cia.gov/library/publications/the-world-factbook/geos/test-id-gec.html');
+    expect(wrapper.find('iframe').element.src).toBe(
+      'https://www.cia.gov/library/publications/the-world-factbook/geos/test-id-gec.html'
+    );
   });
 });

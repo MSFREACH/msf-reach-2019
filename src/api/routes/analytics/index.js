@@ -1,36 +1,32 @@
-
 import { Router } from 'express';
 import rp from 'request-promise';
-
 
 // Import any required utility functions
 import { ensureAuthenticated } from '../../../lib/util';
 
-
-
 // Import validation dependencies
 
-import { celebrate as validate , Joi} from 'celebrate';
-
-
+import { celebrate as validate, Joi } from 'celebrate';
 
 export default ({ config, logger }) => {
-    let api = Router();
+  let api = Router();
 
-    // Get a list of all tweets matching the searchString
-    api.post('/analyze', ensureAuthenticated,
-        validate({
-            body: Joi.object().required()
-        }),
-        (req, res, next) => {
-            let eventBody=req.body;
-            if (req.hasOwnProperty('user') && req.user.hasOwnProperty('oid')) {
-                eventBody.ad_oid = req.user.oid;
-            }
-            let options = {
-                method: 'POST',
-                uri: 'https://msf-api.vizalytics.com/event',
-                body: eventBody  /*{
+  // Get a list of all tweets matching the searchString
+  api.post(
+    '/analyze',
+    ensureAuthenticated,
+    validate({
+      body: Joi.object().required()
+    }),
+    (req, res, next) => {
+      let eventBody = req.body;
+      if (req.hasOwnProperty('user') && req.user.hasOwnProperty('oid')) {
+        eventBody.ad_oid = req.user.oid;
+      }
+      let options = {
+        method: 'POST',
+        uri: 'https://msf-api.vizalytics.com/event',
+        body: eventBody /*{
                     'metadata': {
                         'severity': 'quite severe',
                         'population_total': 1000000,
@@ -77,23 +73,25 @@ export default ({ config, logger }) => {
                     'type': 'armed_conflict',
                     'status': 'active'
                 }*/,
-                headers: {
-                    'x-api-key': config.VIZALYTICS_API_KEY,
-                    'content-type': 'application/json'
-                },
-                json: true // Automatically stringifies the body to JSON
-            };
+        headers: {
+          'x-api-key': config.VIZALYTICS_API_KEY,
+          'content-type': 'application/json'
+        },
+        json: true // Automatically stringifies the body to JSON
+      };
 
-            rp(options)
-                .then(function (parsedBody) {
-                    res.status(200).send(parsedBody);
-                }).catch((err) => {
-                /* istanbul ignore next */
-                    logger.error(err);
-                    /* istanbul ignore next */
-                    next(err);
-                });
+      rp(options)
+        .then(function(parsedBody) {
+          res.status(200).send(parsedBody);
+        })
+        .catch(err => {
+          /* istanbul ignore next */
+          logger.error(err);
+          /* istanbul ignore next */
+          next(err);
         });
+    }
+  );
 
-    return api;
+  return api;
 };

@@ -7,10 +7,9 @@ export const FETCH_START = 'setLoading';
 export const FETCH_EVENTS_END = 'setEvents';
 export const SET_EVENT = 'setEvent';
 export const UPDATE_EVENT_IN_LIST = 'updateEventInList';
-export const RESET_STATE  = 'resetModuleState';
+export const RESET_STATE = 'resetModuleState';
 export const FETCH_RELATED_EVENT_START = 'setRelatedEventsLoading';
 export const FETCH_RELATED_EVENTS_END = 'setRelatedEvents';
-
 
 export const FETCH_REPORTS_START = 'setReportLoading';
 export const FETCH_REPORTS_END = 'setReports';
@@ -29,7 +28,6 @@ export const FETCH_DOWNLOAD_URL_END = 'setDownloadURL';
 export const FETCH_BUCKET_URLS_START = 'setBucketUrlRequestsLoading';
 export const FETCH_BUCKET_URLS_END = 'setBucketUrlRequestData';
 
-
 export const FETCH_RESPONSES_START = 'setResponsesLoading';
 export const FETCH_RESPONSES_END = 'setResponses';
 export const UPDATE_RESPONSE_IN_LIST = 'updateResponseInList';
@@ -37,7 +35,8 @@ export const UPDATE_RESPONSE_IN_LIST = 'updateResponseInList';
 export const FETCH_EVENT_NOTIFICATIONS_START = 'setEventNotificationLoading';
 export const FETCH_EVENT_NOTIFICATIONS_END = 'fetchEventNotificationsEnd';
 export const SET_EVENT_NOTIFICATION = 'setEventNotification';
-export const UPDATE_EVENTNOTIFICATIONS_SIGNEDURLS = 'setEventNotificationsSignedUrls'; 
+export const UPDATE_EVENTNOTIFICATIONS_SIGNEDURLS =
+  'setEventNotificationsSignedUrls';
 
 export const FETCH_SITREPS_START = 'setSitrepLoading';
 export const FETCH_SITREPS_END = 'fetchSitrepEnd';

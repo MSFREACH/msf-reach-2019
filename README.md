@@ -65,29 +65,30 @@ npm run build
 
 The database schema can be found in [msf-reach-schema](https://github.com/MSFREACH/msf-reach-schema).
 
-## Testing (server)
+## Linting and testing (server)
 
 Integration tests run using unit.js and mocha. ESLint is used for formatting. For more information see doc/TESTING.md
 
-To run tests, do:
+To run linting and tests, do:
 
 ```sh
-$ npm test
+npm run lint:server
+npm run test:server
 ```
 
-Testing is run on [travis-ci.org](https://travis-ci.org/MSFREACH/msf-reach).
+## Linting and testing (client app)
 
-## Testing (client app)
-
-To run the client app tests:
+To run the client app linting and tests:
 
 ```sh
+npm run lint:client
 npm run test:client
 ```
 
-You can also pass additional arguments to Jest:
+You can also pass additional arguments, e.g.:
 
 ```sh
+npm run lint:client -- --fix
 npm run test:client -- --watch
 ```
 

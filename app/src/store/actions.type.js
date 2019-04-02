@@ -17,7 +17,6 @@ export const BOOKMARK_EVENT = 'bookmarkEvent';
 
 export const FETCH_RELATED_EVENTS = 'fetchRelatedEvents';
 
-
 export const EDIT_EVENT_RESPONSES = 'editEventResponses';
 export const EDIT_EVENT_EXT_CAPACITY = 'editEventExtCapacity';
 export const EDIT_EVENT_FIGURES = 'editEventFigures';
@@ -45,14 +44,13 @@ export const FETCH_UPLOAD_URL = 'fetchUploadUrl';
 export const PUT_SIGNED_REQUEST = 'putSignedRequest';
 export const FETCH_DOWNLOAD_URL = 'fetchDownloadUrl';
 export const DOWNLOAD_OBJECT = 'downloadObject';
-export const FETCH_BUCKET_URLS = 'fetchBucketUrls'; 
+export const FETCH_BUCKET_URLS = 'fetchBucketUrls';
 
 export const FETCH_MSF_RESPONSES = 'fetchMSFResponses';
 export const CREATE_MSF_RESPONSE = 'createMSFResponse';
 export const EDIT_MSF_RESPONSE = 'editMSFResponse';
 export const EDIT_MSF_RESPONSE_AREA = 'editMSFResponseLocation';
 export const DELETE_MSF_RESPONSE = 'deleteMSFResponse';
-
 
 export const FETCH_EVENT_NOTIFICATIONS = 'fetchEventNotifications';
 export const CREATE_EVENT_NOTIFICATION = 'createEventNotification';

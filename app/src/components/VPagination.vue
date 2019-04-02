@@ -7,38 +7,36 @@
         :class="paginationClass(page)"
         @click.prevent="changePage(page)"
       >
-        <a class="page-link" href>{{page}}</a>
+        <a class="page-link" href>{{ page }}</a>
       </li>
     </ul>
   </nav>
 </template>
 
 <script>
-
 export default {
-    name: 'VPagination',
-    props: {
-        pages: {
-            type: Array,
-            required: true
-        },
-        currentPage: {
-            type: Number,
-            required: true
-        }
+  name: 'VPagination',
+  props: {
+    pages: {
+      type: Array,
+      required: true
     },
-    methods: {
-        changePage (goToPage) {
-            if (goToPage === this.currentPage) return;
-            this.$emit('update:currentPage', goToPage);
-        },
-        paginationClass (page) {
-            return {
-                'page-item': true,
-                active: this.currentPage === page
-            };
-        }
+    currentPage: {
+      type: Number,
+      required: true
     }
+  },
+  methods: {
+    changePage(goToPage) {
+      if (goToPage === this.currentPage) return;
+      this.$emit('update:currentPage', goToPage);
+    },
+    paginationClass(page) {
+      return {
+        'page-item': true,
+        active: this.currentPage === page
+      };
+    }
+  }
 };
-
 </script>
