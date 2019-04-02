@@ -73,8 +73,7 @@ export default new Router({
                         props: true
                     }
                 ]
-            },
-            , {
+            },{
                 name: 'newsfeed',
                 path: ':slug/newsfeed',
                 component: () => import('@/components/NewsFeed'),
@@ -91,16 +90,13 @@ export default new Router({
                     path: 'relatedReports',
                     name: 'event-related-reports',
                     component: () => import('@/views/NewsFeed/RelatedReports')
-                },
-                ]
-            },
-            {
+                }]
+            },{
                 name: 'country-details',
                 path: ':slug/country-details/',
                 component: () => import('@/components/CountryDetails.vue'),
                 props: true
-            },
-            {
+            },{
                 name: 'related-events',
                 path: ':slug/related-events/',
                 component: () => import('@/components/RelatedEvents.vue'),
