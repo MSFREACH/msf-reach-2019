@@ -1,13 +1,9 @@
 {
   "presets": [
-    ["env", {
-      "targets": {
-        "node": "current"
-      }
-    }]
-    ],
-    "plugins":[
-        "syntax-dynamic-import",
-        "transform-object-rest-spread"
-    ]
+    ["babel-preset-env", { "targets": { "node": "current" } }]
+  ],
+  "plugins":[
+    "babel-plugin-syntax-dynamic-import",
+    "babel-plugin-transform-object-rest-spread"
+  ]
 }

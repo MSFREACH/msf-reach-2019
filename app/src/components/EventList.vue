@@ -78,7 +78,6 @@
 </template>
 <script>
 /*eslint no-debugger: off*/
-/*eslint no-console: off*/
 /*eslint no-unused-vars: off*/
 
 import { mapGetters } from 'vuex';
