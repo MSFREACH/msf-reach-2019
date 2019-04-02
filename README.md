@@ -1,29 +1,32 @@
-msf-reach
-================
+# msf-reach
+
 Data server and web content for CogniCity MSF, built with NodeJS to provide JSON APIs to Postgres objects and accompanying web pages.
 
-[![Build Status](https://travis-ci.org/MSFREACH/msf-reach.svg?branch=master)](https://travis-ci.org/MSFREACH/msf-reach)
+[![Build Status](https://travis-ci.org/MSFREACH/msf-reach.svg?branch=master)](https://travis-ci.org/MSFREACH/msf-reach-2019)
 
-[![Coverage Status](https://coveralls.io/repos/github/MSFREACH/msf-reach/badge.svg?branch=master)](https://coveralls.io/github/MSFREACH/msf-reach?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/MSFREACH/msf-reach/badge.svg?branch=master)](https://coveralls.io/github/MSFREACH/msf-reach-2019?branch=master)
 
-### Dependencies
+## Dependencies
+
 - see package.json, or run
 ```sh
 $ npm install
 ```
 
-### Local environment
+## Local environment
+
 For running locally, make sure you have a .env file with any overrides for src/config.js, and also update [public/resources/js/events.js#L9](https://github.com/MSFREACH/msf-reach/blob/master/public/resources/js/events.js#L9) to your localhost (and port number as per config). Use of cognito for authentication is disabled by default to make local testing easier (but enabled for our hosted environment).
 
-### Environment variables
-#### Login
+## Environment variables
+### Login
 If using Cognito: Set AWS_COGNITO_ALGORITHM to 'RS256', and AWS_COGNITO_PEM to the public key incl. line breaks—on AWS ElasticBeanstalk where line breaks are not supported in environment variables you need to replace new lines with commas when entering the environment variable, which will be converted back to line breaks in the code.
 
 If using Active Directory: Set the AZURE_AD_* variables with values supplied by AD operator.
 
 Either way, set AUTH=true to force users to login (otherwise if false it will bypass login for local test and development)
 
-#### Other environment variables:
+### Other environment variables:
+
 * ARCGIS_TOKEN: obtain from https://arcgis.cartong.org/arcgis/tokens/generateToken by using username, password, setting expiry for one year, and referrer https://(environment.)msf-reach.org/
 * APP_NAME: leave this as default 'msf-reach'. Only used for logging.
 * API_KEY: set this to a randomly generated string and then also set for chatbot to make its calls.
@@ -47,7 +50,8 @@ Either way, set AUTH=true to force users to login (otherwise if false it will by
 * TWILIO_AUTH_TOKEN: auth token for twilio for sms webhook (in testing)
 * TWITTER_*: twitter app credentials.
 
-### Build and Run
+## Build and Run
+
 Code is written in ES2015 and compiled with babel to a dist folder. To build and run locally:
 ```sh
 npm run start
@@ -57,25 +61,44 @@ To build for deployment:
 npm run build
 ```
 
-### Database
+## Database
+
 The database schema can be found in [msf-reach-schema](https://github.com/MSFREACH/msf-reach-schema).
 
-### Testing
+## Testing (server)
+
 Integration tests run using unit.js and mocha. ESLint is used for formatting. For more information see doc/TESTING.md
 
 To run tests, do:
+
 ```sh
 $ npm test
 ```
 
 Testing is run on [travis-ci.org](https://travis-ci.org/MSFREACH/msf-reach).
 
-### Data Formats
+## Testing (client app)
+
+To run the client app tests:
+
+```sh
+npm run test:vue
+```
+
+You can also pass additional arguments to Jest:
+
+```sh
+npm run test:vue -- --watch
+```
+
+## Data Formats
+
 - GeoJSON
 - TopoJSON
 
 
-### Documentation
+## Documentation
+
 Further documentation can be found in doc/ including:
 - API.md - information on API
 - TESTING.md - information on testing
