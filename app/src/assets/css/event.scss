@@ -82,57 +82,6 @@ textarea#sharepoint{
     position: relative;
 }
 
-.listHeader{
-    z-index:3;
-    display: flex;
-    .v-input{
-
-    }
-    .v-select__selections{
-        font-size: 10px;
-    }
-    .v-text-field{
-        padding-top: 0px;
-    }
-    .v-input__control{
-        border-radius: 20px;
-    }
-    .v-text-field{
-
-        .v-input__control{
-            background: #fff;
-        }
-    }
-
-    .v-select{
-        .v-input__control{
-            background: transparent;
-            border: 1px solid $border-gray;
-            margin-bottom: 0; 
-        }
-    }
-    .v-input__control{
-        padding: 4px 21px;
-        height: 40px;
-    }
-    .v-btn--floating.v-btn--small{
-        background: $text-light-grey;
-    }
-    .v-btn-toggle{
-      display: flex;
-        background: #d0d3da;
-    }
-    .v-list{
-        display: block !important;
-        div{
-            display: block !important;
-        }
-    }
-    .v-menu__content{
-        max-width: 100%;
-    }
-}
-
 .statusWrapper{
     border: 2px solid $bg-space-grey;
     background: $bg-space-grey;

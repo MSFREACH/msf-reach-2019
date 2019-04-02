@@ -1,7 +1,7 @@
 <template>
   <v-layout row wrap>
-      <v-dialog  v-model="dialog" persistent max-width="880px">
-          <v-btn slot="activator" fab small flat :size="40">
+      <v-dialog  v-model="dialog" persistent max-width="880px" class="newContactWrapper">
+          <v-btn slot="activator" fab small flat :size="40" dark>
               <v-icon> add </v-icon>
           </v-btn>
         <!-- 1. data agreement
@@ -37,9 +37,6 @@
                         </v-layout>
 
                     </v-form>
-
-
-
                      <p>Please contact <a href="mailto:lucie.gueuning@hongkong.msf.org">lucie.gueuning@hongkong.msf.org</a> for any queries or to remove your contact information from our database.</p>
                   <v-btn class="right" flat @click="e1 = 2"> Continue</v-btn>
                 </v-stepper-content>
@@ -47,25 +44,32 @@
                     <v-container grid-list-md>
                         <v-form ref="personal" lazy-validation>
                             <v-layout row wrap>
-                                <v-flex xs2>
-                                    <v-select :items="allTitles" v-model="newContact.title" label="Title" required></v-select>
-                                    <v-text-field v-if="newContact.title == 'other'" label="specify" v-model="other.title"></v-text-field>
-                                </v-flex>
-                                <v-flex xs3>
-                                    <v-text-field label="First Name" required></v-text-field>
-                                </v-flex>
-                                <v-flex xs3>
-                                    <v-text-field label="Last Name" required></v-text-field>
-                                </v-flex>
-                                <!-- join into name string  -->
-                                <v-flex xs4>
-                                    <v-text-field label="Alias" v-model="newContact.otherNames"></v-text-field>
-                                </v-flex>
-                                <v-divider></v-divider>
-                                <label>Meeting notes</label>
-                                <v-text-field label="Link to Sharepoint" v-model="newContact.sharepoint"></v-text-field>
-                                <v-textarea label="notes" v-model="newContact.notes" outline></v-textarea>
+                                <v-flex xs6>
+                                    <v-layout row wrap>
+                                        <v-flex xs4>
+                                            <v-select :items="allTitles" v-model="newContact.title" label="Title" required></v-select>
+                                            <v-text-field v-if="newContact.title == 'other'" label="specify" v-model="other.title"></v-text-field>
+                                        </v-flex>
+                                        <v-flex xs8>
+                                            <v-text-field label="Alias" v-model="newContact.otherNames"></v-text-field>
+                                        </v-flex>
+                                    </v-layout>
+                                    <v-layout row wrap>
+                                        <v-flex xs6>
+                                            <v-text-field label="First Name" required></v-text-field>
+                                        </v-flex>
+                                        <v-flex xs6>
+                                            <v-text-field label="Last Name" required></v-text-field>
+                                        </v-flex>
+                                    </v-layout>
+                                    <!-- join into name string  -->
 
+                                </v-flex>
+                                <v-flex xs6>
+                                    <label>Meeting notes</label>
+                                    <v-textarea label="notes" v-model="newContact.notes" box></v-textarea>
+                                    <v-text-field label="Link to Sharepoint" v-model="newContact.sharepoint"></v-text-field>
+                                </v-flex>
                             </v-layout>
                         </v-form>
                         <v-divider vertical></v-divider>
@@ -93,8 +97,6 @@
                                     <label>Partner sections/Branch office/Mission/Project (if any)</label>
                                     <v-textarea v-model="newContact.msf_additional" outline></v-textarea>
                                 </v-flex>
-
-
                             </v-layout>
                             <v-layout v-else row wrap>
                                 <v-flex xs3>
@@ -217,5 +219,11 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="scss">
+@import '@/assets/css/form.scss';
+.newContactWrapper{
+    .v-text-field .v-input__control .v-input__slot:before{
+        border-style: solid;
+    }
+}
 </style>
