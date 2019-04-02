@@ -17,7 +17,12 @@ import { init } from './server.js';
 // Import logging libraries
 import { createLogger, format, transports } from 'winston';
 
-const consoleLogger = new transports.Console();
+const consoleLogger = new transports.Console({
+    format: format.combine(
+        format.colorize(),
+        format.simple()
+    )
+});
 const logger = createLogger({
     level: config.LOG_LEVEL,
     format: format.json(),
@@ -46,6 +51,7 @@ logger.add(new transports.File({
 
 // If we are not in development and console logging has not been requested then remove it
 if (config.NODE_ENV !== 'development' && !config.LOG_CONSOLE) {
+    logger.debug(`Logger is being removed because of env ${config.NODE_ENV}`);
     logger.remove(consoleLogger);
 }
 
