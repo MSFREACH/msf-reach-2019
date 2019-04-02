@@ -15,7 +15,7 @@
                     <v-layout row wrap>
                         <v-flex xs6>
                             <v-btn-toggle v-model="isOrganization">
-                                <v-btn flat value="false">Contact</v-btn>
+                                <v-btn flat value="false">Individual</v-btn>
                                 <v-btn flat value="true">Organisation</v-btn>
                             </v-btn-toggle>
                         </v-flex>
@@ -252,6 +252,7 @@ export default {
     background: $bg-milk-grey;
     height: calc(100vh - 64px);
     overflow: scroll;
+    display: block;
 }
 .theme--light.v-btn-toggle{
     background: none;
