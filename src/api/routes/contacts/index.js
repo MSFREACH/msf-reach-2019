@@ -79,84 +79,18 @@ export default ({ config, db, logger }) => {
         })
   );
 
-    // get an individual contact
-    api.get('/:id', ensureAuthenticated, cacheResponse('1 minute'),
-        validate({
-            query: {
-                params: { id: Joi.number().integer().min(1).required() }
-            }
-        }),
-        (req, res, next) => contacts(config, db, logger).byId(req.params.id)
-            .then((data) => {
-                res.status(200).json({ statusCode: 200, time:new Date().toISOString(), result: data });
-            })
-            .catch((err) => {
-                /* istanbul ignore next */
-                logger.error(err);
-                /* istanbul ignore next */
-                next(err);
-            })
-    );
-
-    // Create a new contact record in the database
-    api.post('/',
-        validate({
-            body: Joi.object().keys({
-                properties: Joi.object().required().keys({
-                    // could probably tighten some of these up
-                    address: Joi.string().allow('', null),
-                    title: Joi.string().allow('', null),
-                    otherNames: Joi.string().allow('', null),
-                    name: Joi.string().allow('', null),
-                    speciality: Joi.string().allow('', null),
-                    type: Joi.string().allow('', null),
-                    employer: Joi.string().allow('', null),
-                    job_title: Joi.string().allow('', null),
-                    division: Joi.string().allow('', null),
-                    OC: Joi.string().allow('', null),
-                    msf_employment: Joi.string().allow('', null),
-                    msf_additional: Joi.string().allow('', null),
-                    cell: Joi.string().allow('', null),
-                    work: Joi.string().allow('', null),
-                    home: Joi.string().allow('', null),
-                    msf_associate: Joi.boolean().allow('', null),
-                    msf_peer: Joi.boolean().allow('', null),
-                    email: Joi.string().required(),
-                    email2: Joi.string().allow('', null),
-                    sharepoint: Joi.string().allow('', null),
-                    WhatsApp: Joi.string().allow('', null),
-                    Facebook: Joi.string().allow('', null),
-                    Twitter: Joi.string().allow('', null),
-                    Instagram: Joi.string().allow('', null),
-                    Telegram: Joi.string().allow('', null),
-                    Skype: Joi.string().allow('', null),
-                    msf_entered: Joi.boolean().required(),
-                    notes: Joi.string().allow('', null)
-                }),
-                oid: Joi.string().uuid(),
-                private: Joi.boolean().required(),
-                location: Joi.object().required().keys({
-                    lat: Joi.number().min(-90).max(90).required(),
-                    lng: Joi.number().min(-180).max(180).required()
-                })
-            })
-        }),
-        (req, res, next) => {
-            contacts(config, db, logger).createContact((req.body.hasOwnProperty('oid')) ? req.body.oid : null, req.body)
-                .then((data) => handleGeoResponse(data, req, res, next))
-                .catch((err) => {
-                    /* istanbul ignore next */
-                    logger.error(err);
-                    // In this case we want to explicity return a 409
-                    if (err.message === 'Contact already exists'){
-                        res.status(409).json({ statusCode: 409, message: err.message});
-                    }
-                    // Handle all other errors as normal
-                    else {
-                        /* istanbul ignore next */
-                        next(err);
-                    }
-                });
+  // get an individual contact
+  api.get(
+    '/:id',
+    ensureAuthenticated,
+    cacheResponse('1 minute'),
+    validate({
+      query: {
+        params: {
+          id: Joi.number()
+            .integer()
+            .min(1)
+            .required()
         }
       }
     }),
@@ -187,37 +121,34 @@ export default ({ config, db, logger }) => {
           .required()
           .keys({
             // could probably tighten some of these up
-            address: Joi.string().allow(''),
-            title: Joi.string().allow(''),
-            otherNames: Joi.string().allow(''),
-            gender: Joi.string().allow(''),
-            name: Joi.string().allow(''),
-            speciality: Joi.string().allow(''),
-            type: Joi.string().allow(''),
-            employer: Joi.string().allow(''),
-            job_title: Joi.string().allow(''),
-            division: Joi.string().allow(''),
-            dob: Joi.string().allow(''),
-            web: Joi.string().allow(''),
-            OC: Joi.string().allow(''),
-            msf_employment: Joi.string().allow(''),
-            msf_additional: Joi.string().allow(''),
-            cell: Joi.string().allow(''),
-            work: Joi.string().allow(''),
-            home: Joi.string().allow(''),
-            fax: Joi.string().allow(''),
-            msf_associate: Joi.boolean().allow(''),
-            msf_peer: Joi.boolean().allow(''),
+            address: Joi.string().allow('', null),
+            title: Joi.string().allow('', null),
+            otherNames: Joi.string().allow('', null),
+            name: Joi.string().allow('', null),
+            speciality: Joi.string().allow('', null),
+            type: Joi.string().allow('', null),
+            employer: Joi.string().allow('', null),
+            job_title: Joi.string().allow('', null),
+            division: Joi.string().allow('', null),
+            OC: Joi.string().allow('', null),
+            msf_employment: Joi.string().allow('', null),
+            msf_additional: Joi.string().allow('', null),
+            cell: Joi.string().allow('', null),
+            work: Joi.string().allow('', null),
+            home: Joi.string().allow('', null),
+            msf_associate: Joi.boolean().allow('', null),
+            msf_peer: Joi.boolean().allow('', null),
             email: Joi.string().required(),
-            email2: Joi.string().allow(''),
-            sharepoint: Joi.string().allow(''),
-            WhatsApp: Joi.string().allow(''),
-            Facebook: Joi.string().allow(''),
-            Twitter: Joi.string().allow(''),
-            Instagram: Joi.string().allow(''),
-            Telegram: Joi.string().allow(''),
-            Skype: Joi.string().allow(''),
-            msf_entered: Joi.boolean().required()
+            email2: Joi.string().allow('', null),
+            sharepoint: Joi.string().allow('', null),
+            WhatsApp: Joi.string().allow('', null),
+            Facebook: Joi.string().allow('', null),
+            Twitter: Joi.string().allow('', null),
+            Instagram: Joi.string().allow('', null),
+            Telegram: Joi.string().allow('', null),
+            Skype: Joi.string().allow('', null),
+            msf_entered: Joi.boolean().required(),
+            notes: Joi.string().allow('', null)
           }),
         oid: Joi.string().uuid(),
         private: Joi.boolean().required(),

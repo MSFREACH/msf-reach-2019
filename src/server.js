@@ -100,7 +100,7 @@ const init = (config, initializeDb, routes, logger) =>
         path: '/__webpack_hmr',
         heartbeat: 2000
       })
-    ); // eslint-disable-line no-console
+    );
 
     // force page reload when html-webpack-plugin template changes
     compiler.plugin('compilation', function(compilation) {
@@ -222,50 +222,34 @@ const init = (config, initializeDb, routes, logger) =>
         // Log debug message
         logger.debug('Successfully connected to DB');
 
-            // Mount the routes
-            if(config.AZURE_AD_TENANT_NAME){
-                app.get('/login',
-                    passport.authenticate('azuread-openidconnect', { failureRedirect: '/login'}),
-                    function(req, res) {
-                        res.redirect('/');
-                    });
-                /// Documented here: http://www.passportjs.org/docs/authenticate/
-                // app.get('/login', function(req, res, next){
-                //     passport.authenticate('azuread-openidconnect', function(err, user){
-                //         if(err) { return next(err); }
-                //         if(!user) { return res.redirect('/login'); }
-                //         req.logIn(user, function(err) {
-                //             if(err) { return next(err); }
-                //             return res.redirect('/users/' +user.username);
-                //         });
-                //     });
-                // });
-                app.post('/auth/openid/return',
-                    passport.authenticate('azuread-openidconnect', { failureRedirect: '/login'}),
-                    function(req, res, next) { // eslint-disable-line no-unused-vars
-                        //set a cookie here and then on the static page store it in localstorage
-                        res.cookie('userdisplayName', req.user.displayName, { maxAge: 1000 * 60 * 1 }); //1 min cookie age should be enough
-                        res.cookie('email', req.user._json.preferred_username);
-                        res.cookie('oid', req.user.oid, { maxAge: 1000 * 60 * 1 });
-                        res.redirect('/authreturn');
-                    });
-                app.use('/landing', express.static('public/landing'));
-                // app.use('/authreturn', [ensureAuthenticated, express.static(config.STATIC_AUTH_RETURN_PATH)]);//Page used to store our user in localstorage and redirect to / after auth return from azure
-                app.use('/authreturn', ensureAuthenticated, function(req, res){
-                    res.redirect('/'); /// here should bounce to vue app ** need to pass it a TOKEN ..... somehow ...
-                });
-
-            } else {
-                app.use('/login', express.static(config.STATIC_AUTH_PATH));
+        // Mount the routes
+        if (config.AZURE_AD_TENANT_NAME) {
+          app.get(
+            '/login',
+            passport.authenticate('azuread-openidconnect', {
+              failureRedirect: '/login'
+            }),
+            function(req, res) {
+              res.redirect('/');
             }
           );
+          /// Documented here: http://www.passportjs.org/docs/authenticate/
+          // app.get('/login', function(req, res, next){
+          //     passport.authenticate('azuread-openidconnect', function(err, user){
+          //         if(err) { return next(err); }
+          //         if(!user) { return res.redirect('/login'); }
+          //         req.logIn(user, function(err) {
+          //             if(err) { return next(err); }
+          //             return res.redirect('/users/' +user.username);
+          //         });
+          //     });
+          // });
           app.post(
             '/auth/openid/return',
             passport.authenticate('azuread-openidconnect', {
               failureRedirect: '/login'
             }),
-            function(req, res) {
-              // eslint-disable-line no-unused-vars
+            function(req, res, next) {  // eslint-disable-line
               //set a cookie here and then on the static page store it in localstorage
               res.cookie('userdisplayName', req.user.displayName, {
                 maxAge: 1000 * 60 * 1
@@ -276,10 +260,10 @@ const init = (config, initializeDb, routes, logger) =>
             }
           );
           app.use('/landing', express.static('public/landing'));
-          app.use('/authreturn', [
-            ensureAuthenticated,
-            express.static(config.STATIC_AUTH_RETURN_PATH)
-          ]); //Page used to store our user in localstorage and redirect to / after auth return from azure
+          // app.use('/authreturn', [ensureAuthenticated, express.static(config.STATIC_AUTH_RETURN_PATH)]);//Page used to store our user in localstorage and redirect to / after auth return from azure
+          app.use('/authreturn', ensureAuthenticated, function(req, res) {
+            res.redirect('/'); /// here should bounce to vue app ** need to pass it a TOKEN ..... somehow ...
+          });
         } else {
           app.use('/login', express.static(config.STATIC_AUTH_PATH));
         }

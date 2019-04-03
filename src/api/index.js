@@ -35,23 +35,23 @@ export default ({ config, db, logger }) => {
     res.status(200).json({ version });
   });
 
-    // Mount the various endpoints
-    api.use('/events', events({ config, db, logger }));
-    api.use('/msfResponses', msfResponses({ config, db, logger }));
-    api.use('/eventNotifications', eventNotifications({ config, db, logger }));
-    api.use('/countryDetails', countryDetails({ config, db, logger }));
-    api.use('/sitreps', sitreps({ config, db, logger }));
-    api.use('/layers', layers({ config, db, logger}));
-    api.use('/reports', reports({ config, db, logger }));
-    api.use('/twitter', twitter({ logger }));
-    api.use('/hazards', hazards({ logger }));
-    api.use('/rss', rss({ logger }));
-    api.use('/bookmarks', bookmarks({ config, db, logger }));
-    api.use('/utils', utils({ config, db, logger }) );
-    api.use('/missions', missions({ config, db, logger }));
-    api.use('/contacts', contacts({ config, db, logger }));
-    api.use('/proxy', proxy({config, logger}));
-    api.use('/analytics',analytics({config,logger}));
+  // Mount the various endpoints
+  api.use('/events', events({ config, db, logger }));
+  api.use('/msfResponses', msfResponses({ config, db, logger }));
+  api.use('/eventNotifications', eventNotifications({ config, db, logger }));
+  api.use('/countryDetails', countryDetails({ config, db, logger }));
+  api.use('/sitreps', sitreps({ config, db, logger }));
+  api.use('/layers', layers({ config, db, logger }));
+  api.use('/reports', reports({ config, db, logger }));
+  api.use('/twitter', twitter({ logger }));
+  api.use('/hazards', hazards({ logger }));
+  api.use('/rss', rss({ logger }));
+  api.use('/bookmarks', bookmarks({ config, db, logger }));
+  api.use('/utils', utils({ config, db, logger }));
+  api.use('/missions', missions({ config, db, logger }));
+  api.use('/contacts', contacts({ config, db, logger }));
+  api.use('/proxy', proxy({ config, logger }));
+  api.use('/analytics', analytics({ config, logger }));
 
   // Handle validation errors (wording of messages can be overridden using err.isJoi)
   api.use(celebrate.errors());
