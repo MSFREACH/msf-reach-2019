@@ -72,3 +72,9 @@ export const FETCH_COUNTRY_DETAILS = 'fetchCountryDetails';
 export const CREATE_COUNTRY_DETAILS = 'createCountryDetails';
 export const EDIT_COUNTRY_DETAILS = 'editCountryDetails';
 export const DELETE_COUNTRY_DETAILS = 'deleteCountryDetails';
+
+export const SEARCH_TWEETS = 'SEARCH_TWEETS';
+export const APPEND_TWEETS = 'APPEND_TWEETS';
+
+export const FETCH_RSS = 'FETCH_RSS';
+

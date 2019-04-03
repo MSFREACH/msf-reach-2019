@@ -25,14 +25,22 @@ ul{
 }
 
 .searchHeader{
+    display: flex;
+    width: 300px;
     .v-select__slot{
       label{
           top: 7px;
       }
     }
+    label{
+        text-transform: capitalize;
+    }
+    .v-input__slot{
+        height: inherit;
+    }
 }
 
-.callToActionRed, 
+.callToActionRed,
 .offsetTime{
     color: $warning-red;
 }
@@ -60,19 +68,10 @@ ul{
         }
     }
 }
-.searchHeader{
-    label{
-        text-transform: capitalize;
-    }
-    .v-input__slot{
-        height: inherit;
-    }
-}
+
 .SITREP-Container{
     display: inherit;
     .searchHeader{
-        display: flex;
-        width: 300px;
         .v-text-field{
             padding-top: 0px;
         }
@@ -156,6 +155,37 @@ ul{
         }
         .v-dialog__container{
             width: auto;
+        }
+    }
+}
+
+.twitter {
+    // width: 75%;
+    max-width: 1180px;
+    display: block;
+    margin: 0;
+    .searchHeader{
+        width: 400px;
+        margin-bottom: 20px;
+        min-width: 400px;
+        .v-text-field{
+            padding-top: 0px;
+        }
+        .v-input{
+            height: 40px;
+            background: $bg-light;
+            border-radius: 20px;
+            padding: 3px 21px;
+            display: inline-block;
+            vertical-align: top;
+        }
+        .v-text-field--single-line{
+            width: 48%;
+            margin-top: 0;
+        }
+        .v-select{
+            width: 32%;
+            margin: 0 10px;
         }
     }
 }

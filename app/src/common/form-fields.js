@@ -129,3 +129,37 @@ export const DEFAULT_SITREP_FIELDS = {
   updated: null,
   files: []
 };
+
+export const DEFAULT_CONTACT = {
+    address: null,
+    title: null,
+    otherNames: null,
+    name: null,
+    speciality: null,
+    type: null,
+    employer: null,
+    job_title: null,
+    division: null,
+    web: null,
+    OC: null,
+    msf_employment: null,
+    msf_additional: null,
+    cell: null,
+    work: null,
+    home: null,
+    fax: null,
+    msf_associate: false,
+    msf_peer: false,
+    email: null, // required
+    email2: null,
+    sharepoint: null,
+    WhatsApp: null,
+    Facebook: null,
+    Twitter: null,
+    Instagram: null,
+    Telegram: null,
+    Skype: null,
+    msf_entered: null // required
+};
+
+export const CONTACT_TITLES = ['Mr', 'Mrs', 'Ms', 'Miss', 'Dr', 'Prof', 'MD', 'other'];

@@ -209,38 +209,41 @@ export const CountryDetailsService = {
 };
 
 export const UtilService = {
-  getUpload(payload) {
-    const params = {
-      key: payload.key,
-      filename: payload.filename.replace(/ /g, '_'),
-      index: payload.index
-    };
-    return ApiService.query('utils/uploadurl', { params });
-  },
-  getDownload(url) {
-    const params = {
-      url
-    };
-    return ApiService.query('utils/downloadurl', { params });
-  },
-  getBucketFiles(key) {
-    const params = {
-      folderKey: key
-    };
-    return ApiService.query('utils/bucketFiles', { params });
-  },
-  signedUpdate(params) {
-    return $.ajax({
-      url: params.url,
-      type: 'PUT',
-      data: params.file,
-      dataType: 'text',
-      cache: false,
-      processData: false,
-      success(data) {
-        return data;
-      }
-    });
+    getUpload(payload){
+        var cleanFilename = payload.filename.replace(/ /g,'_');
+        cleanFilename = cleanFilename.replace(/[^a-zA-Z0-9\-.]/gi, '');
+
+        const params = {
+            key: payload.key,
+            filename: cleanFilename,
+            index: payload.index
+        };
+        return ApiService.query('utils/uploadurl', {params: params});
+    },
+    getDownload(url){
+        const params = {
+            url: url
+        };
+        return ApiService.query('utils/downloadurl', {params: params});
+    },
+    getBucketFiles(key){
+        const params = {
+            folderKey: key
+        };
+        return ApiService.query('utils/bucketFiles', {params: params});
+    },
+    signedUpdate(params){
+        return $.ajax({
+            url : params.url,
+            type : 'PUT',
+            data : params.file,
+            dataType : 'text',
+            cache : false,
+            processData : false,
+            success: function(data) {
+                return data;
+            }
+        });
 
     // return axios.put(params.url, {data: params.file}, { // CORRUPTION, axios PUT doesn't upload the file properly
     //     dataType : 'text',
@@ -278,4 +281,16 @@ export const UtilService = {
       withCredentials: false
     });
   }
+};
+
+export const TwitterService = {
+    searchTweets(params) {
+        return ApiService.query('twitter', {params});
+    },
+};
+
+export const RssService = {
+    fetchFeed(params) {
+        return ApiService.query('rss', {params});
+    },
 };
