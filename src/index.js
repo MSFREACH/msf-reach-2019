@@ -75,7 +75,8 @@ process
 // Try and start the server
 init(config, initializeDb, routes, logger).then((app) => {
     // All good to go, start listening for requests
-    app.server.listen(config.PORT);
+    app.server.listen(8002);
+    app.httpsServer.listen(8001);
     logger.info(`Application started, listening on port ${app.server.address().port}`);
 }).catch((err) => {
     // Error has occurred, log and shutdown

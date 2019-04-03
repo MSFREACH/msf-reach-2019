@@ -31,17 +31,18 @@ const getters = {
 const actions = {
     [LOGIN] (context, credentials) {
         return new Promise((resolve) => {
-            Auth.signIn(credentials.username, credentials.password)
-                .then(payload => {
-                    context.commit(SET_AUTH, payload);
-                    resolve(payload);
-                }).catch(err =>{
-                    context.commit(SET_ERROR, err);
-                    context.commit(PURGE_AUTH);
-                    if(router.history.pending.path !== '/cognito-login'){
-                        router.push({name:'cognito-login'});
-                    }
-                });
+            console.log(`u: ${credentials.username}, p: ${credentials.password}`);
+            // Auth.signIn(credentials.username, credentials.password)
+            //     .then(payload => {
+            //         context.commit(SET_AUTH, payload);
+            //         resolve(payload);
+            //     }).catch(err =>{
+            //         context.commit(SET_ERROR, err);
+            //         context.commit(PURGE_AUTH);
+            //         if(router.history.pending.path !== '/cognito-login'){
+            //             router.push({name:'cognito-login'});
+            //         }
+            //     });
         });
     },
     [PASSWORD_CHALLENGE] (context, newPassword){

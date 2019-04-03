@@ -1,4 +1,6 @@
 import { Promise } from 'bluebird';
+import fs from 'fs';
+import https from 'https'
 
 // Express middleware and http
 import express from 'express';
@@ -35,9 +37,17 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 	**/
 const init = (config, initializeDb, routes, logger) => new Promise((resolve, reject) => {
 
+    // local https
+    const httpsOptions = {
+        key: fs.readFileSync('/Users/maxfowler/Desktop/key.pem'),
+        cert: fs.readFileSync('/Users/maxfowler/Desktop/cert.pem')
+    };
+
     // Create the server
     let app = express();
-    app.server = http.createServer(app);
+    app.server = http.createServer(httpsOptions, app);
+    app.httpsServer = https.createServer(httpsOptions, app);
+    // app.server = http.createServer(app);
     app.use(bodyParser.urlencoded({extended: true}));
 
     // Parse body messages into json
@@ -78,6 +88,11 @@ const init = (config, initializeDb, routes, logger) => new Promise((resolve, rej
             return res.redirect('https://' + req.headers.host + req.url);
         }
         next();
+    });
+
+    // simple test page for sanity
+    app.get('/debug', (req, res) => {
+        res.send('WORKING!');
     });
 
     // Trust proxy header
@@ -132,6 +147,9 @@ const init = (config, initializeDb, routes, logger) => new Promise((resolve, rej
             redirectUrl: config.AZURE_AD_RETURN_URL,
             allowHttpForRedirectUrl: !config.REDIRECT_HTTP,
             scope: ['openid','profile','offline_access','User.Read','User.ReadBasic.All'],
+            loggingLevel: 'info',
+            loggingNoPII: false,
+            passReqToCallback: true,
             responseType: 'id_token code', //For openID Connect auth. See: https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-protocols-openid-connect-code
             responseMode: 'form_post' //This is recommended by MS
         },
@@ -183,10 +201,10 @@ const init = (config, initializeDb, routes, logger) => new Promise((resolve, rej
             logger.debug('Successfully connected to DB');
 
             // Mount the routes
-            if(config.AZURE_AD_TENANT_NAME){
+            if(config.AZURE_AD_TENANT_NAME) {
                 app.get('/login',
-                    passport.authenticate('azuread-openidconnect', { failureRedirect: '/login'}),
-                    function(req, res) {
+                    passport.authenticate('azuread-openidconnect', {failureRedirect: '/login'}),
+                    function (req, res) {
                         res.redirect('/');
                     });
                 /// Documented here: http://www.passportjs.org/docs/authenticate/
@@ -201,7 +219,9 @@ const init = (config, initializeDb, routes, logger) => new Promise((resolve, rej
                 //     });
                 // });
                 app.post('/auth/openid/return',
-                    passport.authenticate('azuread-openidconnect', { failureRedirect: '/login'}),
+                    passport.authenticate('azuread-openidconnect', {
+                        failureRedirect: '/debug',
+                    }),
                     function(req, res, next) { // eslint-disable-line no-unused-vars
                         //set a cookie here and then on the static page store it in localstorage
                         res.cookie('userdisplayName', req.user.displayName, { maxAge: 1000 * 60 * 1 }); //1 min cookie age should be enough
