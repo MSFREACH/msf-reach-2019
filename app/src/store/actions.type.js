@@ -77,4 +77,3 @@ export const SEARCH_TWEETS = 'SEARCH_TWEETS';
 export const APPEND_TWEETS = 'APPEND_TWEETS';
 
 export const FETCH_RSS = 'FETCH_RSS';
-
