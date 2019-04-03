@@ -52,26 +52,6 @@ export default new Router({
               component: () => import('@/views/Event/Notifications'),
               props: true
             },
-            , {
-                name: 'newsfeed',
-                path: ':slug/newsfeed',
-                component: () => import('@/components/NewsFeed'),
-                props: true,
-                children:[{
-                    path: 'twitter',
-                    name: 'event-twitter',
-                    component: () => import('@/views/NewsFeed/Twitter')
-                }, {
-                    path: 'rss',
-                    name: 'event-rss',
-                    component: () => import('@/views/NewsFeed/RssFeed')
-                }, {
-                    path: 'relatedReports',
-                    name: 'event-related-reports',
-                    component: () => import('@/views/NewsFeed/RelatedReports')
-                },
-                ]
-            },
             {
               path: 'responses',
               name: 'event-responses',
@@ -102,26 +82,68 @@ export default new Router({
               component: () => import('@/views/Event/SITREP'),
               props: true
             }
-        ]
-    },{
-        name: 'event-edit',
-        path: '/editor/:slug?',
-        component: () => import('@/views/EventEdit'),
-        props: true
-    },{
-        name: 'contacts',
-        path: '/contacts',
-        component: () => import('@/components/ContactList'),
-        props: true
-    },{
-        name: 'reports',
-        path: '/reports',
-        component: () => import('@/components/Placeholder'),
-        props: true
-    },{
-        name: 'placeholder',
-        path: '/placeholder',
-        component: () => import('@/components/Placeholder'),
-        props: true
-    }]
+          ]
+        },
+        {
+          name: 'newsfeed',
+          path: ':slug/newsfeed',
+          component: () => import('@/components/NewsFeed'),
+          props: true,
+          children: [
+            {
+              path: 'twitter',
+              name: 'event-twitter',
+              component: () => import('@/views/NewsFeed/Twitter')
+            },
+            {
+              path: 'rss',
+              name: 'event-rss',
+              component: () => import('@/views/NewsFeed/RssFeed')
+            },
+            {
+              path: 'relatedReports',
+              name: 'event-related-reports',
+              component: () => import('@/views/NewsFeed/RelatedReports')
+            }
+          ]
+        },
+        {
+          name: 'country-details',
+          path: ':slug/country-details/',
+          component: () => import('@/components/CountryDetails.vue'),
+          props: true
+        },
+        {
+          name: 'related-events',
+          path: ':slug/related-events/',
+          component: () => import('@/components/RelatedEvents.vue'),
+          props: true
+        }
+      ]
+    },
+    {
+      name: 'event-edit',
+      path: '/editor/:slug?',
+      component: () => import('@/views/EventEdit'),
+      props: true
+    },
+    {
+      name: 'contacts',
+      path: '/contacts',
+      component: () => import('@/components/ContactList'),
+      props: true
+    },
+    {
+      name: 'reports',
+      path: '/reports',
+      component: () => import('@/components/Placeholder'),
+      props: true
+    },
+    {
+      name: 'placeholder',
+      path: '/placeholder',
+      component: () => import('@/components/Placeholder'),
+      props: true
+    }
+  ]
 });

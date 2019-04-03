@@ -47,13 +47,6 @@ export default {
       displayTweets: []
     };
   },
-  methods: {
-    searchTweets() {
-      this.$store.dispatch(SEARCH_TWEETS, {
-        searchString: this.twitterSearchString
-      });
-    }
-  },
   computed: {
     ...mapGetters(['tweets'])
   },
@@ -61,6 +54,13 @@ export default {
     tweets(newValue) {
       // eslint-disable-line no-unused-vars
       this.displayTweets = _.map(this.tweets, _.clone);
+    }
+  },
+  methods: {
+    searchTweets() {
+      this.$store.dispatch(SEARCH_TWEETS, {
+        searchString: this.twitterSearchString
+      });
     }
   }
 };

@@ -28,14 +28,6 @@ export default {
       feedItems: []
     };
   },
-  mounted() {
-    this.fetchRss();
-  },
-  methods: {
-    fetchRss() {
-      this.$store.dispatch(FETCH_RSS, {});
-    }
-  },
   computed: {
     ...mapGetters(['rssFeedItems'])
   },
@@ -43,6 +35,14 @@ export default {
     rssFeedItems(newValue) {
       // eslint-disable-line no-unused-vars
       this.feedItems = _.map(this.rssFeedItems, _.clone);
+    }
+  },
+  mounted() {
+    this.fetchRss();
+  },
+  methods: {
+    fetchRss() {
+      this.$store.dispatch(FETCH_RSS, {});
     }
   }
 };

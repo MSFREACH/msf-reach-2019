@@ -61,7 +61,8 @@ module.exports = {
         "src/views/Event/General.vue",
         "src/views/Event/Notifications.vue",
         "src/views/Event/SITREP.vue",
-        "src/views/New/NewEvent.vue"
+        "src/views/New/NewEvent.vue",
+        "src/views/NewsFeed/Twitter.vue"
       ]
     },
     {

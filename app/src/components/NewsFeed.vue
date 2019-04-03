@@ -33,7 +33,9 @@ export default {
   components: {},
   props: {
     slug: {
-      type: String
+      type: Number,
+      default: 0,
+      required: false
     }
   },
   data() {

@@ -339,7 +339,6 @@ export default {
         isPrivate: null
       },
       newContact: DEFAULT_CONTACT,
-      defaultContact: DEFAULT_CONTACT,
       allOCs: CONTACT_OCS,
       allTitles: CONTACT_TITLES,
       allContactTypes: CONTACT_TYPES,
