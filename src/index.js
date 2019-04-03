@@ -18,10 +18,7 @@ import { init } from './server.js';
 import { createLogger, format, transports } from 'winston';
 
 const consoleLogger = new transports.Console({
-    format: format.combine(
-        format.colorize(),
-        format.simple()
-    )
+  format: format.combine(format.colorize(), format.simple())
 });
 const logger = createLogger({
   level: config.LOG_LEVEL,
@@ -59,8 +56,8 @@ logger.add(
 
 // If we are not in development and console logging has not been requested then remove it
 if (config.NODE_ENV !== 'development' && !config.LOG_CONSOLE) {
-    logger.debug(`Logger is being removed because of env ${config.NODE_ENV}`);
-    logger.remove(consoleLogger);
+  logger.debug(`Logger is being removed because of env ${config.NODE_ENV}`);
+  logger.remove(consoleLogger);
 }
 
 // If we exit immediately winston does not get a chance to write the last log message
