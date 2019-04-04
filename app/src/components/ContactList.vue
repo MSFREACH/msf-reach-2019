@@ -83,132 +83,132 @@
           </v-flex>
         </v-flex>
       </v-flex>
-    </v-layout>
-    <v-flex xs9 text-xs-center>
-      <v-scroll-y-transition mode="out-in">
-        <div v-if="!selected" class="title grey--text">
-          Select Contact
-        </div>
-        <v-card
-          v-else
-          :key="selected.id"
-          class="pt-4 mx-auto"
-          flat
-          max-width="400"
-        >
-          <h3>{{ selected.properties.properties.name }}</h3>
-          <v-card-text
-            v-if="selected.properties.properties.type == defaultType"
+      <v-flex xs9 text-xs-center>
+        <v-scroll-y-transition mode="out-in">
+          <div v-if="!selected" class="title grey--text">
+            Select Contact
+          </div>
+          <v-card
+            v-else
+            :key="selected.id"
+            class="pt-4 mx-auto"
+            flat
+            max-width="400"
           >
-            {{ selected.properties.properties.OC }}
-            {{ selected.properties.properties.employment }}
-            {{ selected.properties.properties.additional }}
-            {{ selected.properties.properties.job_title }}
-          </v-card-text>
-          <v-card-text else>
-            <v-chip v-show="selected.properties.properties.msf_associate" label>
-              MSF Associate
-            </v-chip>
-            <v-chip v-show="selected.properties.properties.msf_peer" label>
-              MSF Peer
-            </v-chip>
-            {{ selected.properties.properties.employer }}
-            {{ selected.properties.properties.job_title }}
-            {{ selected.properties.properties.division }}
-          </v-card-text>
+            <h3>{{ selected.properties.properties.name }}</h3>
+            <v-card-text
+              v-if="selected.properties.properties.type == defaultType"
+            >
+              {{ selected.properties.properties.OC }}
+              {{ selected.properties.properties.employment }}
+              {{ selected.properties.properties.additional }}
+              {{ selected.properties.properties.job_title }}
+            </v-card-text>
+            <v-card-text else>
+              <v-chip v-show="selected.properties.properties.msf_associate" label>
+                MSF Associate
+              </v-chip>
+              <v-chip v-show="selected.properties.properties.msf_peer" label>
+                MSF Peer
+              </v-chip>
+              {{ selected.properties.properties.employer }}
+              {{ selected.properties.properties.job_title }}
+              {{ selected.properties.properties.division }}
+            </v-card-text>
 
-          <v-divider />
-          <v-layout tag="v-card-text" text-xs-left wrap d-flex>
-            <v-flex
-              v-show="selected.properties.properties.cell"
-              tag="strong"
-              xs5
-              text-xs-right
-              mr-3
-              mb-2
-            >
-              Mobile
+            <v-divider />
+            <v-layout tag="v-card-text" text-xs-left wrap d-flex>
+              <v-flex
+                v-show="selected.properties.properties.cell"
+                tag="strong"
+                xs5
+                text-xs-right
+                mr-3
+                mb-2
+              >
+                Mobile
+              </v-flex>
+              <v-flex>{{ selected.properties.properties.cell }}</v-flex>
+              <v-flex
+                v-show="selected.properties.properties.work"
+                tag="strong"
+                xs5
+                text-xs-right
+                mr-3
+                mb-2
+              >
+                Work:
+              </v-flex>
+              <v-flex>
+                {{ selected.properties.properties.work }}
+              </v-flex>
+              <v-flex
+                v-show="selected.properties.properties.home"
+                tag="strong"
+                xs5
+                text-xs-right
+                mr-3
+                mb-2
+              >
+                Home:
+              </v-flex>
+              <v-flex>{{ selected.properties.properties.home }}</v-flex>
+              <v-flex tag="strong" xs5 text-xs-right mr-3 mb-2>
+                <v-icon>mail</v-icon>
+              </v-flex>
+              <v-flex>
+                <div>{{ selected.properties.properties.email }}</div>
+                <div v-show="selected.properties.properties.email2">
+                  {{ selected.properties.properties.email2 }}
+                </div>
+              </v-flex>
+            </v-layout>
+            <v-layout>
+              <v-flex>
+                <span
+                  v-if="
+                    checkEqual(
+                      selected.properties.properties.cell,
+                      selected.properties.properties.WhatsApp
+                    )
+                  "
+                  class="mdi mdi-whatsapp"
+                />
+                <span v-else class="mdi mdi-whatsapp">
+                  {{ selected.properties.properties.WhatsApp }}
+                </span>
+              </v-flex>
+              <v-flex>
+                <span
+                  v-if="
+                    checkEqual(
+                      selected.properties.properties.cell,
+                      selected.properties.properties.Telegram
+                    )
+                  "
+                  class="mdi mdi-telegram"
+                />
+                <span v-else class="mdi mdi-telegram">
+                  {{ selected.properties.properties.Telegram }}
+                </span>
+              </v-flex>
+              <v-flex v-show="selected.properties.properties.skype">
+                <span class="mdi mdi-skype" />
+                <span> {{ selected.properties.properties.skype }} </span>
+              </v-flex>
+              <v-flex v-show="selected.properties.properties.Instagram">
+                <span class="mdi mdi-instagram" />
+                <span> {{ selected.properties.properties.Instagram }} </span>
+              </v-flex>
+            </v-layout>
+            <v-flex v-show="selected.properties.properties.address" xs12>
+              <v-icon>location_on</v-icon>
+              <span> {{ selected.properties.properties.address }} </span>
             </v-flex>
-            <v-flex>{{ selected.properties.properties.cell }}</v-flex>
-            <v-flex
-              v-show="selected.properties.properties.work"
-              tag="strong"
-              xs5
-              text-xs-right
-              mr-3
-              mb-2
-            >
-              Work:
-            </v-flex>
-            <v-flex>
-              {{ selected.properties.properties.work }}
-            </v-flex>
-            <v-flex
-              v-show="selected.properties.properties.home"
-              tag="strong"
-              xs5
-              text-xs-right
-              mr-3
-              mb-2
-            >
-              Home:
-            </v-flex>
-            <v-flex>{{ selected.properties.properties.home }}</v-flex>
-            <v-flex tag="strong" xs5 text-xs-right mr-3 mb-2>
-              <v-icon>mail</v-icon>
-            </v-flex>
-            <v-flex>
-              <div>{{ selected.properties.properties.email }}</div>
-              <div v-show="selected.properties.properties.email2">
-                {{ selected.properties.properties.email2 }}
-              </div>
-            </v-flex>
-          </v-layout>
-          <v-layout>
-            <v-flex>
-              <span
-                v-if="
-                  checkEqual(
-                    selected.properties.properties.cell,
-                    selected.properties.properties.WhatsApp
-                  )
-                "
-                class="mdi mdi-whatsapp"
-              />
-              <span v-else class="mdi mdi-whatsapp">
-                {{ selected.properties.properties.WhatsApp }}
-              </span>
-            </v-flex>
-            <v-flex>
-              <span
-                v-if="
-                  checkEqual(
-                    selected.properties.properties.cell,
-                    selected.properties.properties.Telegram
-                  )
-                "
-                class="mdi mdi-telegram"
-              />
-              <span v-else class="mdi mdi-telegram">
-                {{ selected.properties.properties.Telegram }}
-              </span>
-            </v-flex>
-            <v-flex v-show="selected.properties.properties.skype">
-              <span class="mdi mdi-skype" />
-              <span> {{ selected.properties.properties.skype }} </span>
-            </v-flex>
-            <v-flex v-show="selected.properties.properties.Instagram">
-              <span class="mdi mdi-instagram" />
-              <span> {{ selected.properties.properties.Instagram }} </span>
-            </v-flex>
-          </v-layout>
-          <v-flex v-show="selected.properties.properties.address" xs12>
-            <v-icon>location_on</v-icon>
-            <span> {{ selected.properties.properties.address }} </span>
-          </v-flex>
-        </v-card>
-      </v-scroll-y-transition>
-    </v-flex>
+          </v-card>
+        </v-scroll-y-transition>
+      </v-flex>
+    </v-layout>
   </v-layout>
 </template>
 
@@ -282,6 +282,9 @@ export default {
 
       return orderedInitials;
     },
+  },
+  mounted(){
+    this.fetchContacts();
   },
   watch: {
     contacts(val) {
