@@ -24,24 +24,32 @@
                         </v-flex>
                     </v-layout>
                 </v-toolbar>
-                <v-treeview
-                    :active.sync="active"
-                    :items="items"
-                    :load-children="fetchContacts"
-                    :open.sync="open"
-                    activatable
-                    active-class="primary--text"
-                    open-on-click
-                    transition
-                >
-                    <template v-slot:prepend="{item, active}">
-                        <v-icon v-if="!item.children" :color="active? 'primary' : ''"> mdi-account </v-icon>
-                    </template>
-                    <template v-slot:label="{item}">
-                        {{item.name}}
-                        <span class="count" v-if="item.children">{{ item.children.length }}</span>
-                    </template>
-                </v-treeview>
+                <v-flex v-for="(letterGroup, i) in alphabeticalClusters" :key="'letter-'+i" v-if="letterGroup.children.length > 0">
+                  <v-subheader>
+                    <v-flex xs2 left> {{letterGroup.label.toUpperCase()}}</v-flex> <v-divider></v-divider>
+                  </v-subheader>
+                  <v-data-iterator
+                    content-tag="v-layout"
+                    :items="letterGroup.children"
+                    :search="search"
+                    no-data-text="No contacts found"
+                    hide-actions
+                    row wrap>
+
+                    <v-list class="result-list" slot="item" slot-scope="props">
+                      <v-list-tile :key="props.item.id" avatar ripple avatar @click="select(props.item)">
+                        <v-list-tile-content>
+                          {{props.item.properties.properties.name}} <i> {{props.item.properties.properties.type}} </i>
+                        </v-list-tile-content>
+                        <v-list-tile-action>
+                          <v-icon color="grey lighten-1">bookmark</v-icon>
+                          <v-icon color="grey lighten-1">share</v-icon>
+                        </v-list-tile-action>
+                      </v-list-tile>
+                    </v-list>
+                  </v-data-iterator>
+                </v-flex>
+
             </v-flex>
             <v-flex xs9 text-xs-center>
                 <v-scroll-y-transition mode="out-in">
@@ -136,10 +144,12 @@ export default {
             active: [],
             open: [],
             expanded: {},
+            selected: null,
             defaultType: DEFAULT_CONTACT_TYPE,
             allTypes: CONTACT_TYPES,
             filterType: '',
-            isOrganization: false
+            isOrganization: false,
+            displayContacts: []
         };
     },
     components:{
@@ -151,40 +161,48 @@ export default {
             'isLoadingContact',
             'contacts'
         ]),
-        items () {
-            const children = this.allTypes.map(type => ({
-                id: type.value,
-                name: this.getName(type.text),
-                children: this.getChildren(type.text)
-            }))
-            var tmpTypeLabel = this.allTypes.map(type => {
-                return type.text;
-            });
+        alphabeticalClusters(){
+          var charCode,
+              i = 0;
+          var alphabets = [];
+          for(charCode = 65; charCode < 91; charCode++){
+            var letter = String.fromCharCode(charCode).toLowerCase();
+            alphabets.push(letter);
+          }
 
-            var others = this.contacts.filter(contact => {
-                return (tmpTypeLabel.indexOf(contact.properties.properties.type) == -1);
-            });
+          const sortedChildren = alphabets.map(letter => ({
+            label: letter,
+            children: this.getSameInitials(letter)
+          }));
 
-            var orderedList = _.clone(children);
-            orderedList.push({
-                id: 2,
-                name: 'Uncategorized',
-                children: this.getOtherChildren(others)
-            });
+          var others = this.contacts.filter(contact => {
+              return (alphabets.indexOf(contact.properties.properties.name.charAt(0).toLowerCase()) == -1);
+          });
 
-            return orderedList;
-        },
-        selected () {
-            if (!this.active.length) return undefined;
-            const id = this.active[0];
-            return this.contacts.find(contact => contact.properties.id === id);
+          var orderedInitials = _.clone(sortedChildren);
+
+          orderedInitials.push({
+            label: '#',
+            children: this.getOtherInitial(others)
+          });
+
+          return orderedInitials;
+
         }
+        // ,
+        // selected () {
+        //     if (!this.active.length) return undefined;
+        //     const id = this.active[0];
+        //     return this.contacts.find(contact => contact.properties.id === id);
+        // }
     },
     watch:{
         contacts(val){
             val.forEach( i => {
                 this.$set(this.expanded, i.properties.id, false);
             });
+
+            this.displayContacts = _.sortBy(this.contacts, ['properties.properties.name']);
         }
     },
     mounted() {
@@ -201,40 +219,40 @@ export default {
             console.log('CONTACT LIST --- ', contact);
             return contact.properties.properties.type == this.filterType;
         },
-        getChildren (type) {
-            const contacts = []
-
-            for (const contact of this.contacts) {
-                if (contact.properties.properties.type !== type) continue
-                contacts.push({
-                ...contact,
-                id: contact.properties.id,
-                name: this.getName(contact.properties.properties.name)
-                })
-            }
-
-            return contacts.sort((a, b) => {
-                return a.properties.properties.name > b.properties.properties.name ? 1 : -1
-            })
+        select(contact){
+          this.selected = contact;
         },
-        getOtherChildren(others){
-            const contacts = []
-
-            for (const contact of others) {
-                contacts.push({
-                ...contact,
-                name: this.getName(contact.properties.properties.name)
-                })
-            }
-
-            return contacts.sort((a, b) => {
-                return a.properties.properties.name > b.properties.properties.name ? 1 : -1
-            })
-        },
-
         getName (name) {
             return `${name.charAt(0).toUpperCase()}${name.slice(1)}`
+        },
+        getSameInitials(letter){
+          const contacts = [];
+          for (const contact of this.contacts) {
+              if (contact.properties.properties.name.charAt(0).toLowerCase() !== letter) continue
+              contacts.push({
+              ...contact,
+              id: contact.properties.id,
+              name: this.getName(contact.properties.properties.name)
+              })
+          }
+
+          return contacts.sort((a, b) => {
+              return a.properties.properties.name > b.properties.properties.name ? 1 : -1
+          })
+        },
+        getOtherInitial(others){
+          const contacts = [];
+          for (const contact of others){
+            contacts.push({
+              ...contact,
+              name: this.getName(contact.properties.properties.name)
+            })
+          }
+          return contacts.sort((a, b) => {
+              return a.properties.properties.name > b.properties.properties.name ? 1 : -1
+          })
         }
+
     }
 
 };

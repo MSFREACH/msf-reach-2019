@@ -218,18 +218,7 @@ export default {
     @import '@/assets/css/event.scss';
     @import '@/assets/css/display.scss';
 
-    .result-list.v-list{
-        width: 100%;
-        border-radius: 5px;
-        margin: 5px;
-        box-sizing: border-box;
-        border: 2px transparent solid;
-        padding: 0;
-    }
-    .result-list.v-list:hover{
-        border: 2px #0374C7 solid;
-        background: #fff;
-    }
+
     .eventListPanel{
         background: $bg-milk-grey;
         .v-input__slot{
