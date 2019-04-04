@@ -6,18 +6,18 @@ export const SEVERITY = [
   {
     color: 'green',
     value: 1,
-    text: 'low'
+    text: 'low',
   },
   {
     color: 'orange',
     value: 2,
-    text: 'medium'
+    text: 'medium',
   },
   {
     color: 'red',
     value: 3,
-    text: 'high'
-  }
+    text: 'high',
+  },
 ];
 export const SEVERITY_LABELS = ['low', 'medium', 'high'];
 
@@ -34,8 +34,8 @@ export const EVENT_TYPES = [
       { value: 'measles', text: 'Measles' },
       { value: 'meningococcal_meningitis', text: 'Meningococcal Meningitis' },
       { value: 'hemorrhagic_fever', text: 'Hemorrhagic fever' },
-      { value: 'yellow_fever', text: 'Yellow Fever' }
-    ]
+      { value: 'yellow_fever', text: 'Yellow Fever' },
+    ],
   },
 
   { value: 'displacement', text: 'Displacement' },
@@ -50,17 +50,17 @@ export const EVENT_TYPES = [
       { value: 'flood', text: 'Flood' },
       { value: 'tsunami', text: 'Tsunami' },
       { value: 'drought', text: 'Drought' },
-      { value: 'landslide', text: 'Landslide' }
-    ]
+      { value: 'landslide', text: 'Landslide' },
+    ],
   },
   { value: 'search_and_rescue', text: 'Search and Rescue' },
-  { value: 'other', text: 'Other' }
+  { value: 'other', text: 'Other' },
 ];
 
 export const DEFAULT_EVENT_TYPE = {
   type: null,
   subtype: null,
-  specify: null
+  specify: null,
 };
 export const DISEASE_OUTBREAK_TYPES = [
   { value: 'cholera', text: 'Cholera' },
@@ -71,7 +71,7 @@ export const DISEASE_OUTBREAK_TYPES = [
   { value: 'meningococcal_meningitis', text: 'Meningococcal Meningitis' },
   { value: 'hemorrhagic_fever', text: 'Hemorrhagic fever' },
   { value: 'yellow_fever', text: 'Yellow Fever' },
-  { value: 'other', text: 'Other' }
+  { value: 'other', text: 'Other' },
 ];
 
 export const NATURAL_DISASTER_TYPES = [
@@ -82,25 +82,25 @@ export const NATURAL_DISASTER_TYPES = [
   { value: 'tsunami', text: 'Tsunami' },
   { value: 'drought', text: 'Drought' },
   { value: 'landslide', text: 'Landslide' },
-  { value: 'other', text: 'Other' }
+  { value: 'other', text: 'Other' },
 ];
 
 export const DEFAULT_EVENT_AREA = {
   severity: {
     scale: null,
-    description: null
-  }
+    description: null,
+  },
 };
 
 export const DEFAULT_EVENT_CONTACT = {
   local: {
     name: null,
-    position: null
+    position: null,
   },
   operator: {
     name: null,
-    position: null
-  }
+    position: null,
+  },
 };
 
 export const EVENT_NOTIFICATION_CATEGORIES = [
@@ -109,22 +109,26 @@ export const EVENT_NOTIFICATION_CATEGORIES = [
   { text: 'CONTACTS', value: 'CONTACTS' },
   { text: 'SECURITY', value: 'SECURITY' },
   { text: 'MAP', value: 'MAP' },
-  { text: 'EXPLO findings', value: 'EXPLO_FINDINGS' }
+  { text: 'EXPLO findings', value: 'EXPLO_FINDINGS' },
 ];
 
 export const EVENT_NOTIFICATION_HEADERS = [
-  { text: 'Operator', align: 'left', sortable: false, value: 'username' },
+  {
+    text: 'Operator', align: 'left', sortable: false, value: 'username',
+  },
   { text: 'UPDATED', value: 'updated_at', sortable: false },
   { text: 'Category', value: 'category', sortable: false },
   { text: 'Notification', value: 'description', sortable: false },
-  { text: 'Files', value: 'files.length', sortable: false }
+  { text: 'Files', value: 'files.length', sortable: false },
 ];
 
 export const DEFAULT_EXT_CAPACITY_HEADERS = [
   { text: 'Organization', align: 'left', value: 'name' },
   { text: 'Capacity', align: 'left', value: 'type' },
   { text: 'Date of Arrival', align: 'left', value: 'arrival_date' },
-  { text: 'Deployment', align: 'left', sortable: false, value: 'deployment' }
+  {
+    text: 'Deployment', align: 'left', sortable: false, value: 'deployment',
+  },
 ];
 
 export const EVENT_STATUSES = [
@@ -132,7 +136,7 @@ export const EVENT_STATUSES = [
   { value: 'exploration', text: 'Exploration', icon: 'accessibility_new' },
   { value: 'ongoing', text: 'Ongoing Project', icon: 'find_replace' },
   { value: 'intervention', text: 'Emergency Response', icon: 'find_replace' },
-  { value: 'complete', text: 'Complete', icon: 'calendar_view_day' }
+  { value: 'complete', text: 'Complete', icon: 'calendar_view_day' },
 ];
 
 export const MSF_OPERATIONAL_CENTERS = ['OCA', 'OCBA', 'OCG', 'OCB', 'OCP'];
@@ -157,7 +161,7 @@ export const MSF_KEY_FIGURES = [
   'dengue_cases',
   'NFI_kits_distributed',
   'shelter_kits_distributed',
-  'others'
+  'others',
 ];
 
 export const MSF_RESOURCE_CATEGORIES = [
@@ -167,19 +171,19 @@ export const MSF_RESOURCE_CATEGORIES = [
   'watsan',
   'admin_HR_fin',
   'mental_health',
-  'others'
+  'others',
 ];
 
 export const COUNTRY_PARAMS = {
   defaultCountry: 'xx',
-  preferredCountries: ['xx', 'us', 'gb', 'id', 'au', 'hk']
+  preferredCountries: ['xx', 'us', 'gb', 'id', 'au', 'hk'],
 };
 
 export const DEFAULT_CONTACT_TYPE = 'Current MSF Staff';
 
 export const CONTACT_BOOL = {
   internal: 'Current MSF Staff',
-  external: 'others'
+  external: 'others',
 };
 
 export const CONTACT_TYPES = [
@@ -192,13 +196,13 @@ export const CONTACT_TYPES = [
   { text: 'Other NGO', value: 'Other NGO' },
   { text: 'Academic', value: 'Academic' },
   { text: 'Private Medical Practice', value: 'Private Medical Practice' },
-  { text: 'Other', value: 'Other' }
+  { text: 'Other', value: 'Other' },
 ];
 
 export const CONTACT_MSF_EMPLOY_STATUS = [
   'Field worker (national)',
   'Field worker (international)',
-  'HQ staff (OC/PS)'
+  'HQ staff (OC/PS)',
 ];
 export const CONTACT_OCS = [
   'OCA',
@@ -207,7 +211,7 @@ export const CONTACT_OCS = [
   'OCG',
   'OCP',
   'Inter-section',
-  'IO'
+  'IO',
 ];
 
 export const REPORT_STATUSES = ['confirmed', 'unconfirmed', 'ignored'];
@@ -218,118 +222,118 @@ export const REPORT_TYPES = ['ACCESS', 'NEEDS', 'CONTACTS', 'SECURITY'];
 export const TWITTER_LANGUAGE_OPTIONS = [
   {
     code: 'fr',
-    name: 'French'
+    name: 'French',
   },
   {
     code: 'en',
-    name: 'English'
+    name: 'English',
   },
   {
     code: 'ar',
-    name: 'Arabic'
+    name: 'Arabic',
   },
   {
     code: 'ja',
-    name: 'Japanese'
+    name: 'Japanese',
   },
   {
     code: 'es',
-    name: 'Spanish'
+    name: 'Spanish',
   },
   {
     code: 'de',
-    name: 'German'
+    name: 'German',
   },
   {
     code: 'it',
-    name: 'Italian'
+    name: 'Italian',
   },
   {
     code: 'id',
-    name: 'Indonesian'
+    name: 'Indonesian',
   },
   {
     code: 'pt',
-    name: 'Portuguese'
+    name: 'Portuguese',
   },
   {
     code: 'ko',
-    name: 'Korean'
+    name: 'Korean',
   },
   {
     code: 'tr',
-    name: 'Turkish'
+    name: 'Turkish',
   },
   {
     code: 'ru',
-    name: 'Russian'
+    name: 'Russian',
   },
   {
     code: 'nl',
-    name: 'Dutch'
+    name: 'Dutch',
   },
   {
     code: 'fil',
-    name: 'Filipino'
+    name: 'Filipino',
   },
   {
     code: 'msa',
-    name: 'Malay'
+    name: 'Malay',
   },
   {
     code: 'zh-tw',
-    name: 'Traditional Chinese'
+    name: 'Traditional Chinese',
   },
   {
     code: 'zh-cn',
-    name: 'Simplified Chinese'
+    name: 'Simplified Chinese',
   },
   {
     code: 'hi',
-    name: 'Hindi'
+    name: 'Hindi',
   },
   {
     code: 'no',
-    name: 'Norwegian'
+    name: 'Norwegian',
   },
   {
     code: 'sv',
-    name: 'Swedish'
+    name: 'Swedish',
   },
   {
     code: 'fi',
-    name: 'Finnish'
+    name: 'Finnish',
   },
   {
     code: 'da',
-    name: 'Danish'
+    name: 'Danish',
   },
   {
     code: 'pl',
-    name: 'Polish'
+    name: 'Polish',
   },
   {
     code: 'hu',
-    name: 'Hungarian'
+    name: 'Hungarian',
   },
   {
     code: 'fa',
-    name: 'Farsi'
+    name: 'Farsi',
   },
   {
     code: 'he',
-    name: 'Hebrew'
+    name: 'Hebrew',
   },
   {
     code: 'ur',
-    name: 'Urdu'
+    name: 'Urdu',
   },
   {
     code: 'th',
-    name: 'Thai'
+    name: 'Thai',
   },
   {
     code: 'en-gb',
-    name: 'English UK'
-  }
+    name: 'English UK',
+  },
 ];

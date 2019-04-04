@@ -11,12 +11,14 @@
       />
       <markdown-panel v-if="showMarkdown && dialog" />
       <v-dialog v-model="dialog" :dark="editIndex != -1" max-width="880px">
-        <v-btn slot="activator" class="mb-2" small fab flat
-          ><v-icon>add</v-icon></v-btn
-        >
+        <v-btn slot="activator" class="mb-2" small fab flat>
+          <v-icon>add</v-icon>
+        </v-btn>
         <v-card :class="editIndex != -1 ? 'editing' : 'create-new'">
           <v-flex right>
-            <v-icon class="action-link" @click="close">close</v-icon>
+            <v-icon class="action-link" @click="close">
+              close
+            </v-icon>
           </v-flex>
           <v-card-text>
             <v-container grid-list-md>
@@ -46,10 +48,11 @@
                   small
                   flat
                   @click="showMarkdown = !showMarkdown"
-                  ><v-icon>short_text</v-icon> markdown syntax guide</v-btn
                 >
+                  <v-icon>short_text</v-icon> markdown syntax guide
+                </v-btn>
 
-                <hr class="row-divider" />
+                <hr class="row-divider">
                 <v-card class="file-attachment" light>
                   <form enctype="multipart/form-data">
                     <input
@@ -60,7 +63,7 @@
                       accept="*/*"
                       multiple
                       @change="onFilePicked"
-                    />
+                    >
                     <v-icon class="file-icon" @click="pickFile">
                       attach_file
                     </v-icon>
@@ -75,7 +78,7 @@
                     close
                   </v-icon>
                   <object :data="item" width="100%" height="100%">
-                    <embed :src="item" width="100%" height="100%" />
+                    <embed :src="item" width="100%" height="100%">
                   </object>
                 </v-card>
               </v-layout>
@@ -83,7 +86,7 @@
           </v-card-text>
           <v-card-actions>
             <div v-if="editedSitrep.created">
-              <label> Operator </label> {{ editedSitrep.username }} <br />
+              <label> Operator </label> {{ editedSitrep.username }} <br>
               <label> Updated </label> {{ editedSitrep.created | relativeTime }}
             </div>
 
@@ -95,9 +98,9 @@
               indeterminate
             />
             <v-switch v-if="editIndex != -1" label="save" @click="submit" />
-            <v-btn v-else flat dark color="grey lighten-1" @click="submit"
-              >add</v-btn
-            >
+            <v-btn v-else flat dark color="grey lighten-1" @click="submit">
+              add
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -118,18 +121,19 @@
       <v-expansion-panel expand focusable>
         <v-expansion-panel-content v-for="(item, i) in displaySITREPs" :key="i">
           <v-layout slot="header" row wrap>
-            <v-flex xs3 class="calendar-date">{{
-              item.created | dayMonth
-            }}</v-flex>
-            <v-flex xs6
-              ><span v-if="!item.description"> -- </span
-              >{{ item.description | snippetNoMarkdown }}</v-flex
-            >
-            <v-flex xs3
-              ><span class="file-attachment count">{{
+            <v-flex xs3 class="calendar-date">
+              {{
+                item.created | dayMonth
+              }}
+            </v-flex>
+            <v-flex xs6>
+              <span v-if="!item.description"> -- </span>{{ item.description | snippetNoMarkdown }}
+            </v-flex>
+            <v-flex xs3>
+              <span class="file-attachment count">{{
                 item.files.length
-              }}</span></v-flex
-            >
+              }}</span>
+            </v-flex>
           </v-layout>
           <v-layout class="innerText" row wrap>
             <v-flex class="pa-3" xs12 v-html="mdRender(item.description)" />
@@ -146,7 +150,7 @@
                   :src="file.url"
                   width="100%"
                   height="100%"
-                />
+                >
                 <object
                   v-else
                   :data="file.url"
@@ -154,14 +158,16 @@
                   width="100%"
                   height="100%"
                 >
-                  <embed :src="file.url" width="100%" height="100%" />
+                  <embed :src="file.url" width="100%" height="100%">
                 </object>
               </v-card>
             </v-flex>
             <v-flex xs2>
               <v-card-actions class="text-xs-right list-actions">
                 <v-switch label="edit" @click="editSitrep(item)" />
-                <v-icon small @click="deleteSitrep(item)"> delete </v-icon>
+                <v-icon small @click="deleteSitrep(item)">
+                  delete
+                </v-icon>
               </v-card-actions>
             </v-flex>
 
@@ -204,7 +210,7 @@ import {
   DELETE_SITREP,
   FETCH_UPLOAD_URL,
   PUT_SIGNED_REQUEST,
-  FETCH_DOWNLOAD_URL
+  FETCH_DOWNLOAD_URL,
 } from '@/store/actions.type';
 import { UPDATE_SITREP_SIGNEDURLS } from '@/store/mutations.type';
 import { DEFAULT_SITREP_FIELDS } from '@/common/form-fields';
@@ -214,7 +220,7 @@ import MarkdownPanel from '@/views/util/MarkdownPanel.vue';
 export default {
   name: 'REventSitrep',
   components: {
-    MarkdownPanel
+    MarkdownPanel,
   },
   filters: {},
   data() {
@@ -231,7 +237,7 @@ export default {
       date1: new Date().toISOString().substr(0, 10),
       arrayEvents: null,
       search: '',
-      request: REQUEST_SITREP_STATUSES
+      request: REQUEST_SITREP_STATUSES,
     };
   },
   watch: {
@@ -245,11 +251,11 @@ export default {
       }
     },
     sitreps(val) {
-      var vm = this;
+      const vm = this;
       val.map((item, index) => {
-        var signedUrls = [];
-        item.files.forEach(function(file) {
-          vm.$store.dispatch(FETCH_DOWNLOAD_URL, file).then(data => {
+        const signedUrls = [];
+        item.files.forEach((file) => {
+          vm.$store.dispatch(FETCH_DOWNLOAD_URL, file).then((data) => {
             signedUrls.push(data);
             item.signedFiles = signedUrls;
           });
@@ -257,12 +263,10 @@ export default {
         vm.$store.commit(UPDATE_SITREP_SIGNEDURLS, { index, signedUrls });
       });
 
-      this.arrayEvents = this.sitreps.map(item => {
-        return item.created.substr(0, 10);
-      });
+      this.arrayEvents = this.sitreps.map(item => item.created.substr(0, 10));
 
       this.allowedDates();
-    }
+    },
   },
   mounted() {
     this.fetchSitreps();
@@ -274,7 +278,7 @@ export default {
     },
     fetchSitreps() {
       this.$store.dispatch(FETCH_SITREPS, {
-        eventId: parseInt(this.currentEventId)
+        eventId: parseInt(this.currentEventId),
       });
     },
     mdRender(value) {
@@ -284,9 +288,7 @@ export default {
       this.dialog = true;
       this.editIndex = _.findIndex(this.sitreps, item);
       this.editedSitrep = _.clone(item);
-      this.previewFileUrls = item.signedFiles.map(item => {
-        return item.url;
-      });
+      this.previewFileUrls = item.signedFiles.map(item => item.url);
     },
     deleteSitrep(item) {
       const itemIndex = _.findIndex(this.sitreps, item);
@@ -298,27 +300,27 @@ export default {
     },
     onFilePicked(e) {
       const files = e.target.files;
-      for (var f = 0; f < files.length; f++) {
+      for (let f = 0; f < files.length; f++) {
         const fr = new FileReader();
         fr.readAsDataURL(files[f]);
         fr.addEventListener('load', () => {
-          var fileUrl = fr.result;
+          const fileUrl = fr.result;
           this.previewFileUrls.push(fileUrl);
         });
       }
     },
     processFiles(files) {
-      var vm = this;
-      Object.keys(files).forEach(function(key) {
-        var file = files[key];
-        var fileName = file.name;
-        var params = {
-          key: 'event/' + vm.currentEventId + '/sitreps',
-          filename: fileName
+      const vm = this;
+      Object.keys(files).forEach((key) => {
+        const file = files[key];
+        const fileName = file.name;
+        const params = {
+          key: `event/${vm.currentEventId}/sitreps`,
+          filename: fileName,
         };
-        vm.$store.dispatch(FETCH_UPLOAD_URL, params).then(payload => {
+        vm.$store.dispatch(FETCH_UPLOAD_URL, params).then((payload) => {
           if (payload) {
-            var fileLink = payload.url;
+            const fileLink = payload.url;
             vm.signedFileUrls.push(fileLink);
             vm.uploadFile(file, key);
           }
@@ -326,12 +328,12 @@ export default {
       });
     },
     uploadFile(file, index) {
-      this.$store.dispatch(PUT_SIGNED_REQUEST, file).then(data => {
+      this.$store.dispatch(PUT_SIGNED_REQUEST, file).then((data) => {
         if (index == this.signedFileUrls.length - 1) this.save();
       });
     },
     submit() {
-      var files = this.$refs.myUpload.files;
+      const files = this.$refs.myUpload.files;
       this.request.inProgress = true;
       if (files.length > 0) {
         this.processFiles(files);
@@ -340,11 +342,11 @@ export default {
       }
     },
     save() {
-      var timeNow = new Date();
-      var isEdit = this.editIndex > -1 && this.editedSitrep.id;
-      var action = isEdit ? EDIT_SITREP : CREATE_SITREP;
-      var params = _.extend(this.editedSitrep, {
-        username: this.currentUser.username
+      const timeNow = new Date();
+      const isEdit = this.editIndex > -1 && this.editedSitrep.id;
+      const action = isEdit ? EDIT_SITREP : CREATE_SITREP;
+      const params = _.extend(this.editedSitrep, {
+        username: this.currentUser.username,
       });
       params.files = this.signedFileUrls;
 
@@ -359,7 +361,7 @@ export default {
         delete params.updated;
       }
 
-      this.$store.dispatch(action, params).then(payload => {
+      this.$store.dispatch(action, params).then((payload) => {
         if (payload.status == 200) {
           this.close();
         }
@@ -381,7 +383,7 @@ export default {
       if (this.arrayEvents && this.arrayEvents.indexOf(val) !== -1) {
         return val;
       }
-    }
+    },
   },
   computed: {
     ...mapGetters([
@@ -389,15 +391,15 @@ export default {
       'currentUser',
       'currentEventId',
       'sitreps',
-      'fetchSitrepError'
+      'fetchSitrepError',
     ]),
     formTitle() {
       return this.editIndex == -1 ? 'Create new' : 'Edit SITREP';
     },
     displaySITREPs() {
       return this.sitreps;
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss">

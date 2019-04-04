@@ -15,12 +15,10 @@
             v-model="editing"
             :label="editing ? `save` : `edit`"
           />
-          <v-btn v-else color="warningRed" flat small round outline
-            >reactivate</v-btn
-          >
-          <span v-if="editing" class="cancel" @click="cancelEdit()"
-            ><v-icon>close</v-icon></span
-          >
+          <v-btn v-else color="warningRed" flat small round outline>
+            reactivate
+          </v-btn>
+          <span v-if="editing" class="cancel" @click="cancelEdit()"><v-icon>close</v-icon></span>
         </div>
         <v-layout v-if="!editing" row wrap>
           <div class="top-level primary-text">
@@ -78,13 +76,12 @@
                         eventMetadata.severity_measures[index].scale - 1
                       ].text + 'Severity sub-tag'
                     "
-                    >{{
-                      allSeverity[
-                        eventMetadata.severity_measures[index].scale - 1
-                      ].text
-                    }}
-                    severity</span
-                  >
+                  >{{
+                    allSeverity[
+                      eventMetadata.severity_measures[index].scale - 1
+                    ].text
+                  }}
+                    severity</span>
                 </v-flex>
                 <div
                   v-if="
@@ -97,7 +94,9 @@
                 </div>
               </v-layout>
             </div>
-            <v-flex v-else> {{ eventMetadata.country }} </v-flex>
+            <v-flex v-else>
+              {{ eventMetadata.country }}
+            </v-flex>
 
             <div v-if="!eventMetadata.severity_measures" class="sub-tag">
               <span
@@ -106,18 +105,16 @@
                   allSeverity[eventMetadata.severity_scale - 1].text +
                     'Severity'
                 "
-                >{{
-                  allSeverity[eventMetadata.severity_scale - 1].text
-                }}
-                severity</span
-              >
-              <span class="notes"
-                ><br />
+              >{{
+                allSeverity[eventMetadata.severity_scale - 1].text
+              }}
+                severity</span>
+              <span class="notes"><br>
                 {{ eventMetadata.severity }}
               </span>
             </div>
           </div>
-          <hr class="row-divider" />
+          <hr class="row-divider">
 
           <div class="one-third">
             <label>OPEN DATE</label>
@@ -140,12 +137,12 @@
             </div>
           </div>
 
-          <hr class="row-divider" />
+          <hr class="row-divider">
           <div class="full-width">
             <label>Description</label>
             {{ eventMetadata.description }}
           </div>
-          <hr class="row-divider" />
+          <hr class="row-divider">
 
           <sharepoint-link
             v-if="eventMetadata.sharepoint_link"
@@ -164,7 +161,7 @@
                 class="full-width"
                 type="text"
                 placeholder="Event name"
-              />
+              >
             </div>
 
             <div class="quarter-width">
@@ -217,9 +214,7 @@
                 placeholder="specify"
               />
             </div>
-            <a v-if="!newType" class="form-actions" @click="addType()"
-              >Add type</a
-            >
+            <a v-if="!newType" class="form-actions" @click="addType()">Add type</a>
             <div v-else>
               <v-flex class="row-actions" xs12>
                 <a @click="submitType()">confirm</a>
@@ -273,8 +268,7 @@
                     "
                   >
                     {{ severityLabels[inEditArea.severity.scale - 1] }}
-                    severity</span
-                  >
+                    severity</span>
                 </v-flex>
                 <v-text-field
                   v-model="inEditArea.severity.description"
@@ -315,15 +309,13 @@
                         eventMetadata.severity_measures[index].scale - 1
                       ].text + 'Severity'
                     "
-                    >{{
-                      allSeverity[
-                        eventMetadata.severity_measures[index].scale - 1
-                      ].text
-                    }}
-                    severity</span
-                  >
-                  <span class="notes"
-                    ><br />
+                  >{{
+                    allSeverity[
+                      eventMetadata.severity_measures[index].scale - 1
+                    ].text
+                  }}
+                    severity</span>
+                  <span class="notes"><br>
                     {{ eventMetadata.severity_measures[index].description }}
                   </span>
                 </span>
@@ -338,18 +330,15 @@
                       index
                     )
                   "
-                  >edit</a
-                >
+                >edit</a>
                 <a @click="deleteArea(index)">delete</a>
               </span>
             </div>
 
-            <a v-if="!inEditArea" class="form-actions" @click="addArea()"
-              >Add area</a
-            >
+            <a v-if="!inEditArea" class="form-actions" @click="addArea()">Add area</a>
             <!-- <new-map-entry></new-map-entry> -->
           </div>
-          <hr class="row-divider" />
+          <hr class="row-divider">
           <div class="not-editable one-third">
             <label> OPEN DATE </label>
             {{ eventCreatedAt | fullDate }}
@@ -435,7 +424,7 @@
               placeholder="Position"
             />
           </div>
-          <hr class="row-divider" />
+          <hr class="row-divider">
           <v-layout row wrap>
             <v-flex xs6 style="display: inline-block;">
               <label> Description </label>
@@ -451,8 +440,9 @@
                 small
                 flat
                 @click="showMarkdown = !showMarkdown"
-                ><v-icon>short_text</v-icon> markdown syntax guide</v-btn
               >
+                <v-icon>short_text</v-icon> markdown syntax guide
+              </v-btn>
             </v-flex>
             <v-flex xs6 style="display: inline-block;">
               <label>PREVIEW</label>
@@ -462,7 +452,7 @@
               />
             </v-flex>
           </v-layout>
-          <hr class="row-divider" />
+          <hr class="row-divider">
           <v-text-field
             v-model="eventMetadata.sharepoint_link"
             clearable
@@ -485,9 +475,9 @@
               <map-input ref="eventMapEntry" :coordinates="eventCoordinates" />
               <v-card-actions>
                 <v-spacer />
-                <v-btn color="primary" flat @click.native="saveArea()"
-                  >Save Area</v-btn
-                >
+                <v-btn color="primary" flat @click.native="saveArea()">
+                  Save Area
+                </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -515,7 +505,7 @@ import {
   DEFAULT_EVENT_AREA,
   EVENT_STATUSES,
   SEVERITY,
-  SEVERITY_LABELS
+  SEVERITY_LABELS,
 } from '@/common/common';
 import MapAnnotation from '@/views/Map/MapAnnotation.vue';
 import MapInput from '@/views/Map/MapInput.vue';
@@ -529,12 +519,12 @@ import MarkdownPanel from '@/views/util/MarkdownPanel.vue';
 export default {
   name: 'REventGeneral',
   components: {
-    //TODO: MAP goes here
+    // TODO: MAP goes here
     MapAnnotation,
     VueGoogleAutocomplete,
     SharepointLink,
     MarkdownPanel,
-    MapInput
+    MapInput,
   },
   data() {
     return {
@@ -545,11 +535,11 @@ export default {
       allEventTypes: EVENT_TYPES,
       subTypes: {
         disease_outbreak: DISEASE_OUTBREAK_TYPES,
-        natural_disaster: NATURAL_DISASTER_TYPES
+        natural_disaster: NATURAL_DISASTER_TYPES,
       },
       editable: {
         typeIndex: null,
-        areaIndex: null
+        areaIndex: null,
       },
       newType: null,
       defaultType: DEFAULT_EVENT_TYPE,
@@ -561,21 +551,21 @@ export default {
         isLoading: false,
         items: [],
         model: null,
-        search: null
+        search: null,
       },
       addressAutocomplete: {},
       statuses: EVENT_STATUSES,
       _beforeEditStatus: null,
       showStepper: false,
       dateTimeConfig: {
-        format: DATETIME_DISPLAY_FORMAT
+        format: DATETIME_DISPLAY_FORMAT,
       },
       eventDate: null,
       eventTime: null,
       dateSelected: false,
       timeSelected: false,
       selectedTimezone: null,
-      timeZoneAbbr: null
+      timeZoneAbbr: null,
     };
   },
   computed: {
@@ -585,37 +575,36 @@ export default {
       'eventCreatedAt',
       'eventProperties',
       'eventCoordinates',
-      'currentUser'
+      'currentUser',
     ]),
     subTypeSelect() {
       return (
-        this.newType.type == 'disease_outbreak' ||
-        this.newType.type == 'natural_disaster'
+        this.newType.type == 'disease_outbreak'
+        || this.newType.type == 'natural_disaster'
       );
     },
     timezones() {
       return moment.tz.names();
     },
     timezoneOffSet() {
-      var m = moment.tz(
+      const m = moment.tz(
         this.eventMetadata.event_local_time,
-        this.eventMetadata.event_local_timezone
+        this.eventMetadata.event_local_timezone,
       );
-      var mm = m.format();
-      var testString = mm.substring(19, 22);
+      const mm = m.format();
+      const testString = mm.substring(19, 22);
       return testString;
     },
     mapAddress() {
-      var areas = this.eventMetadata.areas;
+      const areas = this.eventMetadata.areas;
       if (areas && areas.length > 0) {
         return areas[0];
-      } else {
-        return { country: this.eventMetadata.country };
       }
+      return { country: this.eventMetadata.country };
     },
     allowEdit() {
       return this.eventMetadata.event_status != 'complete';
-    }
+    },
   },
   watch: {
     editing(val) {
@@ -634,32 +623,32 @@ export default {
     },
     eventMetadata(newVal) {
       if (!newVal.areas) {
-        var mockArea = { country: newVal.metadata.country, region: '' };
+        const mockArea = { country: newVal.metadata.country, region: '' };
         this.eventMetadata.areas = [mockArea];
       }
       if (!newVal.severity_measures) {
-        var mockSeverity = {
+        const mockSeverity = {
           scale: newVal.severity_scale,
-          description: newVal.severity
+          description: newVal.severity,
         };
         this.eventMetadata.severity_measures = [mockSeverity];
       }
       this.showStepper = false;
       if (newVal.event_local_time) {
-        var localDT = this.eventMetadata.event_local_time;
+        const localDT = this.eventMetadata.event_local_time;
         this.eventDate = moment(localDT).format('YYYY-MM-DD');
         this.eventTime = moment(localDT).format('HH:mm');
       }
     },
     selectedTimezone(val) {
-      var zoneObj = moment.tz.zone(val);
+      const zoneObj = moment.tz.zone(val);
       this.timeZoneAbbr = zoneObj.abbr(new Date());
-    }
+    },
   },
 
   mounted() {
     if (this.eventMetadata && this.eventMetadata.event_local_time) {
-      var localDT = this.eventMetadata.event_local_time;
+      const localDT = this.eventMetadata.event_local_time;
       this.eventDate = moment(localDT).format('YYYY-MM-DD');
       this.eventTime = moment(localDT).format('HH:mm');
     }
@@ -681,7 +670,7 @@ export default {
       this._beforeEditingCache = null;
     },
     lintDateTime() {
-      var tmpDateTime = new Date(this.eventDate + ' ' + this.eventTime);
+      const tmpDateTime = new Date(`${this.eventDate} ${this.eventTime}`);
 
       this.eventMetadata.event_local_time = tmpDateTime;
       this.eventMetadata.event_local_timezone = this.selectedTimezone;
@@ -691,11 +680,11 @@ export default {
       // check if status changed
       if (this.eventMetadata.event_status == this._beforeEditStatus) return;
       this.showStepper = true;
-      var timestamp = new Date();
-      var ISOTime = timestamp.toISOString();
+      const timestamp = new Date();
+      const ISOTime = timestamp.toISOString();
       this.eventMetadata.status_updates.push({
         type: this.eventMetadata.event_status,
-        timestamp: ISOTime
+        timestamp: ISOTime,
       });
     },
     save() {
@@ -705,22 +694,21 @@ export default {
       this.eventMetadata.types = _.compact(this.eventMetadata.types);
       this.eventMetadata.incharge_operator = this.currentUser.username;
       this.inProgress = true;
-      var payload = {
+      const payload = {
         type: this.eventMetadata.types.join(','),
         status: 'active',
-        metadata: this.eventMetadata
+        metadata: this.eventMetadata,
       };
-      var vm = this;
+      const vm = this;
       console.log(payload);
-      this.$store.dispatch(EDIT_EVENT, payload).then(payload => {
-        var eventID =
-          payload.data.result.objects.output.geometries[0].properties.id;
+      this.$store.dispatch(EDIT_EVENT, payload).then((payload) => {
+        const eventID = payload.data.result.objects.output.geometries[0].properties.id;
         this.inProgress = false;
         this.$parent.statusChanged = this.showStepper;
         // TODO: CHECK if router actually pushed, store state didn't set to new event
         this.$router.push({
           name: 'event-general',
-          params: { slug: eventID }
+          params: { slug: eventID },
         });
       });
     },
@@ -732,7 +720,7 @@ export default {
     },
     submitType() {
       // strip value & append to this.eventTypes
-      var tmp = this.newType;
+      const tmp = this.newType;
       if (this.subTypeSelect) {
         tmp.subtype == 'other'
           ? this.eventTypes.push(tmp.specify)
@@ -743,7 +731,7 @@ export default {
       this.clearType();
     },
     clearType() {
-      for (var fields in this.newType) delete this.newType[fields];
+      for (const fields in this.newType) delete this.newType[fields];
       this.newType = null;
     },
     deleteType(index) {
@@ -753,20 +741,19 @@ export default {
       this.inEditArea = this.defaultArea;
     },
     editArea(area, severity, index) {
-      var tmpAddress = area.region
+      const tmpAddress = area.region
         ? `${area.region}, ${area.country_code}`
         : area.country;
-      var tmpArea = { address: tmpAddress, severity };
+      const tmpArea = { address: tmpAddress, severity };
 
       this.inEditArea = tmpArea;
       this.inEditAreaIndex = index;
     },
     submitArea() {
-      var tmp = this.inEditArea;
+      const tmp = this.inEditArea;
       if (tmp.address) {
         // check if existing area obj
-        this.eventMetadata.severity_measures[this.inEditAreaIndex] =
-          tmp.severity;
+        this.eventMetadata.severity_measures[this.inEditAreaIndex] = tmp.severity;
         this.inEditAreaIndex = null;
       } else {
         this.eventMetadata.severity_measures.push(tmp.severity);
@@ -775,7 +762,7 @@ export default {
       this.clearArea();
     },
     clearArea() {
-      for (var fields in this.inEditArea) delete this.inEditArea[fields];
+      for (const fields in this.inEditArea) delete this.inEditArea[fields];
       this.inEditArea = null;
       this.addressAutocomplete = null;
     },
@@ -786,10 +773,10 @@ export default {
      * @param {Object} placeResultData PlaceResult object
      * @param {String} id Input container ID
      */
-    getAddressData: function(addressData, placeResultData, id) {
+    getAddressData(addressData, placeResultData, id) {
       this.addressAutocomplete = addressData;
-    }
-  }
+    },
+  },
 };
 </script>
 

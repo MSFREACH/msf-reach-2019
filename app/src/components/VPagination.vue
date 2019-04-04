@@ -19,12 +19,12 @@ export default {
   props: {
     pages: {
       type: Array,
-      required: true
+      required: true,
     },
     currentPage: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
     changePage(goToPage) {
@@ -34,9 +34,9 @@ export default {
     paginationClass(page) {
       return {
         'page-item': true,
-        active: this.currentPage === page
+        active: this.currentPage === page,
       };
-    }
-  }
+    },
+  },
 };
 </script>

@@ -18,8 +18,7 @@
             color="accent"
             left
             small
-            ><span slot="badge"
-          /></v-badge>
+          ><span slot="badge" /></v-badge>
           {{ item.name }}
         </span>
       </router-link>
@@ -52,9 +51,9 @@ import REventSitrep from '@/views/Event/SITREP.vue';
 import SharepointLink from '@/views/util/Sharepoint.vue';
 import StatusStepper from './StatusStepper.vue';
 
-/*eslint no-unused-vars: off*/
-/*eslint no-debugger: off*/
-/*eslint no-console: off*/
+/* eslint no-unused-vars: off */
+/* eslint no-debugger: off */
+/* eslint no-console: off */
 
 export default {
   name: 'REvent',
@@ -66,16 +65,16 @@ export default {
     REventFigures,
     REventResources,
     SharepointLink,
-    StatusStepper
+    StatusStepper,
   },
   props: {
     slug: {
-      type: String
+      type: String,
     },
     firstTime: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -83,11 +82,11 @@ export default {
       detailTabs: EVENT_DETAIL_NAVIGATIONS,
       mini: true,
       right: null,
-      statusChanged: false
+      statusChanged: false,
     };
   },
   beforeRouteEnter(to, from, next) {
-    Promise.all([store.dispatch(FETCH_EVENT, to.params.slug)]).then(data => {
+    Promise.all([store.dispatch(FETCH_EVENT, to.params.slug)]).then((data) => {
       next();
     });
   },
@@ -98,7 +97,7 @@ export default {
       return (
         this.statusChanged && this.event.metadata.event_status != 'monitoring'
       );
-    }
+    },
   },
   watch: {
     slug(newVal) {
@@ -106,7 +105,7 @@ export default {
       if (this.firstTime) {
         this.detailTabs.map(item => (item.firstTime = true));
       }
-    }
+    },
   },
   methods: {
     parsedMarkdown(chunk) {
@@ -114,8 +113,8 @@ export default {
     },
     fetchEvent(newId) {
       this.$store.dispatch(FETCH_EVENT, newId);
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss">

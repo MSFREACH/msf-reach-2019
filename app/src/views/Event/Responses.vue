@@ -8,8 +8,9 @@
         flat
         small
         @click="switchStatus(item)"
-        >{{ item }}</v-btn
       >
+        {{ item }}
+      </v-btn>
     </nav>
     <v-flex xs8>
       <div
@@ -18,9 +19,7 @@
       >
         <v-layout v-if="allowEdit" class="actions">
           <v-switch v-model="editing" :label="editing ? `save` : `edit`" />
-          <span v-if="editing" class="cancel" @click="cancelEdit()"
-            ><v-icon>close</v-icon></span
-          >
+          <span v-if="editing" class="cancel" @click="cancelEdit()"><v-icon>close</v-icon></span>
         </v-layout>
         <v-layout v-if="editing" row wrap dark>
           <div class="row-spacing">
@@ -35,11 +34,11 @@
                 v-model="editResponse.project_code"
                 type="text"
                 placeholder="######"
-              />
+              >
             </div>
           </div>
           <response-programmes :current-programmes="editResponse.programmes" />
-          <hr class="row-divider" />
+          <hr class="row-divider">
           <div class="one-half">
             <label>Response</label>
             <v-flex d-flex>
@@ -168,7 +167,7 @@
               </div>
             </div>
 
-            <hr class="row-divider" />
+            <hr class="row-divider">
             <div class="one-half">
               <label>Response</label>
               {{ displayResponse.metadata.type }} -
@@ -194,13 +193,13 @@
               </div>
             </div>
 
-            <hr class="row-divider" />
+            <hr class="row-divider">
             <div class="one-half">
               <label>OPERATIONAL CENTRE</label>
               {{ displayResponse.operational_center }}
             </div>
 
-            <hr class="row-divider" />
+            <hr class="row-divider">
             <v-btn v-if="displayResponse.metadata" fab flat small>
               <a
                 :href="displayResponse.metadata.sharepoint_link"
@@ -237,9 +236,9 @@
             <map-input ref="responseMapEntry" :coordinates="eventCoordinates" />
             <v-card-actions>
               <v-spacer />
-              <v-btn color="primary" flat @click.native="saveArea()"
-                >Save Area</v-btn
-              >
+              <v-btn color="primary" flat @click.native="saveArea()">
+                Save Area
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -261,7 +260,7 @@ import {
   CREATE_MSF_RESPONSE,
   EDIT_MSF_RESPONSE,
   EDIT_MSF_RESPONSE_AREA,
-  DELETE_MSF_RESPONSE
+  DELETE_MSF_RESPONSE,
 } from '@/store/actions.type';
 import { DEFAULT_MSF_RESPONSE } from '@/common/form-fields';
 import { RESPONSE_TYPES, OPERATIONAL_CENTERS } from '@/common/response-fields';
@@ -278,7 +277,7 @@ export default {
     MapAnnotation,
     MapInput,
     NewResponse,
-    ResponseProgrammes
+    ResponseProgrammes,
   },
   data() {
     return {
@@ -296,8 +295,8 @@ export default {
         start: false,
         startValue: null,
         end: false,
-        endValue: null
-      }
+        endValue: null,
+      },
     };
   },
   watch: {
@@ -306,10 +305,10 @@ export default {
         this._beforeEditingCache = Object.assign({}, this.displayResponse);
         this.editResponse = this.displayResponse;
         this.selectedDate.startValue = moment(
-          this.editResponse.metadata.start_date
+          this.editResponse.metadata.start_date,
         ).format('YYYY-MM-DD');
         this.selectedDate.endValue = moment(
-          this.editResponse.metadata.end_date
+          this.editResponse.metadata.end_date,
         ).format('YYYY-MM-DD');
       } else {
         this.save();
@@ -317,15 +316,15 @@ export default {
     },
     mapDialog(val) {
       if (val) {
-        var vm = this;
-        setTimeout(function() {
+        const vm = this;
+        setTimeout(() => {
           vm.$refs.responseMapEntry.resizeMap();
         }, 100);
       }
     },
     responses(val) {
       if (val && val.length > 0) this.selectedResponseId = this.responses[0].id;
-    }
+    },
   },
   mounted() {
     this.fetchReponses();
@@ -333,7 +332,7 @@ export default {
   methods: {
     fetchReponses() {
       this.$store.dispatch(FETCH_MSF_RESPONSES, {
-        eventId: this.$route.params.slug
+        eventId: this.$route.params.slug,
       });
     },
     switchStatus(status) {
@@ -356,13 +355,13 @@ export default {
     },
     saveArea() {
       console.log('saveArea ------ ', this.response.area);
-      var params = {
+      const params = {
         event_id: this.$route.params.slug,
         event_status: this.eventStatus,
-        area: this.response.area
+        area: this.response.area,
       };
-      var emptyResponse = Object.values(this.editResponse).some(
-        el => el == undefined
+      const emptyResponse = Object.values(this.editResponse).some(
+        el => el == undefined,
       );
 
       if (emptyResponse) {
@@ -374,7 +373,7 @@ export default {
     },
     deleteResponse() {
       this.$store.dispatch(DELETE_MSF_RESPONSE, parseInt(this.editResponse.id));
-    }
+    },
   },
   computed: {
     ...mapGetters([
@@ -382,51 +381,45 @@ export default {
       'response',
       'eventStatus',
       'eventMetadata',
-      'eventCoordinates'
+      'eventCoordinates',
     ]),
     isResponseStatus() {
-      var currentStatus = this.eventStatus.toLowerCase();
+      const currentStatus = this.eventStatus.toLowerCase();
       return currentStatus == 'ongoing' || currentStatus == 'intervention';
     },
     allowEdit() {
       if (!this.displayResponse && this.isResponseStatus) return true;
       if (
-        this.displayResponse &&
-        this.displayResponse.event_status == this.eventStatus
-      )
-        return true;
+        this.displayResponse
+        && this.displayResponse.event_status == this.eventStatus
+      ) return true;
       return false;
     },
     activeResponses() {
       if (!this.responses) return null;
-      var currentStatus = this.selectedStatus
+      const currentStatus = this.selectedStatus
         ? this.selectedStatus
         : this.eventStatus;
 
-      return this.responses.filter(item => {
-        return item.event_status == currentStatus;
-      });
+      return this.responses.filter(item => item.event_status == currentStatus);
     },
     displayResponse() {
       if (!_.isEmpty(this.selectedResponseId)) {
-        var filtered = this.responses.filter(item => {
-          return item.id == this.selectedResponseId;
-        });
+        const filtered = this.responses.filter(item => item.id == this.selectedResponseId);
         return filtered[0];
-      } else if (!_.isEmpty(this.activeResponses)) {
+      } if (!_.isEmpty(this.activeResponses)) {
         return this.activeResponses[0];
-      } else {
-        return null;
       }
+      return null;
     },
 
     statusHistory() {
       if (!this.responses) return [this.eventStatus];
 
-      var statuses = this.responses.map(item => item.event_status);
+      const statuses = this.responses.map(item => item.event_status);
       return _.sortedUniq(statuses);
-    }
-  }
+    },
+  },
 };
 </script>
 

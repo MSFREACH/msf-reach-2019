@@ -1,8 +1,8 @@
 <template>
   <v-layout row wrap app>
-    <v-btn id="filterMenu" @click.stop="drawer = !drawer"
-      ><v-icon>menu</v-icon></v-btn
-    >
+    <v-btn id="filterMenu" @click.stop="drawer = !drawer">
+      <v-icon>menu</v-icon>
+    </v-btn>
     <v-card class="d-inline-block elevation-12">
       <v-navigation-drawer id="filterBar" v-model="drawer" floating app>
         <v-layout row wrap>
@@ -26,12 +26,12 @@
                     v-if="item.children"
                     :src="'/resources/new_icons/menu_' + item.value + '.svg'"
                     class="menu-icon"
-                  />
+                  >
                   <img
                     v-else
                     :src="'/resources/new_icons/menu_' + item.id + '.svg'"
                     class="menu-icon"
-                  />
+                  >
                   <span>{{ item.name }} </span>
                 </template>
               </v-treeview>
@@ -72,29 +72,29 @@ import { STATUS_ICONS } from '@/common/map-icons';
 import {
   FETCH_EVENTS,
   FETCH_REPORTS,
-  FETCH_CONTACTS
+  FETCH_CONTACTS,
 } from '@/store/actions.type';
 import { getFeatures, getEventFeatures } from '@/lib/geojson-util';
 import {
   EVENT_STATUSES,
   REPORT_TYPES,
   CONTACT_TYPES,
-  CONTACT_BOOL
+  CONTACT_BOOL,
 } from '@/common/common';
 import moment from 'moment';
 
-var map;
+let map;
 
 export default {
   name: 'MapMain',
   props: {
     coordinates: {
-      type: Array
+      type: Array,
     },
     eventId: {
       type: String,
-      required: false
-    }
+      required: false,
+    },
   },
   data() {
     return {
@@ -108,7 +108,7 @@ export default {
       allEventStatuses: EVENT_STATUSES,
       allReportTypes: REPORT_TYPES,
       allContactTypes: CONTACT_TYPES,
-      tree: []
+      tree: [],
     };
   },
   watch: {
@@ -124,22 +124,22 @@ export default {
     toggle_mode(val) {
       map.setStyle(MAPBOX_STYLES[val]);
       this.clearLayers();
-      var vm = this;
-      setTimeout(function() {
+      const vm = this;
+      setTimeout(() => {
         vm.loadEventsLayer();
         vm.appendEventsTooltip();
       }, 500);
     },
     selections(val) {
-      var selectedLayerIds = val.map(item => item.id);
-      this.layerIds.forEach(function(layerId) {
+      const selectedLayerIds = val.map(item => item.id);
+      this.layerIds.forEach((layerId) => {
         map.setLayoutProperty(
           layerId,
           'visibility',
-          selectedLayerIds.indexOf(layerId) > -1 ? 'visible' : 'none'
+          selectedLayerIds.indexOf(layerId) > -1 ? 'visible' : 'none',
         );
       });
-    }
+    },
   },
   mounted() {
     this.fetchData();
@@ -151,17 +151,17 @@ export default {
       'eventsGeoJson',
       'reportsGeoJson',
       'contactsGeoJson',
-      'fetchEventsError'
+      'fetchEventsError',
     ]),
     selections() {
       const selections = [];
-      var tmpList = [];
+      let tmpList = [];
       for (const filters of this.filterItems) {
         tmpList = tmpList.concat(filters.children);
       }
 
       for (const leaf of this.tree) {
-        var selection = this.filterItems.find(item => item.id == leaf);
+        let selection = this.filterItems.find(item => item.id == leaf);
         if (!selection) {
           selection = tmpList.find(item => item.id == leaf);
         }
@@ -170,7 +170,7 @@ export default {
       }
 
       return selections;
-    }
+    },
   },
   methods: {
     fetchData() {
@@ -179,13 +179,11 @@ export default {
       this.$store.dispatch(FETCH_CONTACTS, {});
     },
     initMap() {
-      var geojsonEvents = this.eventsGeoJson.objects.output;
-      var eventFeatureCollection = getFeatures(this.eventsGeoJson, 'output');
+      const geojsonEvents = this.eventsGeoJson.objects.output;
+      const eventFeatureCollection = getFeatures(this.eventsGeoJson, 'output');
 
       if (this.eventId) {
-        var eventObj = eventFeatureCollection.filter(item => {
-          return item.properties.id == this.eventId;
-        });
+        const eventObj = eventFeatureCollection.filter(item => item.properties.id == this.eventId);
         var gotoCoordinates = eventObj[0].geometry.coordinates;
         this.recentCoordinates = gotoCoordinates;
       } else if (!_.isEmpty(this.recentCoordinates)) {
@@ -199,11 +197,11 @@ export default {
         style: MAPBOX_STYLES.thematic,
         center: gotoCoordinates,
         zoom: 10,
-        minZoom: 4
+        minZoom: 4,
       });
 
-      var vm = this;
-      map.on('load', function() {
+      const vm = this;
+      map.on('load', () => {
         vm.loadEventsLayer();
         vm.appendEventsTooltip();
         vm.loadReportsLayer();
@@ -211,15 +209,15 @@ export default {
         vm.loadContactsLayer();
         vm.appendContactsTooltip();
       });
-      map.on('zoom', function(e) {
+      map.on('zoom', (e) => {
         // console.log(map.getZoom());
       });
     },
     clearLayers() {
       map.removeLayer('events-heat');
       map.removeLayer('events-epicenter');
-      this.allEventStatuses.forEach(function(item) {
-        map.removeLayer('events_' + item.value);
+      this.allEventStatuses.forEach((item) => {
+        map.removeLayer(`events_${item.value}`);
       });
       map.removeLayer('events_assessment');
       map.removeLayer('events-cluster-count');
@@ -227,13 +225,13 @@ export default {
       map.removeSource('reach-events');
     },
     loadEventsLayer() {
-      var vm = this;
-      var featureCollection = getEventFeatures(this.eventsGeoJson, 'output');
-      vm.allEventStatuses.forEach(function(item) {
-        var imageId = 'event-' + item.value;
-        var imageKey = `/resources/new_icons/event_${item.value}.png`;
+      const vm = this;
+      const featureCollection = getEventFeatures(this.eventsGeoJson, 'output');
+      vm.allEventStatuses.forEach((item) => {
+        const imageId = `event-${item.value}`;
+        const imageKey = `/resources/new_icons/event_${item.value}.png`;
 
-        map.loadImage(imageKey, function(error, image) {
+        map.loadImage(imageKey, (error, image) => {
           if (!map.hasImage(imageId)) {
             if (error) throw error;
             map.addImage(imageId, image);
@@ -246,11 +244,11 @@ export default {
           type: 'geojson',
           data: {
             type: 'FeatureCollection',
-            features: featureCollection
+            features: featureCollection,
           },
           cluster: true,
           clusterMaxZoom: 14, // Max zoom to cluster points on
-          clusterRadius: 50
+          clusterRadius: 50,
         });
       }
       if (!map.getLayer('events-heat')) {
@@ -268,7 +266,7 @@ export default {
               0,
               0,
               10,
-              1
+              1,
             ],
             // Increase the heatmap color weight weight by zoom level
             // heatmap-intensity is a multiplier on top of heatmap-weight
@@ -279,7 +277,7 @@ export default {
               0,
               1,
               9,
-              3
+              3,
             ],
             // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
             // Begin color ramp at 0-stop with a 0-transparancy color
@@ -297,7 +295,7 @@ export default {
               0.75,
               'rgba(56,140,204,.8)',
               1,
-              'rgba(3,116,199, 1)'
+              'rgba(3,116,199, 1)',
             ],
             // Adjust the heatmap radius by zoom level
             'heatmap-radius': [
@@ -307,11 +305,11 @@ export default {
               0,
               2,
               2,
-              76 // ADJUST FOR: blur radius
+              76, // ADJUST FOR: blur radius
             ],
             // Transition from heatmap to circle layer by zoom level
-            'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 7, 1, 9, 0]
-          }
+            'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 7, 1, 9, 0],
+          },
         });
       }
       if (!map.getLayer('events-epicenter')) {
@@ -328,7 +326,7 @@ export default {
               5,
               'rgba(3, 116, 199, .5)', // standard red, between 5 and 10
               10,
-              'rgba(3, 116, 199, .5)' // bright red, greater than or equal to 10
+              'rgba(3, 116, 199, .5)', // bright red, greater than or equal to 10
             ],
             'circle-radius': [
               'step',
@@ -337,20 +335,20 @@ export default {
               5,
               30, // size between 5 and 10
               20,
-              50 // size greater than or equal to 10
-            ]
+              50, // size greater than or equal to 10
+            ],
           },
-          filter: ['==', '$type', 'Point']
+          filter: ['==', '$type', 'Point'],
         });
       }
-      featureCollection.forEach(function(feature) {
-        var status = feature.properties.metadata.event_status.toLowerCase();
+      featureCollection.forEach((feature) => {
+        const status = feature.properties.metadata.event_status.toLowerCase();
         if (status == 'assessment') {
           var iconImage = 'event-ongoing';
         } else {
-          var iconImage = 'event-' + status;
+          var iconImage = `event-${status}`;
         }
-        var layerId = 'events_' + status;
+        const layerId = `events_${status}`;
         if (!map.getLayer(layerId)) {
           map.addLayer({
             id: layerId,
@@ -359,9 +357,9 @@ export default {
             minzoom: 9,
             layout: {
               'icon-image': iconImage,
-              'icon-allow-overlap': true
+              'icon-allow-overlap': true,
             },
-            filter: ['==', 'event_status', status]
+            filter: ['==', 'event_status', status],
           });
           vm.layerIds.push(layerId);
         }
@@ -377,8 +375,8 @@ export default {
           layout: {
             'text-field': '{point_count_abbreviated}',
             'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-            'text-size': 12
-          }
+            'text-size': 12,
+          },
         });
       }
 
@@ -394,47 +392,45 @@ export default {
             'circle-color': 'rgba(3, 116, 199, .5)',
             'circle-radius': 10,
             'circle-stroke-width': 1,
-            'circle-stroke-color': 'rgba(3, 116, 199, .5)'
-          }
+            'circle-stroke-color': 'rgba(3, 116, 199, .5)',
+          },
         });
       }
       // vm.layerIds.push("events-heat", "events-epicenter", )
     },
     appendEventsTooltip() {
       // Create a popup, but don't add it to the map yet.
-      var popup = new mapboxgl.Popup({
+      const popup = new mapboxgl.Popup({
         closeButton: true,
-        closeOnClick: false
+        closeOnClick: false,
       });
 
-      map.on('mouseenter', 'events-epicenter', function(e) {
+      map.on('mouseenter', 'events-epicenter', (e) => {
         // Change the cursor style as a UI indicator.
         map.getCanvas().style.cursor = 'pointer';
-        var coordinates = e.features[0].geometry.coordinates.slice();
+        const coordinates = e.features[0].geometry.coordinates.slice();
 
-        var evMeta = JSON.parse(e.features[0].properties.metadata);
-        var description = evMeta.description; // <<< missing feature.properties, need to convert GeometryCollection to FeatureCollection
-        var evName = evMeta.name;
+        const evMeta = JSON.parse(e.features[0].properties.metadata);
+        const description = evMeta.description; // <<< missing feature.properties, need to convert GeometryCollection to FeatureCollection
+        const evName = evMeta.name;
         // var evType = evMeta.types.join(',');
-        var evStatus = evMeta.event_status;
+        const evStatus = evMeta.event_status;
 
-        var cleanAreas = _.compact(evMeta.areas);
-        var evPlace;
+        const cleanAreas = _.compact(evMeta.areas);
+        let evPlace;
         if (!evMeta.areas || _.isEmpty(cleanAreas)) {
           evPlace = evMeta.country;
+        } else if (cleanAreas[0].region) {
+          evPlace = cleanAreas[0].region + cleanAreas[0].country_code;
         } else {
-          if (cleanAreas[0].region) {
-            evPlace = cleanAreas[0].region + cleanAreas[0].country_code;
-          } else {
-            evPlace = cleanAreas[0].country;
-          }
+          evPlace = cleanAreas[0].country;
         }
 
-        var evLastUpdate = moment(
-          e.features[0].properties.updated_at
+        const evLastUpdate = moment(
+          e.features[0].properties.updated_at,
         ).fromNow();
 
-        var contentStr = `<a href="#/events/${e.features[0].properties.id}">
+        const contentStr = `<a href="#/events/${e.features[0].properties.id}">
                     <div class="secondary-text">${evName}</div>
                     <div class="specified-primary">${evPlace} </div>
                     <label>${evLastUpdate} </label>
@@ -460,19 +456,17 @@ export default {
       // });
     },
     zoomToEventCenter() {
-      var eventObj = this.eventFeatureCollection.filter(item => {
-        return item.properties.id == this.eventId;
-      });
+      const eventObj = this.eventFeatureCollection.filter(item => item.properties.id == this.eventId);
 
       map.flyTo({ center: [eventObj.geometry.coordinates] });
     },
     loadReportsLayer() {
-      var vm = this;
-      var featureCollection = getFeatures(this.reportsGeoJson, 'output');
-      vm.allReportTypes.forEach(function(item) {
-        var imageId = 'report-' + item.value;
-        var imageKey = `/resources/new_icons/report_${item.toLowerCase()}.png`;
-        map.loadImage(imageKey, function(error, image) {
+      const vm = this;
+      const featureCollection = getFeatures(this.reportsGeoJson, 'output');
+      vm.allReportTypes.forEach((item) => {
+        const imageId = `report-${item.value}`;
+        const imageKey = `/resources/new_icons/report_${item.toLowerCase()}.png`;
+        map.loadImage(imageKey, (error, image) => {
           if (!map.hasImage(imageId)) {
             if (error) throw error;
             map.addImage(imageId, image);
@@ -485,11 +479,11 @@ export default {
           type: 'geojson',
           data: {
             type: 'FeatureCollection',
-            features: featureCollection
+            features: featureCollection,
           },
           cluster: true,
           clusterMaxZoom: 14,
-          clusterRadius: 25
+          clusterRadius: 25,
         });
       }
 
@@ -502,7 +496,7 @@ export default {
             // increase circle size as user zooms from z12 to z22
             'circle-radius': {
               base: 1.17,
-              stops: [[12, 2], [22, 20]]
+              stops: [[12, 2], [22, 20]],
             },
             'circle-color': [
               'match',
@@ -515,31 +509,31 @@ export default {
               '#FFB677',
               'SECURITY',
               '#FCE38A',
-              /* other */ '#fff'
-            ]
+              /* other */ '#fff',
+            ],
           },
-          filter: ['==', '$type', 'Point']
+          filter: ['==', '$type', 'Point'],
         });
       }
 
-      featureCollection.forEach(function(feature) {
-        var type = feature.properties.type;
+      featureCollection.forEach((feature) => {
+        const type = feature.properties.type;
       });
     },
     loadContactsLayer() {
-      var vm = this;
-      var featureCollection = getFeatures(this.contactsGeoJson, 'output');
+      const vm = this;
+      const featureCollection = getFeatures(this.contactsGeoJson, 'output');
 
       if (!map.getSource('reach-contacts')) {
         map.addSource('reach-contacts', {
           type: 'geojson',
           data: {
             type: 'FeatureCollection',
-            features: featureCollection
+            features: featureCollection,
           },
           cluster: true,
           clusterMaxZoom: 14,
-          clusterRadius: 25
+          clusterRadius: 25,
         });
       }
 
@@ -552,7 +546,7 @@ export default {
             // increase circle size as user zooms from z12 to z22
             'circle-radius': {
               base: 1.17,
-              stops: [[12, 2], [22, 180]]
+              stops: [[12, 2], [22, 180]],
             },
             'circle-color': [
               'match',
@@ -565,59 +559,59 @@ export default {
               '#FFB677',
               'SECURITY',
               '#FCE38A',
-              /* other */ '#fff'
-            ]
+              /* other */ '#fff',
+            ],
           },
-          filter: ['==', '$type', 'Point']
+          filter: ['==', '$type', 'Point'],
         });
       }
     },
 
     appendContactsTooltip() {
       // Create a popup, but don't add it to the map yet.
-      var popup = new mapboxgl.Popup({
+      const popup = new mapboxgl.Popup({
         closeButton: true,
-        closeOnClick: false
+        closeOnClick: false,
       });
 
-      map.on('mouseenter', 'contacts-epicenter', function(e) {
+      map.on('mouseenter', 'contacts-epicenter', (e) => {
         // Change the cursor style as a UI indicator.
         map.getCanvas().style.cursor = 'pointer';
-        var coordinates = e.features[0].geometry.coordinates.slice();
-        console.log('----- parsed error ------- ', e.features[0].properties); /// TODO:  cluster points cannot render popups;
-        var properties = JSON.parse(e.features[0].properties.properties);
-        var msfStr = `<div class="bold-text"> ${
+        const coordinates = e.features[0].geometry.coordinates.slice();
+        console.log('----- parsed error ------- ', e.features[0].properties); // / TODO:  cluster points cannot render popups;
+        const properties = JSON.parse(e.features[0].properties.properties);
+        const msfStr = `<div class="bold-text"> ${
           properties.OC ? properties.OC : ''
         } </div>
                 <div class="note-text"> ${
-                  properties.msf_employment
-                    ? properties.msf_employment + ','
-                    : ''
-                } ${properties.msf_additional}</div>`;
+  properties.msf_employment
+    ? `${properties.msf_employment},`
+    : ''
+} ${properties.msf_additional}</div>`;
 
-        var nonMSFstr = `<div class="bold-text"> ${
+        const nonMSFstr = `<div class="bold-text"> ${
           properties.msf_associate ? 'MSF Associate' : ''
         } </div>
                 <div class="bold-text"> ${
-                  properties.msf_peer ? 'MSF Peer' : ''
-                } </div>
+  properties.msf_peer ? 'MSF Peer' : ''
+} </div>
                 <div class="bold-text"> ${
-                  properties.employer ? properties.employer : ''
-                } ${
-          properties.division ? properties.division + ', ' : ''
-        }</div>`;
+  properties.employer ? properties.employer : ''
+} ${
+  properties.division ? `${properties.division}, ` : ''
+}</div>`;
 
-        var contentStr = `<a href="#/contacts/${e.features[0].properties.id}">
+        const contentStr = `<a href="#/contacts/${e.features[0].properties.id}">
                     <div class="secondary-text">${properties.name}</div>
                     <div class="specified-text"> ${properties.type}</div>
                     ${
-                      properties.type == CONTACT_BOOL.internal
-                        ? msfStr
-                        : nonMSFstr
-                    }
+  properties.type == CONTACT_BOOL.internal
+    ? msfStr
+    : nonMSFstr
+}
                     <div class="note-text"> ${
-                      properties.job_title ? properties.job_title : ''
-                    }</div>
+  properties.job_title ? properties.job_title : ''
+}</div>
                     <div class="note-text"> ${properties.email}</div>
                     <div class="note-text"> ${properties.cell}</div>
                     <div class="note-text"> ${properties.address}</div>
@@ -633,12 +627,12 @@ export default {
           .addTo(map);
       });
 
-      map.on('mouseleave', 'contacts-epicenter', function() {
+      map.on('mouseleave', 'contacts-epicenter', () => {
         map.getCanvas().style.cursor = '';
         popup.remove();
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

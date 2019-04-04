@@ -21,15 +21,17 @@
               <small>GDPR</small>
             </v-stepper-step>
             <v-divider />
-            <v-stepper-step :complete="e1 > 2" step="2"
-              >Personal details <small>Type of contact</small></v-stepper-step
-            >
+            <v-stepper-step :complete="e1 > 2" step="2">
+              Personal details <small>Type of contact</small>
+            </v-stepper-step>
             <v-divider />
-            <v-stepper-step :complete="e1 > 3" step="3"
-              >Contact methods <small>Social media</small></v-stepper-step
-            >
+            <v-stepper-step :complete="e1 > 3" step="3">
+              Contact methods <small>Social media</small>
+            </v-stepper-step>
             <v-spacer />
-            <v-icon class="action-link" @click="close">close</v-icon>
+            <v-icon class="action-link" @click="close">
+              close
+            </v-icon>
           </v-stepper-header>
           <v-stepper-items>
             <v-stepper-content step="1">
@@ -70,13 +72,13 @@
               </v-form>
               <p>
                 Please contact
-                <a href="mailto:lucie.gueuning@hongkong.msf.org"
-                  >lucie.gueuning@hongkong.msf.org</a
-                >
+                <a href="mailto:lucie.gueuning@hongkong.msf.org">lucie.gueuning@hongkong.msf.org</a>
                 for any queries or to remove your contact information from our
                 database.
               </p>
-              <v-btn class="right" flat @click="e1 = 2"> Continue</v-btn>
+              <v-btn class="right" flat @click="e1 = 2">
+                Continue
+              </v-btn>
             </v-stepper-content>
             <v-stepper-content step="2">
               <v-container grid-list-md>
@@ -171,10 +173,8 @@
                       />
                     </v-flex>
                     <v-flex xs6>
-                      <label
-                        >Partner sections/Branch office/Mission/Project (if
-                        any)</label
-                      >
+                      <label>Partner sections/Branch office/Mission/Project (if
+                        any)</label>
                       <v-textarea v-model="newContact.msf_additional" outline />
                     </v-flex>
                   </v-layout>
@@ -207,14 +207,14 @@
                 </v-form>
                 <h4>
                   Please indicate the location where you are currently based.
-                  Please update it as soon as you move.<span style="color:red;"
-                    >*</span
-                  >
+                  Please update it as soon as you move.<span style="color:red;">*</span>
                 </h4>
                 <!-- <map-input></map-input> -->
               </v-container>
 
-              <v-btn class="right" flat @click="e1 = 3"> Continue</v-btn>
+              <v-btn class="right" flat @click="e1 = 3">
+                Continue
+              </v-btn>
             </v-stepper-content>
             <v-stepper-content step="3">
               <v-container grid-list-md>
@@ -331,7 +331,7 @@ import {
   DEFAULT_CONTACT_TYPE,
   CONTACT_TYPES,
   CONTACT_MSF_EMPLOY_STATUS,
-  CONTACT_OCS
+  CONTACT_OCS,
 } from '@/common/common';
 import { CREATE_CONTACT } from '@/store/actions.type';
 
@@ -344,7 +344,7 @@ export default {
       consent: {
         gdpr: null,
         permission: null,
-        isPrivate: null
+        isPrivate: null,
       },
       newContact: DEFAULT_CONTACT,
       allOCs: CONTACT_OCS,
@@ -355,9 +355,9 @@ export default {
       defaultContact: DEFAULT_CONTACT_TYPE,
       other: {
         title: null,
-        type: null
+        type: null,
       },
-      inProgress: false
+      inProgress: false,
     };
   },
   methods: {
@@ -365,15 +365,15 @@ export default {
       this.dialog = false;
     },
     save() {
-      var payload = _.clone(this.newContact);
+      const payload = _.clone(this.newContact);
       if (payload.type == 'other') payload.type = other.type;
       if (payload.title == 'other') payload.title = other.title;
-      var vm = this;
+      const vm = this;
       this.store.dispatch(CREATE_CONTACT, payload).then(() => {
         setTimeout(() => vm.close(), 1000);
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

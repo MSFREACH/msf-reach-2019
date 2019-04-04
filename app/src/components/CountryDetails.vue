@@ -23,8 +23,8 @@
             append-icon="remove"
           >
             <v-list-tile slot="activator">
-              <v-list-tile-title
-                ><label>{{ category.text }}</label>
+              <v-list-tile-title>
+                <label>{{ category.text }}</label>
               </v-list-tile-title>
             </v-list-tile>
             <v-list-tile
@@ -51,8 +51,7 @@
               <a
                 class="form-actions"
                 @click="openDetailsModal(type, category.value)"
-                >{{ inputTypes[type] }}</a
-              >
+              >{{ inputTypes[type] }}</a>
             </v-list-tile-action>
           </v-list-group>
         </v-list>
@@ -80,7 +79,7 @@
                   <v-icon class="remove-file-icon" @click="removeFile()">
                     close
                   </v-icon>
-                  <embed :src="previewFileUrl" width="100%" height="100%" />
+                  <embed :src="previewFileUrl" width="100%" height="100%">
                 </v-card>
                 <v-card v-else class="file-attachment" light>
                   <form enctype="multipart/form-data">
@@ -92,7 +91,7 @@
                       accept="*/*"
                       multiple
                       @change="onFilePicked"
-                    />
+                    >
                     <v-icon class="file-icon" @click="pickFile">
                       attach_file
                     </v-icon>
@@ -126,7 +125,9 @@
           <v-card-actions>
             <v-spacer />
             <v-progress-circular v-if="uploadingFile" :indeterminate="true" />
-            <v-btn color="active" @click="submit">add</v-btn>
+            <v-btn color="active" @click="submit">
+              add
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -136,7 +137,7 @@
         </v-flex>
         <v-layout v-else row wrap>
           <v-flex xs12 class="previewWindow">
-            <img v-if="fileType.indexOf('image') != -1" :src="downloadUrl" />
+            <img v-if="fileType.indexOf('image') != -1" :src="downloadUrl">
             <object
               v-else
               :data="downloadUrl"
@@ -144,17 +145,17 @@
               width="100%"
               height="100%"
             >
-              <embed :src="downloadUrl" width="100%" height="100%" />
+              <embed :src="downloadUrl" width="100%" height="100%">
             </object>
 
-            <v-btn id="downloadBtn" color="grey" small fab flat outline
-              ><a :href="downloadUrl" target="_blank"
-                ><v-icon>save_alt</v-icon></a
-              ></v-btn
-            >
+            <v-btn id="downloadBtn" color="grey" small fab flat outline>
+              <a :href="downloadUrl" target="_blank"><v-icon>save_alt</v-icon></a>
+            </v-btn>
           </v-flex>
           <v-flex xs6>
-            <div class="fileHeader">{{ displayFile.metadata.name }}</div>
+            <div class="fileHeader">
+              {{ displayFile.metadata.name }}
+            </div>
           </v-flex>
         </v-layout>
       </v-layout>
@@ -163,7 +164,7 @@
 </template>
 
 <script>
-/*eslint no-debugger: off*/
+/* eslint no-debugger: off */
 
 import $ from 'jquery';
 import _ from 'lodash';
@@ -177,14 +178,14 @@ import {
   FETCH_UPLOAD_URL,
   PUT_SIGNED_REQUEST,
   FETCH_DOWNLOAD_URL,
-  DOWNLOAD_OBJECT
+  DOWNLOAD_OBJECT,
 } from '@/store/actions.type';
 import { OPERATIONAL_CENTERS } from '@/common/response-fields';
 import {
   DEFAULT_COUNTRY_DETAILS_ROW,
   CD_DEFAULT_VIEW,
   CD_DETAILS_TYPES,
-  CD_DETAILS_CATEGORIES
+  CD_DETAILS_CATEGORIES,
 } from '@/common/country-details-fields';
 import ISO2GEC from '@/common/iso2gec_countryCodes.json';
 
@@ -207,7 +208,7 @@ export default {
         security: [],
         mission: [],
         toolbox: [],
-        document_repo: []
+        document_repo: [],
       },
       iso2gecCodes: ISO2GEC,
       defaultDetails: DEFAULT_COUNTRY_DETAILS_ROW,
@@ -216,34 +217,34 @@ export default {
       previewFileUrl: null,
       displayFile: {},
       downloadUrl: null,
-      fileType: null
+      fileType: null,
     };
   },
   computed: {
     ...mapGetters(['eventAreas', 'countryDetails', 'uploadingFile']),
     countryCodes() {
       if (!this.eventAreas.length > 0) return;
-      var tmp = this.eventAreas.map(item => item.country_code);
+      const tmp = this.eventAreas.map(item => item.country_code);
       return _.sortedUniq(tmp);
     },
     countries() {
       if (!this.eventAreas.length > 0) return;
-      var tmp = this.eventAreas.map(item => ({
+      const tmp = this.eventAreas.map(item => ({
         country: item.country,
-        country_code: item.country_code
+        country_code: item.country_code,
       }));
       this.selectedCountry = tmp[0].country_code;
       return _.sortedUniq(tmp);
     },
     CIAWorldFactbookUrl() {
       if (!this.eventAreas.length > 0) return;
-      var isoCC = this.selectedCountry
+      const isoCC = this.selectedCountry
         ? this.selectedCountry
         : this.eventAreas[0].country_code;
-      var gecCode = this.iso2gecCodes[isoCC].GEC;
-      var url = `https://www.cia.gov/library/publications/the-world-factbook/geos/${gecCode.toLowerCase()}.html`;
+      const gecCode = this.iso2gecCodes[isoCC].GEC;
+      const url = `https://www.cia.gov/library/publications/the-world-factbook/geos/${gecCode.toLowerCase()}.html`;
       return url;
-    }
+    },
   },
   watch: {
     eventAreas(val) {
@@ -252,7 +253,7 @@ export default {
     countryDetails(val) {
       if (val) {
       }
-    }
+    },
   },
   mounted() {
     this.$store.dispatch(FETCH_EVENT, this.$route.params.slug);
@@ -266,8 +267,8 @@ export default {
         });
     },
     sortNavigation() {
-      var vm = this;
-      this.countryDetails.forEach(function(item) {
+      const vm = this;
+      this.countryDetails.forEach((item) => {
         vm.documents[item.category].push(item);
       });
     },
@@ -287,26 +288,26 @@ export default {
       const fr = new FileReader();
       fr.readAsDataURL(files[0]);
       fr.addEventListener('load', () => {
-        var fileUrl = fr.result;
+        const fileUrl = fr.result;
         this.previewFileUrl = fileUrl;
         this.readyToUpload = true;
       });
     },
     processFiles() {
-      var vm = this;
-      var files = this.selectedFiles;
+      const vm = this;
+      const files = this.selectedFiles;
       // name, size, type;
-      var fileName = files[0].name;
-      var fileType = files[0].type;
-      var fileSize = files[0].size;
-      var file = files[0];
-      var params = {
+      const fileName = files[0].name;
+      const fileType = files[0].type;
+      const fileSize = files[0].size;
+      const file = files[0];
+      const params = {
         key: `countryDetails/${this.selectedCountry}/${this.details.category}`,
-        filename: fileName
+        filename: fileName,
       };
-      this.$store.dispatch(FETCH_UPLOAD_URL, params).then(payload => {
+      this.$store.dispatch(FETCH_UPLOAD_URL, params).then((payload) => {
         if (payload) {
-          var fileLink = payload.url;
+          const fileLink = payload.url;
           vm.details.metadata.name = fileName;
           vm.details.metadata.url = fileLink;
           this.uploadFile(file);
@@ -314,7 +315,7 @@ export default {
       });
     },
     uploadFile(file) {
-      this.$store.dispatch(PUT_SIGNED_REQUEST, file).then(data => {
+      this.$store.dispatch(PUT_SIGNED_REQUEST, file).then((data) => {
         this.save();
       });
     },
@@ -330,16 +331,16 @@ export default {
       }
     },
     save() {
-      var cIndex = this.countryCodes.indexOf(this.selectedCountry);
-      var countryName = this.countries[cIndex].country;
+      const cIndex = this.countryCodes.indexOf(this.selectedCountry);
+      const countryName = this.countries[cIndex].country;
 
-      var params = _.extend(this.details, {
+      const params = _.extend(this.details, {
         country: countryName,
-        country_code: this.selectedCountry
+        country_code: this.selectedCountry,
       });
       params.metadata = _.pickBy(params.metadata, _.identity);
 
-      this.$store.dispatch(CREATE_COUNTRY_DETAILS, params).then(payload => {
+      this.$store.dispatch(CREATE_COUNTRY_DETAILS, params).then((payload) => {
         setTimeout(() => this.close(), 1000);
       });
     },
@@ -352,14 +353,14 @@ export default {
       }, 300);
     },
     showFile(file) {
-      this.$store.dispatch(FETCH_DOWNLOAD_URL, file.metadata.url).then(data => {
+      this.$store.dispatch(FETCH_DOWNLOAD_URL, file.metadata.url).then((data) => {
         this.displayFile = file;
         this.downloadUrl = data.url;
         this.fileType = data.contentType;
         this.selectedView = 'fileView';
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

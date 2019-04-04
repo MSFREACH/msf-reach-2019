@@ -1,5 +1,5 @@
-/*eslint no-debugger: off*/
-/*eslint no-console: off*/
+/* eslint no-debugger: off */
+/* eslint no-console: off */
 
 import Vue from 'vue';
 
@@ -8,18 +8,18 @@ import {
   FETCH_COUNTRY_DETAILS,
   CREATE_COUNTRY_DETAILS,
   EDIT_COUNTRY_DETAILS,
-  DELETE_COUNTRY_DETAILS
+  DELETE_COUNTRY_DETAILS,
 } from './actions.type';
 import {
   FETCH_COUNTRY_DETAILS_START,
   FETCH_COUNTRY_DETAILS_END,
   SET_ERROR,
-  RESET_STATE
+  RESET_STATE,
 } from './mutations.type';
 
 const initialState = {
   isLoadingDetails: false,
-  countryDetails: []
+  countryDetails: [],
 };
 
 const state = Object.assign({}, initialState);
@@ -32,7 +32,7 @@ const actions = {
       .then(({ data }) => {
         commit(FETCH_COUNTRY_DETAILS_END, data.result);
       })
-      .catch(error => {
+      .catch((error) => {
         commit(SET_ERROR, error);
       });
   },
@@ -40,13 +40,13 @@ const actions = {
     return CountryDetailsService.create(payload);
   },
   [EDIT_COUNTRY_DETAILS](payload) {
-    var id = payload.id;
+    const id = payload.id;
     delete payload.id;
     return CountryDetailsService.update(id, payload);
   },
   [DELETE_COUNTRY_DETAILS](context, slug) {
     return CountryDetailsService.destroy(slug);
-  }
+  },
 };
 
 /* eslint no-param-reassign: ["error", { "props": false }] */
@@ -63,21 +63,21 @@ const mutations = {
     state.isLoadingEvent = false;
   },
   [RESET_STATE]() {
-    for (let f in state) {
+    for (const f in state) {
       Vue.set(state, f, initialState[f]);
     }
-  }
+  },
 };
 
 const getters = {
   countryDetails(state) {
     return state.countryDetails;
-  }
+  },
 };
 
 export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

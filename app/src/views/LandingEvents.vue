@@ -9,7 +9,7 @@ import EventList from '@/components/EventList';
 export default {
   name: 'RLandingEvents',
   components: {
-    EventList
-  }
+    EventList,
+  },
 };
 </script>

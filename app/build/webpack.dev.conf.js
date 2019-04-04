@@ -1,30 +1,30 @@
-var path = require('path');
-var utils = require('./utils');
-var webpack = require('webpack');
-var config = require('./config');
-var merge = require('webpack-merge');
-var baseWebpackConfig = require('./webpack.base.conf');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
-var FaviconsWebpackPlugin = require('favicons-webpack-plugin');
-var HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const path = require('path');
+const webpack = require('webpack');
+const merge = require('webpack-merge');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const baseWebpackConfig = require('./webpack.base.conf');
+const config = require('./config');
+const utils = require('./utils');
 
 // add hot-reload related code to entry chunks
-Object.keys(baseWebpackConfig.entry).forEach(function(name) {
+Object.keys(baseWebpackConfig.entry).forEach((name) => {
   baseWebpackConfig.entry[name] = ['./app/build/dev-client'].concat(
-    baseWebpackConfig.entry[name]
+    baseWebpackConfig.entry[name],
   );
 });
 
 module.exports = merge(baseWebpackConfig, {
   module: {
-    rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
+    rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap }),
   },
   // cheap-module-eval-source-map is faster for development
   devtool: '#cheap-module-eval-source-map',
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': config.dev.env
+      'process.env': config.dev.env,
     }),
     new HardSourceWebpackPlugin(),
     // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
@@ -34,10 +34,10 @@ module.exports = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'app/index.html',
-      inject: true
+      inject: true,
     }),
     new FriendlyErrorsPlugin(),
     // generate favicons
-    new FaviconsWebpackPlugin(path.resolve(__dirname, '../static/logo.png'))
-  ]
+    new FaviconsWebpackPlugin(path.resolve(__dirname, '../static/logo.png')),
+  ],
 });

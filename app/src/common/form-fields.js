@@ -6,23 +6,23 @@ export const DEFAULT_EVENT_METADATA = {
   status_updates: [
     {
       status: null,
-      timestamp: null
-    }
+      timestamp: null,
+    },
   ],
   types: [],
   sub_types: [],
   incharge_contact: {
     local: {
       name: '',
-      position: ''
+      position: '',
     },
     operator: {
       name: '',
-      position: ''
-    }
+      position: '',
+    },
   },
   sharepoint_link: null,
-  severity_measures: []
+  severity_measures: [],
 };
 
 export const DEFAULT_REPORT_CARD_FIELDS = {
@@ -30,22 +30,22 @@ export const DEFAULT_REPORT_CARD_FIELDS = {
   eventId: null,
   location: {
     lat: null,
-    lng: null
+    lng: null,
   },
   content: {
     description: null,
     image_link: null,
     report_tag: null,
-    username: null
-  }
+    username: null,
+  },
 };
 
 export const DEFAULT_EDIT_REPORT_CARD_FIELDS = {
   status: null,
   eventId: null,
   content: {
-    report_tag: null
-  }
+    report_tag: null,
+  },
 };
 
 export const DEFAULT_EVENT_NOTIFICATION_FIELDS = {
@@ -54,7 +54,7 @@ export const DEFAULT_EVENT_NOTIFICATION_FIELDS = {
   eventId: null,
   created: null,
   updated: null,
-  files: []
+  files: [],
 };
 
 export const DEFAULT_MSF_RESPONSE = {
@@ -67,7 +67,7 @@ export const DEFAULT_MSF_RESPONSE = {
     end_date: null,
     total_days: null,
     description: null,
-    sharepoint_link: null
+    sharepoint_link: null,
   },
   programmes: [
     {
@@ -75,16 +75,16 @@ export const DEFAULT_MSF_RESPONSE = {
       sub_program: null,
       open_date: null,
       deployment_scale: null,
-      notes: null
-    }
-  ]
+      notes: null,
+    },
+  ],
 };
 
 export const EXTERNAL_CAPACITY_FIELDS = {
   type: null,
   name: '',
   arrival_date: '',
-  deployment: ''
+  deployment: '',
 };
 
 export const EXTERNAL_CAPACITY_TYPES = ['governmental', 'other'];
@@ -93,8 +93,8 @@ export const DEFAULT_EVENT_FIGURES = {
   keyFigures: [
     {
       status: '',
-      figures: []
-    }
+      figures: [],
+    },
   ],
   population: {
     total: null,
@@ -102,24 +102,24 @@ export const DEFAULT_EVENT_FIGURES = {
     mortality: {
       rate: null,
       population: null,
-      period: null
+      period: null,
     },
     morbidity: {
       rate: null,
       population: null,
-      period: null
-    }
+      period: null,
+    },
   },
   statistics: {
     collection: null,
-    source: null
-  }
+    source: null,
+  },
 };
 
 export const DEFAULT_KEY_FIGURES = {
   category: null,
   subCategory: null,
-  value: null
+  value: null,
 };
 
 export const DEFAULT_SITREP_FIELDS = {
@@ -127,7 +127,7 @@ export const DEFAULT_SITREP_FIELDS = {
   eventId: null,
   created: null,
   updated: null,
-  files: []
+  files: [],
 };
 
 export const DEFAULT_CONTACT = {
@@ -159,7 +159,7 @@ export const DEFAULT_CONTACT = {
   Instagram: null,
   Telegram: null,
   Skype: null,
-  msf_entered: null // required
+  msf_entered: null, // required
 };
 
 export const CONTACT_TITLES = [
@@ -170,5 +170,5 @@ export const CONTACT_TITLES = [
   'Dr',
   'Prof',
   'MD',
-  'other'
+  'other',
 ];

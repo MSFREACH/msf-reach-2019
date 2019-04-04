@@ -11,8 +11,9 @@
         rounded
         flat
         @click="searchInProximity"
-        >Regional Proximity</v-btn
       >
+        Regional Proximity
+      </v-btn>
     </div>
     <v-layout v-if="showMap" row wrap>
       <v-card class="mapSection">
@@ -58,9 +59,9 @@
 </template>
 
 <script>
-/*eslint no-debugger: off*/
-/*eslint no-console: off*/
-/*eslint no-unused-vars: off*/
+/* eslint no-debugger: off */
+/* eslint no-console: off */
+/* eslint no-unused-vars: off */
 
 import { mapGetters } from 'vuex';
 import { FETCH_RELATED_EVENTS } from '@/store/actions.type';
@@ -69,13 +70,13 @@ import MapAnnotation from '@/views/Map/MapAnnotation.vue';
 export default {
   name: 'RelatedEvents',
   components: {
-    MapAnnotation
+    MapAnnotation,
   },
   data() {
     return {
       filterByCountry: null,
       filterByType: null,
-      showMap: false
+      showMap: false,
     };
   },
   computed: {
@@ -87,23 +88,23 @@ export default {
       'isLoadingRelatedEvents',
       'relatedEvents',
       'relatedEventsGeoJson',
-      'fetchRelatedEventsError'
-    ])
+      'fetchRelatedEventsError',
+    ]),
   },
   watch: {
     filterByType(val) {
       if (val) {
-        var params = {
-          search: val
+        const params = {
+          search: val,
         };
         this.showMap = false;
         this.fetchRelatedEvents(params);
       }
-    }
+    },
   },
   mounted() {
-    var params = {
-      types: this.eventTypes
+    const params = {
+      types: this.eventTypes,
     };
     this.$store.dispatch(FETCH_RELATED_EVENTS, params);
   },
@@ -113,13 +114,13 @@ export default {
     },
     searchInProximity() {
       this.showMap = true;
-      var params = {
+      const params = {
         lng: this.eventCoordinates[0],
-        lat: this.eventCoordinates[1]
+        lat: this.eventCoordinates[1],
       };
       this.fetchRelatedEvents(params);
-    }
-  }
+    },
+  },
 };
 </script>
 

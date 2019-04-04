@@ -1,18 +1,18 @@
-/*eslint no-debugger: off*/
-/*eslint no-unused-vars :off*/
+/* eslint no-debugger: off */
+/* eslint no-unused-vars :off */
 import _ from 'lodash';
 import { ReportsService } from '@/common/api.service';
 import {
   FETCH_REPORTS,
   CREATE_REPORT,
   EDIT_REPORT,
-  DELETE_REPORT
+  DELETE_REPORT,
 } from './actions.type';
 import {
   FETCH_REPORTS_START,
   FETCH_REPORTS_END,
   UPDATE_REPORT_IN_LIST,
-  SET_ERROR
+  SET_ERROR,
 } from './mutations.type';
 
 const state = {
@@ -20,7 +20,7 @@ const state = {
   reports: [],
   reportsGeoJson: [],
   isLoadingReport: true,
-  reportsCount: 0
+  reportsCount: 0,
 };
 
 const getters = {
@@ -38,7 +38,7 @@ const getters = {
   },
   fetchReportsError(state) {
     return state.error;
-  }
+  },
 };
 
 const actions = {
@@ -48,7 +48,7 @@ const actions = {
       .then(({ data }) => {
         commit(FETCH_REPORTS_END, data.result);
       })
-      .catch(error => {
+      .catch((error) => {
         commit(SET_ERROR, error);
       });
   },
@@ -56,12 +56,12 @@ const actions = {
     return ReportsService.create(params);
   },
   [EDIT_REPORT](context, params) {
-    console.log('[EDIT_REPORT] ----- ', params); //eslint-disable-line no-console
+    console.log('[EDIT_REPORT] ----- ', params); // eslint-disable-line no-console
     return ReportsService.update(params[0], params[1]);
   },
   [DELETE_REPORT](context, slug) {
     return ReportsService.destroy(slug);
-  }
+  },
 };
 
 /* eslint no-param-reassign: ["error", { "props": false }] */
@@ -71,17 +71,15 @@ const mutations = {
   },
   [FETCH_REPORTS_END](state, payload) {
     // TODO: // // Add popups see: [mapAllReports] parse GeoJSON here
-    console.log(payload); //eslint-disable-line no-console
+    console.log(payload); // eslint-disable-line no-console
     state.reportsGeoJson = payload;
 
-    state.reports = _.map(payload.objects.output.geometries, function(item) {
-      return item.properties;
-    });
+    state.reports = _.map(payload.objects.output.geometries, item => item.properties);
     state.reportsCount = payload.objects.output.geometries.length;
     state.isLoadingReport = false;
   },
   [UPDATE_REPORT_IN_LIST](state, data) {
-    state.reports = state.reports.map(report => {
+    state.reports = state.reports.map((report) => {
       if (report.slug !== data.slug) {
         return report;
       }
@@ -93,12 +91,12 @@ const mutations = {
   [SET_ERROR](state, error) {
     state.isLoadingReport = false;
     state.errors = error;
-  }
+  },
 };
 
 export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

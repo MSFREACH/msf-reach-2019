@@ -8,7 +8,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/events'
+      redirect: '/events',
     },
     {
       name: 'cognito-login',
@@ -18,15 +18,15 @@ export default new Router({
         {
           path: '',
           name: 'about',
-          component: () => import('@/views/About')
-        }
-      ]
+          component: () => import('@/views/About'),
+        },
+      ],
     },
     {
       name: 'map-main',
       path: '/map/:eventId?',
       props: true,
-      component: () => import('@/components/MapMain.vue')
+      component: () => import('@/components/MapMain.vue'),
     },
     {
       name: 'events',
@@ -44,45 +44,45 @@ export default new Router({
               path: '',
               name: 'event-general',
               component: () => import('@/views/Event/General'),
-              props: true
+              props: true,
             },
             {
               path: 'notifications',
               name: 'event-notifications',
               component: () => import('@/views/Event/Notifications'),
-              props: true
+              props: true,
             },
             {
               path: 'responses',
               name: 'event-responses',
               component: () => import('@/views/Event/Responses'),
-              props: true
+              props: true,
             },
             {
               path: 'extCapacity',
               name: 'event-extCapacity',
               component: () => import('@/views/Event/ExtCapacity'),
-              props: true
+              props: true,
             },
             {
               path: 'figures',
               name: 'event-figures',
               component: () => import('@/views/Event/Figures'),
-              props: true
+              props: true,
             },
             {
               path: 'resources',
               name: 'event-resources',
               component: () => import('@/views/Event/Resources'),
-              props: true
+              props: true,
             },
             {
               path: 'sitrep',
               name: 'event-sitrep',
               component: () => import('@/views/Event/SITREP'),
-              props: true
-            }
-          ]
+              props: true,
+            },
+          ],
         },
         {
           name: 'newsfeed',
@@ -93,57 +93,57 @@ export default new Router({
             {
               path: 'twitter',
               name: 'event-twitter',
-              component: () => import('@/views/NewsFeed/Twitter')
+              component: () => import('@/views/NewsFeed/Twitter'),
             },
             {
               path: 'rss',
               name: 'event-rss',
-              component: () => import('@/views/NewsFeed/RssFeed')
+              component: () => import('@/views/NewsFeed/RssFeed'),
             },
             {
               path: 'relatedReports',
               name: 'event-related-reports',
-              component: () => import('@/views/NewsFeed/RelatedReports')
-            }
-          ]
+              component: () => import('@/views/NewsFeed/RelatedReports'),
+            },
+          ],
         },
         {
           name: 'country-details',
           path: ':slug/country-details/',
           component: () => import('@/components/CountryDetails.vue'),
-          props: true
+          props: true,
         },
         {
           name: 'related-events',
           path: ':slug/related-events/',
           component: () => import('@/components/RelatedEvents.vue'),
-          props: true
-        }
-      ]
+          props: true,
+        },
+      ],
     },
     {
       name: 'event-edit',
       path: '/editor/:slug?',
       component: () => import('@/views/EventEdit'),
-      props: true
+      props: true,
     },
     {
       name: 'contacts',
       path: '/contacts',
       component: () => import('@/components/ContactList'),
-      props: true
+      props: true,
     },
     {
       name: 'reports',
       path: '/reports',
       component: () => import('@/components/Placeholder'),
-      props: true
+      props: true,
     },
     {
       name: 'placeholder',
       path: '/placeholder',
       component: () => import('@/components/Placeholder'),
-      props: true
-    }
-  ]
+      props: true,
+    },
+  ],
 });

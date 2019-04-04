@@ -15,6 +15,7 @@ import profile from './profile.module';
 import util from './util.module';
 
 import auth from './auth.module';
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -29,6 +30,6 @@ export default new Vuex.Store({
     SITREP,
     report,
     contact,
-    util
-  }
+    util,
+  },
 });

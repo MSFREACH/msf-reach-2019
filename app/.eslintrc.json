@@ -6,7 +6,7 @@
   "extends": [
     "plugin:vue/recommended",
     "plugin:jest/recommended",
-    "@vue/eslint-config-prettier",
+    "@vue/airbnb",
     "./.eslintrc-todo.js"
   ],
   "parserOptions": {
@@ -14,7 +14,6 @@
     "sourceType": "module"
   },
   "rules": {
-    "prettier/prettier": "error",
     "vue/max-attributes-per-line": "off"
   }
 }

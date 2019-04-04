@@ -5,7 +5,7 @@
       href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
       integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
       crossorigin=""
-    />
+    >
     <div id="map" class="map" />
   </v-layout>
 </template>
@@ -23,32 +23,32 @@ export default {
   name: 'MapAnnotation',
   props: {
     coordinates: {
-      type: Array
+      type: Array,
     },
     eventId: {
-      type: Number
-    }
+      type: Number,
+    },
   },
   data() {
     return {
       map: null,
 
       icons: {
-        statuses: STATUS_ICONS
+        statuses: STATUS_ICONS,
       },
       tileLayer: {
         terrain: null,
         satellite: null,
-        HotOSM: null
+        HotOSM: null,
       },
       layers: [
         {
           id: 0,
           name: 'areas',
           active: false,
-          features: [{}]
-        }
-      ]
+          features: [{}],
+        },
+      ],
     };
   },
   watch: {
@@ -63,7 +63,7 @@ export default {
         // this.initLayers();
         this.loadEventsLayer();
       }
-    }
+    },
   },
   mounted() {
     this.fetchEvents();
@@ -73,23 +73,23 @@ export default {
       'eventsCount',
       'isLoadingEvent',
       'eventsGeoJson',
-      'fetchEventsError'
-    ])
+      'fetchEventsError',
+    ]),
   },
   methods: {
     fetchEvents() {
       this.$store.dispatch(FETCH_EVENTS, {});
     },
     initMap() {
-      var mapID = this.mapId;
+      const mapID = this.mapId;
       this.map = L.map('map', {
         dragging: !L.Browser.mobile,
         tap: false,
-        minZoom: 4
+        minZoom: 4,
       });
       this.tileLayer.reachTiles = L.tileLayer(TILELAYER_REACH.URL);
       this.tileLayer.reachTiles.addTo(this.map); // Defaul use OpenStreetMap_hot
-      var lastCoordinate = this.eventsGeoJson.objects.output.geometries[0]
+      const lastCoordinate = this.eventsGeoJson.objects.output.geometries[0]
         .coordinates;
       this.map.setView([lastCoordinate[1], lastCoordinate[0]], 10);
 
@@ -98,32 +98,32 @@ export default {
 
       L.control.scale().addTo(this.map);
       // event Lat/Lng :: this.eventsGeoJson.objects.output.geometries
-      var eventMarker = L.marker([lastCoordinate[0], lastCoordinate[1]]).addTo(
-        this.map
+      const eventMarker = L.marker([lastCoordinate[0], lastCoordinate[1]]).addTo(
+        this.map,
       );
-      var vm = this;
-      setTimeout(function() {
+      const vm = this;
+      setTimeout(() => {
         vm.map.invalidateSize();
-      }, 1000); /// returns error
+      }, 1000); // / returns error
     },
     initLayers() {
-      this.layers.forEach(layer => {
+      this.layers.forEach((layer) => {
         const markerFeatures = layer.features.filter(
-          feature => feature.type === 'marker'
+          feature => feature.type === 'marker',
         );
         const polygonFeatures = layer.features.filter(
-          feature => feature.type === 'polygon'
+          feature => feature.type === 'polygon',
         );
 
-        markerFeatures.forEach(feature => {
+        markerFeatures.forEach((feature) => {
           feature.leafletObject = L.marker(feature.coords).bindPopup(
-            feature.name
+            feature.name,
           );
         });
 
-        polygonFeatures.forEach(feature => {
+        polygonFeatures.forEach((feature) => {
           feature.leafletObject = L.polygon(feature.coords).bindPopup(
-            feature.name
+            feature.name,
           );
         });
       });
@@ -131,11 +131,11 @@ export default {
     layerChanged(layerId, active) {
       /* Show or hide the features in the layer */
       const layer = this.layers.find(layer => layer.id === layerId);
-      layer.features.forEach(feature => {
+      layer.features.forEach((feature) => {
         /* Show or hide the feature depending on the active argument */
       });
 
-      /// toggle layer accordingly
+      // / toggle layer accordingly
       if (active) {
         feature.leafletObject.addTo(this.map);
       } else {
@@ -143,16 +143,16 @@ export default {
       }
     },
     loadEventsLayer() {
-      var vm = this;
-      var eventsLayer = L.geoJSON(this.eventsGeoJson.objects.output, {
-        pointToLayer: function(feature, latlng) {
-          var evStatus = feature.geometry.properties.metadata.event_status
+      const vm = this;
+      const eventsLayer = L.geoJSON(this.eventsGeoJson.objects.output, {
+        pointToLayer(feature, latlng) {
+          const evStatus = feature.geometry.properties.metadata.event_status
             ? feature.geometry.properties.metadata.event_status.toUpperCase()
             : 'MONITORING';
-          var statusIcon = vm.icons.statuses[evStatus];
+          const statusIcon = vm.icons.statuses[evStatus];
           if (statusIcon) return L.marker(latlng, { icon: L.icon(statusIcon) });
         },
-        onEachFeature: vm.onEachFeature
+        onEachFeature: vm.onEachFeature,
       });
 
       eventsLayer.addTo(this.map);
@@ -160,13 +160,13 @@ export default {
     onEachFeature(feature, layer) {
       console.log('onEachFeature ------ ', feature); // Todo: feature comes in as one big json and not a list
 
-      var popupContent = '';
+      const popupContent = '';
       if (feature.properties && feature.properties.properties) {
         console.log(feature.properties, feature.properties.properties);
       }
       layer.bindPopup(popupContent);
-    }
-  }
+    },
+  },
 };
 </script>
 

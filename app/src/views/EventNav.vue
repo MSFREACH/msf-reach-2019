@@ -27,10 +27,10 @@ export default {
   data() {
     return {
       active: null,
-      crossTabs: EVENT_TOP_NAVIGATIONS
+      crossTabs: EVENT_TOP_NAVIGATIONS,
     };
   },
-  methods: {}
+  methods: {},
 };
 </script>
 <style lang="scss">

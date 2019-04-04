@@ -52,7 +52,7 @@
 import { MAPBOX_STYLES } from '@/common/map-fields';
 import {
   FETCH_GEOJSON_POLYGON,
-  FETCH_REVERSE_GEOCODER
+  FETCH_REVERSE_GEOCODER,
 } from '@/store/actions.type';
 import { UPDATE_RESPONSE_AREA_GEOMETRY } from '@/store/mutations.type';
 
@@ -60,10 +60,10 @@ import { mapGetters } from 'vuex';
 import $ from 'jquery';
 import _ from 'lodash';
 
-/*eslint no-console: off*/
-var map;
-var geocoder;
-var draw;
+/* eslint no-console: off */
+let map;
+let geocoder;
+let draw;
 
 export default {
   name: 'MapInput',
@@ -75,11 +75,11 @@ export default {
       geocodeResult: {},
       reverseGeoJson: {},
       showSuggestion: false,
-      polygon: {}
+      polygon: {},
     };
   },
   computed: {
-    ...mapGetters(['eventBoundary', 'reverseGeojson', 'eventCoordinates'])
+    ...mapGetters(['eventBoundary', 'reverseGeojson', 'eventCoordinates']),
   },
   watch: {
     address(newVal) {
@@ -103,7 +103,7 @@ export default {
       if (newVal && !this.eventCoordinates) {
         this.showSuggestion = true;
       }
-    }
+    },
   },
   mounted() {
     this.initMap();
@@ -114,40 +114,40 @@ export default {
   },
   methods: {
     initMap() {
-      var vm = this;
+      const vm = this;
 
       map = new mapboxgl.Map({
         container: 'newMap',
         style: MAPBOX_STYLES.thematic,
         center: this.coordinates,
         zoom: 10,
-        minZoom: 4
+        minZoom: 4,
       });
 
       geocoder = new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
-        placeholder: 'Search address/location'
+        placeholder: 'Search address/location',
       });
 
       if (!$('.mapboxgl-ctrl-geocoder').length) {
         document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
       }
 
-      geocoder.on('result', function(payload) {
+      geocoder.on('result', (payload) => {
         vm.coordinates = payload.result.center;
         vm.geocodeResult = payload.result;
         vm.geocodeCenter = payload.result.center;
         vm.address = payload.result.place_name;
-        var tmp = payload.result;
-        var tmpObj = {};
-        var context = payload.result.context;
+        const tmp = payload.result;
+        const tmpObj = {};
+        const context = payload.result.context;
 
         if (!context) {
-          var id = payload.result.place_type[0];
+          const id = payload.result.place_type[0];
           tmpObj[id] = payload.result.place_name;
         } else {
-          context.map(function(item) {
-            var id = item.id.split('.')[0];
+          context.map((item) => {
+            const id = item.id.split('.')[0];
             if (id == 'country') tmpObj.country_code = item.short_code;
             return (tmpObj[id] = item.text);
           });
@@ -156,9 +156,9 @@ export default {
         vm.addressData = Object.assign(
           {
             latitude: tmp.geometry.coordinates[1],
-            longitude: tmp.geometry.coordinates[0]
+            longitude: tmp.geometry.coordinates[0],
           },
-          tmpObj
+          tmpObj,
         );
       });
     },
@@ -176,28 +176,28 @@ export default {
           type: 'geojson',
           data: {
             type: 'Feature',
-            geometry: this.eventBoundary.geojson
-          }
+            geometry: this.eventBoundary.geojson,
+          },
         },
         layout: {},
         paint: {
           'fill-color': '#0374C7',
-          'fill-opacity': 0.35
-        }
+          'fill-opacity': 0.35,
+        },
       });
     },
     getBoundaries(query) {
       this.$store.dispatch(FETCH_GEOJSON_POLYGON, query);
     },
     clearLayer() {
-      var mapLayer = map.getLayer('newMapBoundary');
+      const mapLayer = map.getLayer('newMapBoundary');
       if (typeof mapLayer !== 'undefined') {
         map.removeLayer('newMapBoundary').removeSource('newMapBoundary');
       }
     },
-    reverseGeocode: _.debounce(function() {
+    reverseGeocode: _.debounce(function () {
       if (!_.isEmpty(this.geocodeResult)) {
-        var forwardCoords = this.geocodeResult.geometry.coordinates;
+        const forwardCoords = this.geocodeResult.geometry.coordinates;
         console.log(this.coordinates, forwardCoords);
         if (!_.isEqual(this.coordinates, forwardCoords)) {
           this.$store.dispatch(FETCH_REVERSE_GEOCODER, this.coordinates);
@@ -211,8 +211,8 @@ export default {
         displayControlsDefault: false,
         controls: {
           polygon: true,
-          trash: true
-        }
+          trash: true,
+        },
       });
       map.addControl(draw);
       map.on('draw.create', this.updateArea);
@@ -221,19 +221,19 @@ export default {
       map.on('draw.modechange', this.drawModeChange);
     },
     updateArea(e) {
-      var data = draw.getAll();
+      const data = draw.getAll();
       if (data.features.length > 0) {
-        var area = turf.area(data);
-        var rounded_area = Math.round(area * 100) / 100;
+        const area = turf.area(data);
+        const rounded_area = Math.round(area * 100) / 100;
       }
     },
     drawModeChange(e) {
       if (e.mode == 'simple_select') {
-        var data = draw.getAll();
+        const data = draw.getAll();
         if (data.features.length > 0) {
           this.polygon = data.features[0].geometry;
           this.$store.commit(UPDATE_RESPONSE_AREA_GEOMETRY, {
-            area: data.features[0].geometry
+            area: data.features[0].geometry,
           });
         }
       }
@@ -263,8 +263,8 @@ export default {
       this.$refs.addressField.children[0].children[1].value = this.address;
       this.coordinates = item.center;
       this.showSuggestion = false;
-    }
-  }
+    },
+  },
 };
 </script>
 

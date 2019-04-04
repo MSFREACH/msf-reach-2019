@@ -6,7 +6,7 @@ import {
   FETCH_DOWNLOAD_URL,
   FETCH_GEOJSON_POLYGON,
   FETCH_REVERSE_GEOCODER,
-  FETCH_BUCKET_URLS
+  FETCH_BUCKET_URLS,
 } from './actions.type';
 import {
   FETCH_URL_START,
@@ -17,12 +17,12 @@ import {
   FETCH_BUCKET_URLS_START,
   FETCH_BUCKET_URLS_END,
   FETCH_GEOJSON_POLYGON_END,
-  FETCH_REVERSE_GEOCODER_END
+  FETCH_REVERSE_GEOCODER_END,
 } from './mutations.type';
 
-/*eslint no-unused-vars: off*/
-/*eslint no-debugger: off*/
-/*eslint no-console: off*/
+/* eslint no-unused-vars: off */
+/* eslint no-debugger: off */
+/* eslint no-console: off */
 
 const state = {
   requestData: null,
@@ -32,7 +32,7 @@ const state = {
   geoPolygon: {},
   reverseGeojson: {},
   downloadUrl: null,
-  bucketUrls: []
+  bucketUrls: [],
 };
 
 const getters = {
@@ -50,7 +50,7 @@ const getters = {
   },
   uploadingFile(state) {
     return state.isUploadingFile;
-  }
+  },
 };
 
 const actions = {
@@ -66,7 +66,7 @@ const actions = {
     commit(UPLOAD_START);
     const params = {
       url: state.requestData.signedRequest,
-      file: file
+      file,
     };
     return UtilService.signedUpdate(params).then(({ data }) => {
       commit(UPLOAD_END, data);
@@ -91,7 +91,7 @@ const actions = {
     const params = {
       q: query,
       polygon_geojson: 1,
-      format: 'json'
+      format: 'json',
     };
     return UtilService.getGeojsonPolygon(params).then(({ data }) => {
       commit(FETCH_GEOJSON_POLYGON_END, data);
@@ -104,7 +104,7 @@ const actions = {
       commit(FETCH_REVERSE_GEOCODER_END, data);
       return data;
     });
-  }
+  },
 };
 
 const mutations = {
@@ -132,19 +132,17 @@ const mutations = {
     state.downloadUrl = result;
   },
   [FETCH_GEOJSON_POLYGON_END](state, result) {
-    var polygon = _.find(result, function(o) {
-      return o.geojson.type == 'Polygon' || o.geojson.type == 'MultiPolygon';
-    });
+    const polygon = _.find(result, o => o.geojson.type == 'Polygon' || o.geojson.type == 'MultiPolygon');
     state.geoPolygon = polygon;
   },
   [FETCH_REVERSE_GEOCODER_END](state, result) {
     state.reverseGeojson = result;
-  }
+  },
 };
 
 export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

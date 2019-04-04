@@ -25,7 +25,7 @@
             />
             <new-event />
           </div>
-          <hr class="row-divider" />
+          <hr class="row-divider">
           <div class="full-width">
             <v-select
               v-model="filteredTypes"
@@ -100,8 +100,7 @@
               >
                 {{ eventType }}
               </span>
-              <span class="not-render"
-                >{{ props.item.metadata.event_status }}
+              <span class="not-render">{{ props.item.metadata.event_status }}
               </span>
 
               <v-list-tile-sub-title>
@@ -138,35 +137,35 @@ export default {
   components: {
     NewEvent,
     REvent,
-    EventNav
+    EventNav,
   },
   props: {
     status: {
       status: String,
       required: false,
-      default: 'all'
+      default: 'all',
     },
     author: {
       type: String,
-      required: false
+      required: false,
     },
     favorited: {
       type: Boolean,
-      required: false
-    }
+      required: false,
+    },
   },
   data() {
     return {
       rowsPerPageItems: [4, 8, 12],
       pagination: {
-        rowsPerPage: 8
+        rowsPerPage: 8,
       },
       search: '',
       allEventTypes: EVENT_TYPES,
       filteredTypes: [],
       displayEvents: [],
       allEventStatuses: EVENT_STATUSES,
-      selectedStatus: ''
+      selectedStatus: '',
     };
   },
   computed: {
@@ -185,28 +184,25 @@ export default {
       'eventsCount',
       'isLoadingEvent',
       'events',
-      'fetchEventsError'
-    ])
+      'fetchEventsError',
+    ]),
   },
   watch: {
     events(newValue) {
       // eslint-disable-line no-unused-vars
-      this.events.map(item => {
+      this.events.map((item) => {
         item.short_description = _.truncate(item.metadata.description, {
           length: 250,
-          separator: ' '
+          separator: ' ',
         });
-        var cleanAreas = _.compact(item.metadata.areas);
+        const cleanAreas = _.compact(item.metadata.areas);
 
         if (!item.metadata.areas || _.isEmpty(cleanAreas)) {
           item.place = item.metadata.country;
+        } else if (cleanAreas[0].region) {
+          item.place = `${cleanAreas[0].region} ${cleanAreas[0].country_code}`;
         } else {
-          if (cleanAreas[0].region) {
-            item.place =
-              cleanAreas[0].region + ' ' + cleanAreas[0].country_code;
-          } else {
-            item.place = cleanAreas[0].country;
-          }
+          item.place = cleanAreas[0].country;
         }
 
         if (!item.metadata.types) {
@@ -216,13 +212,13 @@ export default {
       this.displayEvents = _.map(this.events, _.clone);
     },
     filteredTypes(newValue) {
-      this.displayEvents = this.events.filter(item => {
-        var types = item.metadata.types
+      this.displayEvents = this.events.filter((item) => {
+        const types = item.metadata.types
           ? item.metadata.types
           : item.type.split(',');
         return _.isEmpty(newValue) || _.indexOf(types, newValue) != -1;
       });
-    }
+    },
   },
   mounted() {
     this.fetchEvents();
@@ -233,12 +229,11 @@ export default {
     },
     filterByStatus(status) {
       this.selectedStatus = status;
-      this.displayEvents = this.events.filter(item => {
+      this.displayEvents = this.events.filter((item) => {
         if (
-          item.metadata.event_status &&
-          item.metadata.event_status.toLowerCase() == status
-        )
-          return item;
+          item.metadata.event_status
+          && item.metadata.event_status.toLowerCase() == status
+        ) return item;
       });
     },
     customFilter(items, search, filter) {
@@ -248,33 +243,27 @@ export default {
       }
       if (!search) {
         // pure type filter
-        return items.filter(item => {
-          return (
-            !this.filteredTypes ||
-            _.intersection(this.filteredTypes, item.types)
-          );
-        });
+        return items.filter(item => (
+          !this.filteredTypes
+            || _.intersection(this.filteredTypes, item.types)
+        ));
       }
       search = search.toString().toLowerCase();
 
       if (_.isEmpty(this.filteredTypes)) {
         // pure search string
-        return itemsitems.filter(item =>
-          filter(item.metadata.description, search)
-        );
+        return itemsitems.filter(item => filter(item.metadata.description, search));
       }
 
       // Otherwise return search by both
       return items
         .filter(item => filter(item.metadata.description, search))
-        .filter(item => {
-          return (
-            !this.filteredTypes ||
-            _.intersection(this.filteredTypes, item.types)
-          );
-        });
-    }
-  }
+        .filter(item => (
+          !this.filteredTypes
+            || _.intersection(this.filteredTypes, item.types)
+        ));
+    },
+  },
 };
 </script>
 
@@ -283,24 +272,23 @@ export default {
 @import '@/assets/css/event.scss';
 @import '@/assets/css/display.scss';
 
-
-    .eventListPanel{
-        background: $bg-milk-grey;
-        .v-input__slot{
-            height: inherit;
-        }
-        .v-list__tile__sub-title{
-            label{
-                line-height: 22px;
-                margin-right: 12px;
-            }
-        }
-        .v-data-iterator{
-            width: 100%;
-            overflow: auto;
-            height: 100vh;
-        }
+.eventListPanel {
+  background: $bg-milk-grey;
+  .v-input__slot {
+    height: inherit;
+  }
+  .v-list__tile__sub-title {
+    label {
+      line-height: 22px;
+      margin-right: 12px;
     }
+  }
+  .v-data-iterator {
+    width: 100%;
+    overflow: auto;
+    height: 100vh;
+  }
+}
 
 .v-menu {
   .v-list {

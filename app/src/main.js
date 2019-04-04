@@ -9,18 +9,18 @@ import Amplify from 'aws-amplify';
 // import Adal from 'vue-adal';
 import config from '@/common/config.js';
 
+import ApiService from '@/common/api.service';
+import DateFilter from '@/common/date.filter';
+import TextFilter from '@/common/text.filter';
+
 Amplify.configure({
   Auth: {
     mandatorySignIn: false,
     region: config.cognito.REGION,
     userPoolId: config.cognito.USER_POOL_ID,
-    userPoolWebClientId: config.cognito.APP_CLIENT_ID
-  }
+    userPoolWebClientId: config.cognito.APP_CLIENT_ID,
+  },
 });
-
-import ApiService from '@/common/api.service';
-import DateFilter from '@/common/date.filter';
-import TextFilter from '@/common/text.filter';
 
 Vue.config.productionTip = false;
 Vue.filter('date', DateFilter.dateOnly);
@@ -49,8 +49,8 @@ Vue.use(Vuetify, {
     // success: '#4CAF50',
     btnGray: '#707070',
     warning: '#EE0000',
-    warningRed: '#F38181'
-  }
+    warningRed: '#F38181',
+  },
 });
 
 // Vue.use(Adal, {
@@ -69,9 +69,7 @@ Vue.use(Vuetify, {
 
 ApiService.init();
 
-router.beforeEach((to, from, next) => {
-  return Promise.all([store.dispatch(CHECK_AUTH)]).then(next);
-});
+router.beforeEach((to, from, next) => Promise.all([store.dispatch(CHECK_AUTH)]).then(next));
 
 /* eslint-disable no-new */
 new Vue({
@@ -79,5 +77,5 @@ new Vue({
   router,
   store,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
 });

@@ -1,7 +1,9 @@
 <template>
   <v-dialog v-model="dialog" max-width="500px">
     <v-btn slot="activator" fab small flat>
-      <v-icon color="grey darken-1"> add </v-icon>
+      <v-icon color="grey darken-1">
+        add
+      </v-icon>
     </v-btn>
     <v-card>
       <v-card-title>
@@ -22,7 +24,7 @@
             </v-flex>
             <!-- UPLOAD IMAGE  -->
             <v-flex xs12>
-              <img v-if="imageUrl" :src="imageUrl" height="150" />
+              <img v-if="imageUrl" :src="imageUrl" height="150">
               <v-text-field
                 v-model="imageName"
                 label="Select Image"
@@ -35,7 +37,7 @@
                 style="display: none"
                 accept="image/*"
                 @change="onFilePicked"
-              />
+              >
             </v-flex>
             <!-- GEOJSON -->
             <!-- CONSENTS -->
@@ -44,23 +46,27 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn flat @click.native="close">Cancel</v-btn>
-        <v-btn flat @click.native="submit">Save</v-btn>
+        <v-btn flat @click.native="close">
+          Cancel
+        </v-btn>
+        <v-btn flat @click.native="submit">
+          Save
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-/*eslint no-debugger: off*/
-/*eslint no-console: off*/
-/*eslint no-unused-vars: off*/
+/* eslint no-debugger: off */
+/* eslint no-console: off */
+/* eslint no-unused-vars: off */
 import { mapGetters } from 'vuex';
 import { DEFAULT_REPORT_CARD_FIELDS } from '@/common/form-fields.js';
 import {
   CREATE_REPORT,
   FETCH_UPLOAD_URL,
-  PUT_SIGNED_REQUEST
+  PUT_SIGNED_REQUEST,
 } from '@/store/actions.type';
 
 export default {
@@ -71,7 +77,7 @@ export default {
       report: DEFAULT_REPORT_CARD_FIELDS,
       imageName: '',
       imageUrl: '',
-      imageFile: ''
+      imageFile: '',
     };
   },
   methods: {
@@ -82,8 +88,8 @@ export default {
       }, 300);
     },
     submit() {
-      var timestamp = new Date();
-      var ISOTime = timestamp.toISOString();
+      const timestamp = new Date();
+      const ISOTime = timestamp.toISOString();
       if (!this.report.eventId) {
         delete this.report.eventId;
       }
@@ -92,13 +98,13 @@ export default {
       // TODO: replace geoJSON with map input
       this.report.location = {
         lat: 52.52,
-        lng: 13.405
+        lng: 13.405,
       };
 
       if (this.imageFile) {
-        var param = { key: 'report', filename: this.imageName };
-        this.$store.dispatch(FETCH_UPLOAD_URL, param).then(payload => {
-          var imageLink = payload.url;
+        const param = { key: 'report', filename: this.imageName };
+        this.$store.dispatch(FETCH_UPLOAD_URL, param).then((payload) => {
+          const imageLink = payload.url;
           this.uploadFile(imageLink);
         });
       } else {
@@ -135,10 +141,10 @@ export default {
       if (imageLink) {
         this.report.content.image_link = imageLink;
       }
-      this.$store.dispatch(CREATE_REPORT, this.report).then(payload => {
+      this.$store.dispatch(CREATE_REPORT, this.report).then((payload) => {
         // show confimation or direct to MAP view to show nearby reports
       });
-    }
-  }
+    },
+  },
 };
 </script>

@@ -102,3 +102,7 @@ npm run test:client -- --watch
 Further documentation can be found in doc/ including:
 - API.md - information on API
 - TESTING.md - information on testing
+
+
+### Linting rules reference
+https://github.com/vuejs/eslint-plugin-vue/tree/master/docs/rules 

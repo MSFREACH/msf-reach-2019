@@ -12,20 +12,24 @@
       <template>
         <v-stepper v-model="e1" class="elevation-0">
           <v-stepper-header flat>
-            <v-stepper-step :complete="e1 > 1" step="1"
-              >Geolocation <small>map</small></v-stepper-step
-            >
+            <v-stepper-step :complete="e1 > 1" step="1">
+              Geolocation <small>map</small>
+            </v-stepper-step>
             <v-divider />
-            <v-stepper-step :complete="e1 > 2" step="2"
-              >General <small>metadata</small></v-stepper-step
-            >
+            <v-stepper-step :complete="e1 > 2" step="2">
+              General <small>metadata</small>
+            </v-stepper-step>
             <v-spacer />
-            <v-icon class="action-link" @click="close">close</v-icon>
+            <v-icon class="action-link" @click="close">
+              close
+            </v-icon>
           </v-stepper-header>
           <v-stepper-items>
             <v-stepper-content step="1">
               <map-input ref="mapEntry" />
-              <v-btn class="right" flat @click="e1 = 2"> Continue</v-btn>
+              <v-btn class="right" flat @click="e1 = 2">
+                Continue
+              </v-btn>
             </v-stepper-content>
 
             <v-stepper-content step="2">
@@ -38,7 +42,7 @@
                   <label>REACH Operator</label>
                   <span> {{ operatorName }} </span>
                 </div>
-                <hr class="row-divider" />
+                <hr class="row-divider">
                 <div class="top-align">
                   <div class="one-third">
                     <label> Type(s) </label>
@@ -85,9 +89,7 @@
                         placeholder="specify"
                       />
                     </div>
-                    <a v-if="!newType" class="form-actions" @click="addType()"
-                      >Add type</a
-                    >
+                    <a v-if="!newType" class="form-actions" @click="addType()">Add type</a>
                     <div v-else>
                       <v-flex class="row-actions" xs12>
                         <a @click="submitType()">confirm</a>
@@ -119,8 +121,7 @@
                       class="tags"
                     >
                       <span v-if="area.region">
-                        {{ area.region }}, {{ area.country }}</span
-                      >
+                        {{ area.region }}, {{ area.country }}</span>
 
                       <span class="severity-wrapper">
                         <span
@@ -136,15 +137,13 @@
                                 metadata.severity_measures[index].scale - 1
                               ].text + 'Severity'
                             "
-                            >{{
-                              allSeverity[
-                                metadata.severity_measures[index].scale - 1
-                              ].text
-                            }}
-                            severity</span
-                          >
-                          <span class="notes"
-                            ><br />
+                          >{{
+                            allSeverity[
+                              metadata.severity_measures[index].scale - 1
+                            ].text
+                          }}
+                            severity</span>
+                          <span class="notes"><br>
                             {{ metadata.severity_measures[index].description }}
                           </span>
                         </span>
@@ -153,7 +152,7 @@
                     <a class="form-actions" @click="e1 = 1">edit area</a>
                   </div>
                 </div>
-                <hr class="row-divider" />
+                <hr class="row-divider">
                 <div class="top-align">
                   <div class="one-third">
                     <label> OPEN DATE </label>
@@ -235,7 +234,7 @@
                     />
                   </div>
                 </div>
-                <hr class="row-divider" />
+                <hr class="row-divider">
                 <v-layout row wrap>
                   <v-flex xs6 style="display: inline-block;">
                     <label> Description </label>
@@ -248,19 +247,19 @@
                     <v-flex xs12 sm6 class="py-2">
                       <v-btn-toggle v-model="toggle_text_format">
                         <v-btn flat>
-                          <v-icon value="bold" @click="formatText('bold')"
-                            >format_bold</v-icon
-                          >
+                          <v-icon value="bold" @click="formatText('bold')">
+                            format_bold
+                          </v-icon>
                         </v-btn>
                         <v-btn flat>
-                          <v-icon value="italic" @click="formatText('italic')"
-                            >format_italic</v-icon
-                          >
+                          <v-icon value="italic" @click="formatText('italic')">
+                            format_italic
+                          </v-icon>
                         </v-btn>
                         <v-btn flat>
-                          <v-icon value="title" @click="formatText('size')"
-                            >format_size</v-icon
-                          >
+                          <v-icon value="title" @click="formatText('size')">
+                            format_size
+                          </v-icon>
                         </v-btn>
                       </v-btn-toggle>
                     </v-flex>
@@ -279,12 +278,14 @@
                   small
                   flat
                   @click="showMarkdown = !showMarkdown"
-                  ><v-icon>short_text</v-icon> markdown syntax guide</v-btn
                 >
-                <hr class="row-divider" />
+                  <v-icon>short_text</v-icon> markdown syntax guide
+                </v-btn>
+                <hr class="row-divider">
                 <v-text-field v-model="metadata.sharepoint_link" v-text-field
-                class="sharepoint-input" clearable prepend-icon="link"
-                label="SharePoint Link" round/<>
+                              class="sharepoint-input" clearable prepend-icon="link"
+                              label="SharePoint Link" round/<
+                />
               </v-container>
               <span class="right">
                 <v-progress-circular v-if="inProgress" :indeterminate="true" />
@@ -312,7 +313,7 @@ import {
   DEFAULT_EVENT_AREA,
   EVENT_STATUSES,
   SEVERITY,
-  SEVERITY_LABELS
+  SEVERITY_LABELS,
 } from '@/common/common';
 import { DEFAULT_EVENT_METADATA } from '@/common/form-fields';
 import { CREATE_EVENT } from '@/store/actions.type';
@@ -325,7 +326,7 @@ export default {
   name: 'NewEvent',
   components: {
     MapInput,
-    MarkdownPanel
+    MarkdownPanel,
   },
   data: () => ({
     e1: 0,
@@ -335,10 +336,10 @@ export default {
     allEventTypes: EVENT_TYPES,
     subTypes: {
       disease_outbreak: DISEASE_OUTBREAK_TYPES,
-      natural_disaster: NATURAL_DISASTER_TYPES
+      natural_disaster: NATURAL_DISASTER_TYPES,
     },
     editable: {
-      typeIndex: null
+      typeIndex: null,
     },
     newType: null,
     defaultType: DEFAULT_EVENT_TYPE,
@@ -355,7 +356,7 @@ export default {
     metadata: DEFAULT_EVENT_METADATA,
     inProgress: false,
     toggle_format: [0, 1],
-    toggle_text_format: null
+    toggle_text_format: null,
   }),
   computed: {
     ...mapGetters(['currentUser']),
@@ -367,32 +368,32 @@ export default {
     },
     subTypeSelect() {
       return (
-        this.newType.type == 'disease_outbreak' ||
-        this.newType.type == 'natural_disaster'
+        this.newType.type == 'disease_outbreak'
+        || this.newType.type == 'natural_disaster'
       );
     },
     timezones() {
       return moment.tz.names();
     },
     timezoneOffSet() {
-      var m = moment.tz(
+      const m = moment.tz(
         this.eventMetadata.event_local_time,
-        this.eventMetadata.event_local_timezone
+        this.eventMetadata.event_local_timezone,
       );
-      var mm = m.format();
-      var testString = mm.substring(19, 22);
+      const mm = m.format();
+      const testString = mm.substring(19, 22);
       return testString;
     },
     eventCreatedAt() {
       return new Date();
-    }
+    },
   },
 
   watch: {
     dialog(val) {
       if (val) {
-        var vm = this;
-        setTimeout(function() {
+        const vm = this;
+        setTimeout(() => {
           vm.$refs.mapEntry.resizeMap();
         }, 100);
         this.e1 = 1;
@@ -404,8 +405,8 @@ export default {
     },
     e1(val) {
       if (val == 2) {
-        var address = this.$refs.mapEntry.addressData;
-        var semanticAddress = _(address)
+        const address = this.$refs.mapEntry.addressData;
+        const semanticAddress = _(address)
           .omit(_.isUndefined)
           .omit(_.isNull)
           .value();
@@ -416,9 +417,9 @@ export default {
       }
     },
     selectedTimezone(val) {
-      var zoneObj = moment.tz.zone(val);
+      const zoneObj = moment.tz.zone(val);
       this.timeZoneAbbr = zoneObj.abbr(new Date());
-    }
+    },
   },
   methods: {
     mdRender(value) {
@@ -434,10 +435,10 @@ export default {
       this.newType = _.clone(this.defaultType);
     },
     addSyntax(type) {
-      var selection = window.getSelection();
+      const selection = window.getSelection();
     },
     submitType() {
-      var tmp = this.newType;
+      const tmp = this.newType;
       // if(!this.metadata.types) this.metadata.types = [];
       if (this.subTypeSelect) {
         tmp.subtype == 'other'
@@ -451,43 +452,42 @@ export default {
       this.clearType();
     },
     clearType() {
-      for (var fields in this.newType) delete this.newType[fields];
+      for (const fields in this.newType) delete this.newType[fields];
       this.newType = null;
     },
     close() {
-      for (var fields in this.metadata) delete this.metadata[fields];
+      for (const fields in this.metadata) delete this.metadata[fields];
       this.metadata = _.cloneDeep(this.defaultMetadata);
       this.dialog = false;
       this.clearType();
     },
     save() {
-      var address = this.$refs.mapEntry.addressData;
+      const address = this.$refs.mapEntry.addressData;
       this.lintDateTime();
       this.lintStatus();
       this.metadata.types = _.compact(this.metadata.types);
       this.metadata.incharge_contact.operator.name = this.currentUser.username;
       this.inProgress = true;
       // TODO: replace geoJSON with map input
-      var timestamp = new Date();
-      var ISOTime = timestamp.toISOString();
-      var payload = {
+      const timestamp = new Date();
+      const ISOTime = timestamp.toISOString();
+      const payload = {
         location: {
           lat: address.latitude,
-          lng: address.longitude
+          lng: address.longitude,
         },
         created_at: ISOTime,
         type: this.metadata.types.join(','),
         status: 'active',
-        metadata: this.metadata
+        metadata: this.metadata,
       };
-      var vm = this;
-      this.$store.dispatch(CREATE_EVENT, payload).then(payload => {
-        var eventID =
-          payload.data.result.objects.output.geometries[0].properties.id;
+      const vm = this;
+      this.$store.dispatch(CREATE_EVENT, payload).then((payload) => {
+        const eventID = payload.data.result.objects.output.geometries[0].properties.id;
         this.inProgress = false;
         this.$router.push({
           name: 'event-general',
-          params: { slug: eventID, firstTime: true }
+          params: { slug: eventID, firstTime: true },
         });
         setTimeout(() => vm.close(), 1000);
       });
@@ -495,17 +495,17 @@ export default {
     lintDateTime() {
       this.metadata.event_datetime = new Date().toISOString();
 
-      var tmpDateTime = new Date(this.eventDate + ' ' + this.eventTime);
+      const tmpDateTime = new Date(`${this.eventDate} ${this.eventTime}`);
       this.metadata.event_local_time = tmpDateTime;
       this.metadata.event_local_timezone = this.selectedTimezone;
       this.metadata.event_local_timezone_abbr = this.timeZoneAbbr;
     },
     lintStatus() {
-      var timestamp = new Date();
-      var ISOTime = timestamp.toISOString();
+      const timestamp = new Date();
+      const ISOTime = timestamp.toISOString();
       this.metadata.event_status = this.selectedStatus;
       this.metadata.status_updates = [
-        { type: this.selectedStatus, timestamp: ISOTime }
+        { type: this.selectedStatus, timestamp: ISOTime },
       ];
     },
     parseDate(date) {
@@ -514,25 +514,25 @@ export default {
       return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
     },
     formatText(type) {
-      var cursorStart = getCursorPosStart();
-      var cursorEnd = getCursorPosEnd();
-      var v = this.metadata.description;
-      var txtBefore = v.substring(0, cursorStart);
-      var txtCenter = v.substring(cursorStart, cursorEnd);
+      const cursorStart = getCursorPosStart();
+      const cursorEnd = getCursorPosEnd();
+      const v = this.metadata.description;
+      const txtBefore = v.substring(0, cursorStart);
+      let txtCenter = v.substring(cursorStart, cursorEnd);
       if (txtCenter.length == 0) {
         txtCenter = type;
       }
-      var txtAfter = v.substring(cursorEnd, v.length);
-      var combine;
+      const txtAfter = v.substring(cursorEnd, v.length);
+      let combine;
       switch (type) {
         case 'bold':
-          combine = txtBefore + ' **' + txtCenter + '** ' + txtAfter;
+          combine = `${txtBefore} **${txtCenter}** ${txtAfter}`;
           break;
         case 'italic':
-          combine = txtBefore + ' *' + txtCenter + '* ' + txtAfter;
+          combine = `${txtBefore} *${txtCenter}* ${txtAfter}`;
           break;
         case 'size':
-          combine = txtBefore + ' \n\r# ' + txtCenter + '\n\r' + txtAfter;
+          combine = `${txtBefore} \n\r# ${txtCenter}\n\r${txtAfter}`;
           break;
         default:
           combine = v;
@@ -540,8 +540,8 @@ export default {
       }
 
       this.metadata.description = combine;
-    }
-  }
+    },
+  },
 };
 
 function getCursorPosStart() {

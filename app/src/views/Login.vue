@@ -23,7 +23,9 @@
                   label="Password"
                   type="password"
                 />
-                <v-spacer /><v-btn dark type="submit"> Sign in</v-btn>
+                <v-spacer /><v-btn dark type="submit">
+                  Sign in
+                </v-btn>
               </v-form>
             </v-card-text>
             <v-card-text v-else>
@@ -36,7 +38,9 @@
                   label="Password"
                   type="password"
                 />
-                <v-spacer /><v-btn dark type="submit">Submit</v-btn>
+                <v-spacer /><v-btn dark type="submit">
+                  Submit
+                </v-btn>
               </v-form>
             </v-card-text>
             <v-card-actions>
@@ -57,7 +61,7 @@ import { mapGetters, mapState } from 'vuex';
 import {
   LOGIN,
   PASSWORD_CHALLENGE,
-  NEW_PASSWORD_REQUIRED
+  NEW_PASSWORD_REQUIRED,
 } from '@/store/actions.type';
 
 export default {
@@ -67,7 +71,7 @@ export default {
       username: null,
       password: null,
       newPassword: null,
-      needToSetPassword: false
+      needToSetPassword: false,
     };
   },
   mounted() {
@@ -76,8 +80,8 @@ export default {
   methods: {
     onSubmit(username, password) {
       // TODO: validation
-      var vm = this;
-      this.$store.dispatch(LOGIN, { username, password }).then(payload => {
+      const vm = this;
+      this.$store.dispatch(LOGIN, { username, password }).then((payload) => {
         if (payload.challengeName == NEW_PASSWORD_REQUIRED) {
           vm.needToSetPassword = true;
         } else {
@@ -86,24 +90,23 @@ export default {
       });
     },
     setPassword(newPassword) {
-      this.$store.dispatch(PASSWORD_CHALLENGE, newPassword).then(data => {
+      this.$store.dispatch(PASSWORD_CHALLENGE, newPassword).then((data) => {
         this.goNext();
       });
     },
     goNext() {
-      var previousRoute = this.$route.query.from;
-      var goTo =
-        previousRoute && previousRoute != '/login'
-          ? previousRoute
-          : { name: 'events' };
+      const previousRoute = this.$route.query.from;
+      const goTo = previousRoute && previousRoute != '/login'
+        ? previousRoute
+        : { name: 'events' };
       this.$router.push(goTo);
-    }
+    },
   },
   computed: {
     ...mapGetters(['isAuthenticated']),
     ...mapState({
-      errors: state => state.auth.errors
-    })
-  }
+      errors: state => state.auth.errors,
+    }),
+  },
 };
 </script>

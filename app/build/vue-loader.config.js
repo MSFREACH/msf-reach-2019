@@ -1,6 +1,7 @@
-var utils = require('./utils');
-var config = require('./config');
-var isProduction = process.env.NODE_ENV === 'production';
+const utils = require('./utils');
+const config = require('./config');
+
+const isProduction = process.env.NODE_ENV === 'production';
 const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin');
 const { VuetifyProgressiveModule } = require('vuetify-loader');
 
@@ -15,19 +16,19 @@ module.exports = {
     video: 'src',
     source: 'src',
     img: 'src',
-    image: 'xlink:href'
+    image: 'xlink:href',
   },
-  chainWebpack: config => {
-    config.plugin('html').tap(args => {
+  chainWebpack: (config) => {
+    config.plugin('html').tap((args) => {
       args[0].chunksSortMode = 'none';
       return args;
     }),
-      config.plugin('vuetify-loader').use(VuetifyLoaderPlugin);
+    config.plugin('vuetify-loader').use(VuetifyLoaderPlugin);
     config.module
       .rule('vue')
       .use('vue-loader')
       .loader('vue-loader')
-      .tap(options => {
+      .tap((options) => {
         options.compilerOptions.modules = [VuetifyProgressiveModule];
         return options;
       });
@@ -44,5 +45,5 @@ module.exports = {
     //           //...
     //        }
     //    }))
-  }
+  },
 };

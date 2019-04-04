@@ -1,5 +1,5 @@
-/*eslint no-debugger: off*/
-/*eslint no-unused-vars :off*/
+/* eslint no-debugger: off */
+/* eslint no-unused-vars :off */
 import _ from 'lodash';
 import { ContactsService } from '@/common/api.service';
 import { FETCH_CONTACTS } from './actions.type';
@@ -7,7 +7,7 @@ import {
   FETCH_CONTACTS_START,
   FETCH_CONTACTS_END,
   UPDATE_CONTACT_IN_LIST,
-  SET_ERROR
+  SET_ERROR,
 } from './mutations.type';
 
 const state = {
@@ -15,7 +15,7 @@ const state = {
   contacts: [],
   contactsGeoJson: [],
   isLoadingContact: true,
-  contactsCount: 0
+  contactsCount: 0,
 };
 
 const getters = {
@@ -33,7 +33,7 @@ const getters = {
   },
   fetchContactsError(state) {
     return state.error;
-  }
+  },
 };
 
 const actions = {
@@ -43,10 +43,10 @@ const actions = {
       .then(({ data }) => {
         commit(FETCH_CONTACTS_END, data.result);
       })
-      .catch(error => {
+      .catch((error) => {
         commit(SET_ERROR, error);
       });
-  }
+  },
 };
 
 /* eslint no-param-reassign: ["error", { "props": false }] */
@@ -56,16 +56,14 @@ const mutations = {
   },
   [FETCH_CONTACTS_END](state, payload) {
     // TODO: // // Add popups see: [mapAllContacts] parse GeoJSON here
-    console.log('Fetched contacts ------ ', payload); //eslint-disable-line no-console
+    console.log('Fetched contacts ------ ', payload); // eslint-disable-line no-console
     state.contactsGeoJson = payload;
-    state.contacts = _.map(payload.objects.output.geometries, function(item) {
-      return item;
-    });
+    state.contacts = _.map(payload.objects.output.geometries, item => item);
     state.contactsCount = payload.objects.output.geometries.length;
     state.isLoadingContact = false;
   },
   [UPDATE_CONTACT_IN_LIST](state, data) {
-    state.contacts = state.contacts.map(contact => {
+    state.contacts = state.contacts.map((contact) => {
       if (contact.slug !== data.slug) {
         return contact;
       }
@@ -77,12 +75,12 @@ const mutations = {
   [SET_ERROR](state, error) {
     state.errors = error;
     state.isLoadingContact = false;
-  }
+  },
 };
 
 export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

@@ -17,12 +17,14 @@
       />
       <markdown-panel v-if="showMarkdown && dialog" />
       <v-dialog v-model="dialog" :dark="editIndex != -1" max-width="880px">
-        <v-btn slot="activator" class="mb-2" small fab flat
-          ><v-icon>add</v-icon></v-btn
-        >
+        <v-btn slot="activator" class="mb-2" small fab flat>
+          <v-icon>add</v-icon>
+        </v-btn>
         <v-card :class="editIndex != -1 ? 'editing' : 'create-new'">
           <v-flex right>
-            <v-icon @click="close">close</v-icon>
+            <v-icon @click="close">
+              close
+            </v-icon>
           </v-flex>
           <v-card-text>
             <v-container grid-list-md>
@@ -40,10 +42,10 @@
                     v-if="editedItem.category == 'EXPLO_FINDINGS'"
                     class="reminder-notes"
                   >
-                    Type of needs, capacities on the ground <br />
+                    Type of needs, capacities on the ground <br>
                     How many people affected, Call for int'l aid by authorities?
-                    <br />
-                    MSF proposed intervention <br />
+                    <br>
+                    MSF proposed intervention <br>
                     type of activities location of activities
                   </span>
                 </v-flex>
@@ -64,19 +66,19 @@
                   <v-flex xs12 sm6 class="py-2">
                     <v-btn-toggle v-model="toggle_format">
                       <v-btn flat>
-                        <v-icon value="bold" @click="formatText('bold')"
-                          >format_bold</v-icon
-                        >
+                        <v-icon value="bold" @click="formatText('bold')">
+                          format_bold
+                        </v-icon>
                       </v-btn>
                       <v-btn flat>
-                        <v-icon value="italic" @click="formatText('italic')"
-                          >format_italic</v-icon
-                        >
+                        <v-icon value="italic" @click="formatText('italic')">
+                          format_italic
+                        </v-icon>
                       </v-btn>
                       <v-btn flat>
-                        <v-icon value="title" @click="formatText('size')"
-                          >format_size</v-icon
-                        >
+                        <v-icon value="title" @click="formatText('size')">
+                          format_size
+                        </v-icon>
                       </v-btn>
                       <!-- <v-btn flat>
                                         <v-icon  @click="formatText('unordered list')" value="unordered_list">format_list_bulleted</v-icon>
@@ -100,10 +102,11 @@
                   small
                   flat
                   @click="showMarkdown = !showMarkdown"
-                  ><v-icon>short_text</v-icon> markdown syntax guide</v-btn
                 >
+                  <v-icon>short_text</v-icon> markdown syntax guide
+                </v-btn>
 
-                <hr class="row-divider" />
+                <hr class="row-divider">
                 <v-card class="file-attachment" light>
                   <form enctype="multipart/form-data">
                     <input
@@ -114,7 +117,7 @@
                       accept="*/*"
                       multiple
                       @change="onFilePicked"
-                    />
+                    >
                     <v-icon class="file-icon" @click="pickFile">
                       attach_file
                     </v-icon>
@@ -129,14 +132,14 @@
                   <v-icon class="remove-file-icon" @click="removeFile(index)">
                     close
                   </v-icon>
-                  <embed :src="item" width="100%" height="100%" />
+                  <embed :src="item" width="100%" height="100%">
                 </v-card>
               </v-layout>
             </v-container>
           </v-card-text>
           <v-card-actions>
             <div>
-              <label> Operator </label> {{ editedItem.username }} <br />
+              <label> Operator </label> {{ editedItem.username }} <br>
               <label> Updated </label> {{ editedItem.created | relativeTime }}
             </div>
 
@@ -148,7 +151,9 @@
               indeterminate
             />
             <v-switch v-if="editIndex != -1" label="save" @click="submit" />
-            <v-btn v-else flat @click="submit"> add </v-btn>
+            <v-btn v-else flat @click="submit">
+              add
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -193,8 +198,7 @@
               </span>
             </td>
             <td>
-              <span v-if="!props.item.description"> -- </span
-              >{{ props.item.description | snippetNoMarkdown }}
+              <span v-if="!props.item.description"> -- </span>{{ props.item.description | snippetNoMarkdown }}
             </td>
             <td>{{ props.item.files.length }}</td>
           </tr>
@@ -219,7 +223,7 @@
                 :src="item.url"
                 width="100%"
                 height="100%"
-              />
+              >
               <v-flex
                 v-else-if="
                   item.contentType == 'application/msword' ||
@@ -229,10 +233,8 @@
                 class="preview-file-icon"
               >
                 <a :href="item.url" target="_blank">
-                  <v-icon color="grey"
-                    >{{ allFileIcons[item.contentType] }}
-                  </v-icon></a
-                >
+                  <v-icon color="grey">{{ allFileIcons[item.contentType] }}
+                  </v-icon></a>
               </v-flex>
               <object
                 v-else
@@ -241,7 +243,7 @@
                 width="100%"
                 height="100%"
               >
-                <embed :src="item.url" width="100%" height="100%" />
+                <embed :src="item.url" width="100%" height="100%">
               </object>
             </v-card>
             <v-dialog
@@ -263,7 +265,7 @@
                         width="100%"
                         height="100%"
                         @click="previewDialog = true"
-                      />
+                      >
                       <object
                         v-else
                         :data="item.url"
@@ -272,7 +274,7 @@
                         height="100%"
                         style="min-height: 80vh;"
                       >
-                        <embed :src="item.url" width="100%" height="100%" />
+                        <embed :src="item.url" width="100%" height="100%">
                       </object>
                     </v-card>
                   </v-window-item>
@@ -312,7 +314,9 @@
             </v-dialog>
             <v-card-actions class="text-xs-right list-actions">
               <v-switch label="edit" @click="editItem(props.item)" />
-              <v-icon small @click="deleteItem(props.item)"> delete </v-icon>
+              <v-icon small @click="deleteItem(props.item)">
+                delete
+              </v-icon>
             </v-card-actions>
           </v-card>
         </template>
@@ -333,7 +337,7 @@ import $ from 'jquery';
 import marked from 'marked';
 import {
   EVENT_NOTIFICATION_CATEGORIES,
-  EVENT_NOTIFICATION_HEADERS
+  EVENT_NOTIFICATION_HEADERS,
 } from '@/common/common';
 import {
   FETCH_EVENT_NOTIFICATIONS,
@@ -342,7 +346,7 @@ import {
   DELETE_EVENT_NOTIFICATION,
   FETCH_UPLOAD_URL,
   PUT_SIGNED_REQUEST,
-  FETCH_DOWNLOAD_URL
+  FETCH_DOWNLOAD_URL,
 } from '@/store/actions.type';
 import { DEFAULT_EVENT_NOTIFICATION_FIELDS } from '@/common/form-fields';
 import { REQUEST_NOTIFICATION_STATUSES } from '@/common/network-handler';
@@ -354,14 +358,14 @@ import { FILE_ICONS } from '@/common/file-preview.js';
 export default {
   name: 'REventNotifications',
   components: {
-    MarkdownPanel
+    MarkdownPanel,
   },
 
   filters: {},
   props: {
     reviewFields: {
-      type: Array
-    }
+      type: Array,
+    },
   },
   data() {
     return {
@@ -386,7 +390,7 @@ export default {
       files: [],
       toggle_format: null,
       downloadUrls: [],
-      signedStatus: {}
+      signedStatus: {},
     };
   },
   computed: {
@@ -396,19 +400,18 @@ export default {
       'oldEventNotifications',
       'eventNotifications',
       'bucketUrls',
-      'uploadingFile'
+      'uploadingFile',
     ]),
     showExploFindings() {
-      if (this.reviewFields)
-        return this.reviewFields.indexOf('explo-findings') != -1;
+      if (this.reviewFields) return this.reviewFields.indexOf('explo-findings') != -1;
     },
     displayNotifications() {
-      var vm = this;
-      return this.eventNotifications.filter(item => {
+      const vm = this;
+      return this.eventNotifications.filter((item) => {
         if (vm.selectedCategory) return item.category == vm.selectedCategory;
         return item;
       });
-    }
+    },
   },
   watch: {
     dialog(val) {
@@ -421,21 +424,21 @@ export default {
       }
     },
     eventNotifications(val) {
-      var vm = this;
+      const vm = this;
       val.map((item, index) => {
-        var signedUrls = [];
-        item.files.forEach(function(file) {
-          vm.$store.dispatch(FETCH_DOWNLOAD_URL, file).then(data => {
+        const signedUrls = [];
+        item.files.forEach((file) => {
+          vm.$store.dispatch(FETCH_DOWNLOAD_URL, file).then((data) => {
             signedUrls.push(data);
             item.signedFiles = signedUrls;
           });
         });
         vm.$store.commit(UPDATE_EVENTNOTIFICATIONS_SIGNEDURLS, {
           index,
-          signedUrls
+          signedUrls,
         });
       });
-    }
+    },
   },
   mounted() {
     this.fetchEventNotifications();
@@ -451,7 +454,7 @@ export default {
     },
     fetchEventNotifications() {
       this.$store.dispatch(FETCH_EVENT_NOTIFICATIONS, {
-        eventId: parseInt(this.currentEventId)
+        eventId: parseInt(this.currentEventId),
       });
     },
     mdRender(value) {
@@ -461,9 +464,7 @@ export default {
       this.dialog = true;
       this.editIndex = _.findIndex(this.eventNotifications, item);
       this.editedItem = Object.assign({}, item);
-      this.previewFileUrls = item.signedFiles.map(item => {
-        return item.url;
-      });
+      this.previewFileUrls = item.signedFiles.map(item => item.url);
       this.signedFileUrls = _.clone(this.previewFileUrls);
     },
     deleteItem(item) {
@@ -476,27 +477,27 @@ export default {
     },
     onFilePicked(e) {
       const files = e.target.files;
-      for (var f = 0; f < files.length; f++) {
+      for (let f = 0; f < files.length; f++) {
         const fr = new FileReader();
         fr.readAsDataURL(files[f]);
         fr.addEventListener('load', () => {
-          var fileUrl = fr.result;
+          const fileUrl = fr.result;
           this.previewFileUrls.push(fileUrl);
         });
       }
     },
     processFiles(files) {
-      var vm = this;
-      Object.keys(files).forEach(function(key) {
-        var file = files[key];
-        var fileName = file.name;
-        var params = {
-          key: 'event/' + vm.currentEventId + '/notifications',
-          filename: fileName
+      const vm = this;
+      Object.keys(files).forEach((key) => {
+        const file = files[key];
+        const fileName = file.name;
+        const params = {
+          key: `event/${vm.currentEventId}/notifications`,
+          filename: fileName,
         };
-        vm.$store.dispatch(FETCH_UPLOAD_URL, params).then(payload => {
+        vm.$store.dispatch(FETCH_UPLOAD_URL, params).then((payload) => {
           if (payload) {
-            var fileLink = payload.url;
+            const fileLink = payload.url;
             vm.signedFileUrls.push(fileLink);
             vm.uploadFile(file, key);
           }
@@ -504,13 +505,13 @@ export default {
       });
     },
     uploadFile(file, index) {
-      this.$store.dispatch(PUT_SIGNED_REQUEST, file).then(data => {
+      this.$store.dispatch(PUT_SIGNED_REQUEST, file).then((data) => {
         if (index == this.signedFileUrls.length - 1) this.save();
       });
     },
     submit() {
       this.request.inProgress = true;
-      var files = this.$refs.myUpload.files;
+      const files = this.$refs.myUpload.files;
       if (files.length > 0) {
         this.processFiles(files);
       } else {
@@ -518,12 +519,12 @@ export default {
       }
     },
     save() {
-      var timeNow = new Date();
-      var isEdit = this.editIndex > -1 && this.editedItem.id;
-      var action = isEdit ? EDIT_EVENT_NOTIFICATION : CREATE_EVENT_NOTIFICATION;
+      const timeNow = new Date();
+      const isEdit = this.editIndex > -1 && this.editedItem.id;
+      const action = isEdit ? EDIT_EVENT_NOTIFICATION : CREATE_EVENT_NOTIFICATION;
 
-      var params = _.extend(this.editedItem, {
-        username: this.currentUser.username
+      const params = _.extend(this.editedItem, {
+        username: this.currentUser.username,
       });
       params.files = this.signedFileUrls;
 
@@ -538,7 +539,7 @@ export default {
         delete params.updated;
       }
 
-      this.$store.dispatch(action, params).then(payload => {
+      this.$store.dispatch(action, params).then((payload) => {
         if (payload.status == 200) {
           this.close();
         }
@@ -557,25 +558,25 @@ export default {
       }, 300);
     },
     formatText(type) {
-      var cursorStart = getCursorPosStart();
-      var cursorEnd = getCursorPosEnd();
-      var v = this.editedItem.description;
-      var txtBefore = v.substring(0, cursorStart);
-      var txtCenter = v.substring(cursorStart, cursorEnd);
+      const cursorStart = getCursorPosStart();
+      const cursorEnd = getCursorPosEnd();
+      const v = this.editedItem.description;
+      const txtBefore = v.substring(0, cursorStart);
+      let txtCenter = v.substring(cursorStart, cursorEnd);
       if (txtCenter.length == 0) {
         txtCenter = type;
       }
-      var txtAfter = v.substring(cursorEnd, v.length);
-      var combine;
+      const txtAfter = v.substring(cursorEnd, v.length);
+      let combine;
       switch (type) {
         case 'bold':
-          combine = txtBefore + ' **' + txtCenter + '** ' + txtAfter;
+          combine = `${txtBefore} **${txtCenter}** ${txtAfter}`;
           break;
         case 'italic':
-          combine = txtBefore + ' *' + txtCenter + '* ' + txtAfter;
+          combine = `${txtBefore} *${txtCenter}* ${txtAfter}`;
           break;
         case 'size':
-          combine = txtBefore + ' \n\r# ' + txtCenter + '\n\r' + txtAfter;
+          combine = `${txtBefore} \n\r# ${txtCenter}\n\r${txtAfter}`;
           break;
         default:
           combine = v;
@@ -590,18 +591,16 @@ export default {
       this.previewLength = length;
     },
     next() {
-      this.previewIndex =
-        this.previewIndex + 1 === this.previewLength
-          ? 0
-          : this.previewIndex + 1;
+      this.previewIndex = this.previewIndex + 1 === this.previewLength
+        ? 0
+        : this.previewIndex + 1;
     },
     prev() {
-      this.previewIndex =
-        this.previewIndex - 1 < 0
-          ? this.previewLength - 1
-          : this.previewIndex - 1;
-    }
-  }
+      this.previewIndex = this.previewIndex - 1 < 0
+        ? this.previewLength - 1
+        : this.previewIndex - 1;
+    },
+  },
 };
 
 function getCursorPosStart() {

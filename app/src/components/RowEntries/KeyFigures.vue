@@ -21,8 +21,8 @@
                   {{ props.item.value }}
                 </v-list-tile-action>
                 <v-list-tile-content>
-                  <v-list-tile-title class="category-text"
-                    >{{ props.item.category }}
+                  <v-list-tile-title class="category-text">
+                    {{ props.item.category }}
                   </v-list-tile-title>
                   <v-list-tile-sub-title class="sub-category-text">
                     {{ props.item.subCategory }}
@@ -30,7 +30,7 @@
                 </v-list-tile-content>
                 <v-list-tile-action :class="hover ? 'showCrud' : 'hide'">
                   <a @click="editKeyFig(props.item, props.index)"> edit </a>
-                  <br />
+                  <br>
                   <a @click="deleteKeyFig(props.item)"> delete </a>
                 </v-list-tile-action>
               </v-list-tile>
@@ -82,8 +82,7 @@
         class="form-actions mt-3"
         @click="addKeyFig()"
       >
-        add Key Figures</a
-      >
+        add Key Figures</a>
     </v-flex>
   </v-layout>
 </template>
@@ -99,8 +98,8 @@ export default {
   name: 'KeyFigures',
   props: {
     activeKeyFigures: {
-      type: Array
-    }
+      type: Array,
+    },
   },
   data() {
     return {
@@ -109,30 +108,30 @@ export default {
       _beforeEditItemCache: DEFAULT_KEY_FIGURES,
       defaultItem: DEFAULT_KEY_FIGURES,
       editItem: DEFAULT_KEY_FIGURES,
-      allKeyFigures: KEY_FIGURES
+      allKeyFigures: KEY_FIGURES,
     };
   },
   computed: {
     allKeyFigSubSelection() {
-      var selectedCategory = this.editItem.category;
-      var results = this.allKeyFigures.filter(item => {
+      const selectedCategory = this.editItem.category;
+      const results = this.allKeyFigures.filter((item) => {
         if (item.value == selectedCategory) {
           return item;
         }
       });
 
       if (results[0]) return results[0].options;
-    }
+    },
   },
   watch: {
     activeKeyFigures(val) {
       if (val) this.keyFigures = val;
-    }
+    },
   },
   mounted() {},
   methods: {
     addKeyFig() {
-      var newKeyFig = this.defaultItem;
+      const newKeyFig = this.defaultItem;
       this.keyFigures.push(newKeyFig);
       this.editItem = Object.assign({}, newKeyFig);
       this.editIndex = this.keyFigures.length - 1; // the latest one
@@ -144,8 +143,8 @@ export default {
     },
     deleteKeyFig(item) {
       const index = this.keyFigures.indexOf(item);
-      confirm('Are you sure you want to delete this item?') &&
-        this.keyFigures.splice(index, 1);
+      confirm('Are you sure you want to delete this item?')
+        && this.keyFigures.splice(index, 1);
     },
     confirmKeyFig(index) {
       console.log(' confirm key -------- ', index, this.editItem);
@@ -160,8 +159,8 @@ export default {
     clearEdit() {
       this.editItem = this._beforeEditItemCache = _.clone(this.defaultItem);
       this.editIndex = -1;
-    }
-  }
+    },
+  },
 };
 </script>
 

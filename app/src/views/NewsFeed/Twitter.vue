@@ -36,28 +36,26 @@ export default {
   name: 'EventTwitter',
   data() {
     return {
-      twitterLanguageOptions: TWITTER_LANGUAGE_OPTIONS.map(item => {
-        return item.name;
-      }),
+      twitterLanguageOptions: TWITTER_LANGUAGE_OPTIONS.map(item => item.name),
       twitterSearchString: '',
       selectedLanguage: '',
-      displayTweets: []
+      displayTweets: [],
     };
   },
   methods: {
     searchTweets() {
       this.$store.dispatch(SEARCH_TWEETS, {
-        searchString: this.twitterSearchString
+        searchString: this.twitterSearchString,
       });
-    }
+    },
   },
   computed: {
-    ...mapGetters(['tweets'])
+    ...mapGetters(['tweets']),
   },
   watch: {
     tweets() {
       this.displayTweets = _.map(this.tweets, _.clone);
-    }
-  }
+    },
+  },
 };
 </script>

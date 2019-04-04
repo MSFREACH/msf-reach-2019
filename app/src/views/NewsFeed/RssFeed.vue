@@ -23,7 +23,7 @@ export default {
   name: 'EventRss',
   data() {
     return {
-      feedItems: []
+      feedItems: [],
     };
   },
   mounted() {
@@ -32,15 +32,15 @@ export default {
   methods: {
     fetchRss() {
       this.$store.dispatch(FETCH_RSS, {});
-    }
+    },
   },
   computed: {
-    ...mapGetters(['rssFeedItems'])
+    ...mapGetters(['rssFeedItems']),
   },
   watch: {
     rssFeedItems() {
       this.feedItems = _.map(this.rssFeedItems, _.clone);
-    }
-  }
+    },
+  },
 };
 </script>

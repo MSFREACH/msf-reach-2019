@@ -14,9 +14,8 @@ export default {
   fullDate(value) {
     if (value) {
       return moment(value).format('LLL');
-    } else {
-      return 'N/A';
     }
+    return 'N/A';
   },
   localTimezone(value) {
     if (value) {
@@ -30,5 +29,5 @@ export default {
   },
   relativeTime(value) {
     return moment(value).fromNow();
-  }
+  },
 };

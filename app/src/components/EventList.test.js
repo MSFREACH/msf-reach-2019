@@ -24,7 +24,7 @@ describe('EventList', () => {
       localVue,
       router,
       store,
-      stubs
+      stubs,
     });
   }
 
@@ -32,17 +32,17 @@ describe('EventList', () => {
     router = new VueRouter();
 
     actions = {
-      fetchEvents: jest.fn()
+      fetchEvents: jest.fn(),
     };
 
     getters = {
       events: jest.fn().mockReturnValue([]),
-      isLoadingEvent: jest.fn().mockReturnValue(true)
+      isLoadingEvent: jest.fn().mockReturnValue(true),
     };
 
     store = new Vuex.Store({
       actions,
-      getters
+      getters,
     });
   });
 
@@ -51,7 +51,7 @@ describe('EventList', () => {
     expect(actions.fetchEvents).toHaveBeenCalledWith(
       expect.any(Object),
       { filters: {}, status: 'all' },
-      undefined
+      undefined,
     );
     expect(wrapper).toMatchSnapshot();
   });
