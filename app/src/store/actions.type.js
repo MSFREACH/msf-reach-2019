@@ -17,7 +17,6 @@ export const BOOKMARK_EVENT = 'bookmarkEvent';
 
 export const FETCH_RELATED_EVENTS = 'fetchRelatedEvents';
 
-
 export const EDIT_EVENT_RESPONSES = 'editEventResponses';
 export const EDIT_EVENT_EXT_CAPACITY = 'editEventExtCapacity';
 export const EDIT_EVENT_FIGURES = 'editEventFigures';
@@ -53,7 +52,6 @@ export const EDIT_MSF_RESPONSE = 'editMSFResponse';
 export const EDIT_MSF_RESPONSE_AREA = 'editMSFResponseLocation';
 export const DELETE_MSF_RESPONSE = 'deleteMSFResponse';
 
-
 export const FETCH_EVENT_NOTIFICATIONS = 'fetchEventNotifications';
 export const CREATE_EVENT_NOTIFICATION = 'createEventNotification';
 export const EDIT_EVENT_NOTIFICATION = 'editEventNotification';
@@ -79,4 +77,3 @@ export const SEARCH_TWEETS = 'SEARCH_TWEETS';
 export const APPEND_TWEETS = 'APPEND_TWEETS';
 
 export const FETCH_RSS = 'FETCH_RSS';
-

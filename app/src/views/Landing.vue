@@ -1,12 +1,12 @@
 <template>
-    <div class="landing-page">
-        here is landing
-        <router-view></router-view>
-    </div>
+  <div class="landing-page">
+    here is landing
+    <router-view />
+  </div>
 </template>
 
 <script>
-    export default {
-        name: 'landing'
-    };
+export default {
+  name: 'Landing'
+};
 </script>

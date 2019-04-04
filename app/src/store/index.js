@@ -17,19 +17,18 @@ import util from './util.module';
 import auth from './auth.module';
 Vue.use(Vuex);
 
-
 export default new Vuex.Store({
-    modules:{
-        auth,
-        profile,
-        events,
-        event,
-        response,
-        eventNotification,
-        countryDetails,
-        SITREP,
-        report,
-        contact,
-        util
-    }
+  modules: {
+    auth,
+    profile,
+    events,
+    event,
+    response,
+    eventNotification,
+    countryDetails,
+    SITREP,
+    report,
+    contact,
+    util
+  }
 });

@@ -1,4 +1,3 @@
 <template>
-    <v-layout row justify-center>
-    </v-layout>
+  <v-layout row justify-center />
 </template>
