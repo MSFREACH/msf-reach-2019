@@ -32,7 +32,7 @@
                         <v-card class='file-attachment' v-for='(item, index) in previewFileUrls' :key='index'>
                             <v-icon @click='removeFile(index)' class="remove-file-icon"> close </v-icon>
                             <object :data="item" width='100%' height='100%'>
-                                <embed :src='item' width='100%' height='100%'></embed>
+                                <embed :src='item' width='100%' height='100%' />
                             </object>
                         </v-card>
                       </v-layout>
@@ -71,7 +71,7 @@
                         <v-card v-for="(file, index) in item.signedFiles" :key="index" class="file-attachment" @click="previewDialog = true">
                             <img v-if="file.contentType.indexOf('image') != -1" :src="file.url" width="100%" height="100%">
                             <object v-else :data="file.url" :type="file.contentType" width="100%" height="100%">
-                                <embed :src="file.url" width="100%" height="100%"></embed>
+                                <embed :src="file.url" width="100%" height="100%" />
                             </object>
                         </v-card>
                     </v-flex>

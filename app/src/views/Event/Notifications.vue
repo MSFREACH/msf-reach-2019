@@ -69,7 +69,7 @@
                         </v-card>
                         <v-card class="file-attachment" v-for="(item, index) in previewFileUrls" :key="index">
                             <v-icon @click='removeFile(index)' class="remove-file-icon"> close </v-icon>
-                            <embed :src="item" width="100%" height="100%"></embed>
+                            <embed :src="item" width="100%" height="100%" />
                         </v-card>
                       </v-layout>
                     </v-container>
@@ -117,7 +117,7 @@
                                 <a :href="item.url" target="_blank"> <v-icon color="grey">{{ allFileIcons[item.contentType] }} </v-icon></a>
                             </v-flex>
                             <object v-else :data="item.url" :type="item.contentType" width="100%" height="100%">
-                                <embed :src="item.url" width="100%" height="100%"></embed>
+                                <embed :src="item.url" width="100%" height="100%" />
                             </object>
                         </v-card>
                         <v-dialog v-model="previewDialog" justify-center max-width="800px" transition="dialog-transition">
@@ -127,7 +127,7 @@
                                         <v-card>
                                             <img v-if="item.contentType.indexOf('image') != -1" :src="item.url" width="100%" height="100%" @click="previewDialog = true">
                                             <object v-else :data="item.url" :type="item.contentType" width="100%" height="100%" style="min-height: 80vh;">
-                                                <embed :src="item.url" width="100%" height="100%"></embed>
+                                                <embed :src="item.url" width="100%" height="100%" />
                                             </object>
                                         </v-card>
                                     </v-window-item>

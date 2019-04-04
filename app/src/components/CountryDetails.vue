@@ -38,7 +38,7 @@
                                 <label> Attach file </label>
                                 <v-card class="file-attachment" v-if="previewFileUrl">
                                     <v-icon @click='removeFile()' class="remove-file-icon"> close </v-icon>
-                                    <embed :src="previewFileUrl" width="100%" height="100%"></embed>
+                                    <embed :src="previewFileUrl" width="100%" height="100%" />
                                 </v-card>
                                 <v-card class="file-attachment" light v-else>
                                     <form enctype="multipart/form-data">
@@ -73,7 +73,7 @@
                     <v-flex xs12 class="previewWindow">
                         <img v-if="fileType.indexOf('image') != -1" :src="downloadUrl"></img>
                         <object v-else :data="downloadUrl" :type="fileType" width="100%" height="100%">
-                            <embed :src="downloadUrl" width="100%" height="100%"></embed>
+                            <embed :src="downloadUrl" width="100%" height="100%" />
                         </object>
 
                         <v-btn id="downloadBtn" color="grey" small fab flat outline><a :href="downloadUrl" target="_blank"><v-icon>save_alt</v-icon></a></v-btn>
