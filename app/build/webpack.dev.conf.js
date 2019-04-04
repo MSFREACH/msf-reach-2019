@@ -1,19 +1,20 @@
-var path = require('path')
-var utils = require('./utils')
-var webpack = require('webpack')
-var config = require('./config')
-var merge = require('webpack-merge')
-var baseWebpackConfig = require('./webpack.base.conf')
-var HtmlWebpackPlugin = require('html-webpack-plugin')
-var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-var FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+var path = require('path');
+var utils = require('./utils');
+var webpack = require('webpack');
+var config = require('./config');
+var merge = require('webpack-merge');
+var baseWebpackConfig = require('./webpack.base.conf');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
+var FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 var HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
-
 // add hot-reload related code to entry chunks
-Object.keys(baseWebpackConfig.entry).forEach(function (name) {
-  baseWebpackConfig.entry[name] = ['./app/build/dev-client'].concat(baseWebpackConfig.entry[name])
-})
+Object.keys(baseWebpackConfig.entry).forEach(function(name) {
+  baseWebpackConfig.entry[name] = ['./app/build/dev-client'].concat(
+    baseWebpackConfig.entry[name]
+  );
+});
 
 module.exports = merge(baseWebpackConfig, {
   module: {
@@ -25,7 +26,7 @@ module.exports = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': config.dev.env
     }),
-    new HardSourceWebpackPlugin(), 
+    new HardSourceWebpackPlugin(),
     // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
@@ -39,4 +40,4 @@ module.exports = merge(baseWebpackConfig, {
     // generate favicons
     new FaviconsWebpackPlugin(path.resolve(__dirname, '../static/logo.png'))
   ]
-})
+});

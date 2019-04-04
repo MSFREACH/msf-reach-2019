@@ -82,13 +82,13 @@ Testing is run on [travis-ci.org](https://travis-ci.org/MSFREACH/msf-reach).
 To run the client app tests:
 
 ```sh
-npm run test:vue
+npm run test:client
 ```
 
 You can also pass additional arguments to Jest:
 
 ```sh
-npm run test:vue -- --watch
+npm run test:client -- --watch
 ```
 
 ## Data Formats
