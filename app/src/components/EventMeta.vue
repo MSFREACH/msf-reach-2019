@@ -29,25 +29,25 @@ import { FAVORITE_ADD, FAVORITE_REMOVE } from '@/store/actions.type';
 export default {
   name: 'REventMeta',
   components: {
-    REventActions
+    REventActions,
   },
   props: {
     event: {
       type: Object,
-      required: true
+      required: true,
     },
     actions: {
       type: Boolean,
       required: false,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     hasFavored() {
       return false;
       // return this.currentUser.favorites.events.indexOf(this.event.id) > -1;
     },
-    ...mapGetters(['currentUser', 'isAuthenticated'])
+    ...mapGetters(['currentUser', 'isAuthenticated']),
   },
   methods: {
     isCurrentUser() {
@@ -63,7 +63,7 @@ export default {
       }
       const action = this.hasFavored ? FAVORITE_REMOVE : FAVORITE_ADD;
       this.$store.dispatch(action, this.event.slug);
-    }
-  }
+    },
+  },
 };
 </script>

@@ -1,17 +1,17 @@
 import ApiService from '@/common/api.service';
 import { FETCH_PROFILE, FETCH_PROFILE_BOOKMARK } from './actions.type';
 import { SET_PROFILE } from './mutations.type';
-/*eslint no-unused-vars: off*/
+/* eslint no-unused-vars: off */
 
 const state = {
   errors: {},
-  profile: {}
+  profile: {},
 };
 
 const getters = {
   profile(state) {
     return state.profile;
-  }
+  },
 };
 
 const actions = {
@@ -38,7 +38,7 @@ const actions = {
         // #todo SET_ERROR cannot work in multiple states
         // context.commit(SET_ERROR, response.data.errors)
       });
-  }
+  },
 };
 
 const mutations = {
@@ -48,12 +48,12 @@ const mutations = {
   [SET_PROFILE](state, profile) {
     state.profile = profile;
     state.errors = {};
-  }
+  },
 };
 
 export default {
   state,
   actions,
   mutations,
-  getters
+  getters,
 };

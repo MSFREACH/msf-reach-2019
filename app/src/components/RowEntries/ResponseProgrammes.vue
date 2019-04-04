@@ -16,8 +16,7 @@
             {{ program.value | removeSnakeCase }}
           </div>
           <span v-if="program.sub_program" class="sub-category-text">
-            {{ program.sub_program | removeSnakeCase }}</span
-          >
+            {{ program.sub_program | removeSnakeCase }}</span>
           <span class="specified-text"> {{ program.notes }} </span>
           <div>
             {{ program.open_date }} | Deployment scale -
@@ -25,7 +24,7 @@
           </div>
         </div>
         <span v-show="editableIndex == index" class="form-actions right ml-5">
-          <a @click="editProgramme(program, index)">Edit</a><br />
+          <a @click="editProgramme(program, index)">Edit</a><br>
           <a @click="deleteProgramme(index)">Delete</a>
         </span>
       </v-flex>
@@ -110,15 +109,16 @@ import {
   REPONSE_PROGRAMME_TYPES,
   DEFAULT_RESPONSE_PROGRAMME,
   RESPONSE_INFECTIOUS_DISEASE_PROGRAMMES,
-  RESPONSE_NCDS_PROGRAMMES
+  RESPONSE_NCDS_PROGRAMMES,
 } from '@/common/response-fields';
 import { UPDATE_RESPONSE_PROGRAMMES } from '@/store/mutations.type';
+
 export default {
   name: 'ResponseProgrammes',
   props: {
     currentProgrammes: {
-      type: Array
-    }
+      type: Array,
+    },
   },
   data() {
     return {
@@ -131,19 +131,19 @@ export default {
       defaultProgram: DEFAULT_RESPONSE_PROGRAMME,
       subProgrammes: {
         infectious_diseases: RESPONSE_INFECTIOUS_DISEASE_PROGRAMMES,
-        ncds: RESPONSE_NCDS_PROGRAMMES
-      }
+        ncds: RESPONSE_NCDS_PROGRAMMES,
+      },
     };
   },
   watch: {
     currentProgrammes(val) {
       if (val) this.programmes = val;
-    }
+    },
   },
   mounted() {},
   methods: {
     addProgramme() {
-      var tmp = _.clone(this.defaultProgram);
+      const tmp = _.clone(this.defaultProgram);
       this.programmes.push(tmp);
       this.editIndex = this.programmes.length - 1;
     },
@@ -158,7 +158,7 @@ export default {
       this.editIndex = -1;
       this._beforeEditingCache = {};
       this.$store.commit(UPDATE_RESPONSE_PROGRAMMES, {
-        programmes: this.programmes
+        programmes: this.programmes,
       });
     },
     cancelEditProgramme(index) {
@@ -170,13 +170,11 @@ export default {
       this.editIndex = -1;
     },
     subProgramSelections(program) {
-      var result = this.allProgrammes.filter(item => {
-        return item.value == program;
-      });
+      const result = this.allProgrammes.filter(item => item.value == program);
 
       return result[0].subPrograms;
-    }
-  }
+    },
+  },
 };
 </script>
 

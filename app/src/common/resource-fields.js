@@ -5,7 +5,7 @@ export const BUDGET_CURRENCIES = [];
 export const SUPPLY_CHAIN_SPECIALITIES = [
   'importation',
   'regulations',
-  'storage'
+  'storage',
 ];
 
 export const DEFAULT_RESOURCES_FIELDS = {
@@ -13,14 +13,14 @@ export const DEFAULT_RESOURCES_FIELDS = {
   institutional_donors: [
     {
       from_who: null,
-      amount: null
-    }
+      amount: null,
+    },
   ],
   visa_requirement: [],
   vaccination_requirement: {
     required: [],
-    recommended: []
-  }
+    recommended: [],
+  },
 };
 
 export const DEFAULT_STATUS_RESOURCES_FIELDS = {
@@ -28,14 +28,14 @@ export const DEFAULT_STATUS_RESOURCES_FIELDS = {
   staff: {
     listFileUrl: null,
     expatriateCount: null,
-    nationalStaffCount: null
+    nationalStaffCount: null,
   },
   budget: {
     total: null,
-    currency: null
+    currency: null,
   },
   supply_chain: {
     type: null,
-    description: null
-  }
+    description: null,
+  },
 };

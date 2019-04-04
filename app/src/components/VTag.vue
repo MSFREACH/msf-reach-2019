@@ -12,12 +12,12 @@ export default {
   props: {
     name: {
       type: String,
-      required: true
+      required: true,
     },
     className: {
       type: String,
-      default: 'tag-pill tag-default'
-    }
-  }
+      default: 'tag-pill tag-default',
+    },
+  },
 };
 </script>

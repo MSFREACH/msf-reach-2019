@@ -11,16 +11,18 @@
         flat
         small
         @click="switchStatus(item)"
-        >{{ item.status }}</v-btn
       >
+        {{ item.status }}
+      </v-btn>
     </nav>
     <nav v-else class="statusTabWrapper">
       <v-btn
         :class="eventStatus.toLowerCase() + '-wrapper statusTabs'"
         flat
         small
-        >{{ eventStatus }}</v-btn
       >
+        {{ eventStatus }}
+      </v-btn>
     </nav>
 
     <div
@@ -30,16 +32,14 @@
       <div v-if="eventFigures">
         <v-layout v-if="allowEdit" class="actions">
           <v-switch v-model="editing" :label="editing ? `save` : `edit`" />
-          <span v-if="editing" class="cancel" @click="cancelEdit()"
-            ><v-icon>close</v-icon></span
-          >
+          <span v-if="editing" class="cancel" @click="cancelEdit()"><v-icon>close</v-icon></span>
         </v-layout>
         <v-layout v-if="editing" row wrap dark>
           <label>KEY FIGURES</label>
           <div ref="key-figures" class="full-width">
             <key-figures :active-key-figures="activeKeyFigures" />
           </div>
-          <hr class="row-divider" />
+          <hr class="row-divider">
           <div ref="total-beneficiaries" class="one-half">
             <label>NUMBER OF BENEFICIARIES </label>
             {{ totalBeneficiaries }}
@@ -49,7 +49,7 @@
             <label>NUMBER OF SERVICES PROVIDED </label>
             {{ totalServices }}
           </div>
-          <hr class="row-divider" />
+          <hr class="row-divider">
           <v-flex xs6>
             <v-text-field
               v-model="editFigures.population.total"
@@ -126,7 +126,7 @@
               />
             </div>
           </v-flex>
-          <hr class="row-divider" />
+          <hr class="row-divider">
           <v-flex xs8>
             <v-select
               v-model="editFigures.statistics.collection"
@@ -156,7 +156,9 @@
                 {{ item.value }}
               </div>
               <div class="sub-category-text ml-2">
-                <div class="category-text">{{ item.category }}</div>
+                <div class="category-text">
+                  {{ item.category }}
+                </div>
                 {{ item.subCategory }}
               </div>
             </v-flex>
@@ -167,7 +169,7 @@
               --
             </div>
           </div>
-          <hr class="row-divider" />
+          <hr class="row-divider">
           <v-flex xs12>
             <div ref="total-beneficiaries" class="one-half">
               <label>NUMBER OF BENEFICIARIES </label>
@@ -178,27 +180,23 @@
               {{ totalServices }}
             </div>
           </v-flex>
-          <hr class="row-divider" />
+          <hr class="row-divider">
           <v-flex v-if="eventFigures" xs12>
             <div class="quarter-width">
               <label>COUNTRY POPULATION</label>
-              <span v-if="!eventFigures.population.total">--</span
-              >{{ eventFigures.population.total }}
+              <span v-if="!eventFigures.population.total">--</span>{{ eventFigures.population.total }}
             </div>
             <div class="quarter-width">
               <label>IMPACTED POPULATION</label>
-              <span v-if="!eventFigures.population.impacted">--</span
-              >{{ eventFigures.population.impacted }}
+              <span v-if="!eventFigures.population.impacted">--</span>{{ eventFigures.population.impacted }}
             </div>
             <div class="quarter-width">
               <label>MORTALITY</label>
-              <span v-if="!eventFigures.population.mortality.rate">--</span
-              >{{ eventFigures.population.mortality.rate }}
+              <span v-if="!eventFigures.population.mortality.rate">--</span>{{ eventFigures.population.mortality.rate }}
             </div>
             <div class="quarter-width">
               <label>MORBIDITY</label>
-              <span v-if="!eventFigures.population.morbidity.rate">--</span
-              >{{ eventFigures.population.morbidity.rate }}
+              <span v-if="!eventFigures.population.morbidity.rate">--</span>{{ eventFigures.population.morbidity.rate }}
             </div>
           </v-flex>
         </v-layout>
@@ -216,33 +214,33 @@ import { UPDATE_EVENT_FIGURES } from '@/store/mutations.type';
 
 import {
   DEFAULT_EVENT_FIGURES,
-  DEFAULT_KEY_FIGURES
+  DEFAULT_KEY_FIGURES,
 } from '@/common/form-fields';
 import {
   KEY_FIGURES,
   FIGURES_COLLECTION,
   FIGURES_SOURCES,
   POPULATION_RANGES,
-  RISK_PERIOD
+  RISK_PERIOD,
 } from '@/common/keyFigures-fields';
 import KeyFigures from '@/components/RowEntries/KeyFigures.vue';
 
 export default {
   name: 'REventFigures',
   components: {
-    KeyFigures
+    KeyFigures,
   },
   filters: {},
   props: {
     reviewFields: {
-      type: Array
-    }
+      type: Array,
+    },
   },
   data() {
     return {
       editing: false,
       editMode: {
-        offset: -1
+        offset: -1,
       },
       _beforeEditingCache: {},
       editFigures: DEFAULT_EVENT_FIGURES,
@@ -252,14 +250,14 @@ export default {
         collectionMeans: FIGURES_COLLECTION,
         sources: FIGURES_SOURCES,
         population: POPULATION_RANGES,
-        period: RISK_PERIOD
-      }
+        period: RISK_PERIOD,
+      },
     };
   },
   watch: {
     editing(val) {
       if (val) {
-        var tmpObj = this.displayFigures
+        const tmpObj = this.displayFigures
           ? this.displayFigures
           : this.defaultFigures;
         this.editFigures = this._beforeEditingCache = _.clone(tmpObj);
@@ -269,31 +267,31 @@ export default {
 
       if (this.reviewFields) {
         if (val) {
-          var vm = this;
-          setTimeout(function() {
+          const vm = this;
+          setTimeout(() => {
             vm.highlightReview(true);
           }, 500);
         } else {
           this.removeHighlight();
         }
       }
-    }
+    },
   },
   mounted() {
     if (this.reviewFields) this.highlightReview();
   },
   methods: {
     highlightReview(isEdit) {
-      var vm = this;
-      this.reviewFields.forEach(function(field) {
+      const vm = this;
+      this.reviewFields.forEach((field) => {
         vm.$refs[field].style.background = isEdit
           ? 'rgba(255,255,255, .25)'
           : '#E5F0F9';
       });
     },
     removeHighlight() {
-      var vm = this;
-      this.reviewFields.forEach(function(field) {
+      const vm = this;
+      this.reviewFields.forEach((field) => {
         vm.$refs[field].style.background = 'none';
       });
     },
@@ -303,54 +301,50 @@ export default {
 
     save() {
       this.$store.commit(UPDATE_EVENT_FIGURES, this.editFigures);
-      this.$store.dispatch(EDIT_EVENT_FIGURES).then(data => {});
+      this.$store.dispatch(EDIT_EVENT_FIGURES).then((data) => {});
       this.editFigures = this._beforeEditingCache = _.clone(
-        this.defaultFigures
+        this.defaultFigures,
       );
     },
     cancelEdit() {
       this.displayFigures = _.clone(this._beforeEditItemCache);
       this.editFigures = this._beforeEditingCache = _.clone(
-        this.defaultFigures
+        this.defaultFigures,
       );
       this.editing = false;
-    }
+    },
   },
   computed: {
     ...mapGetters(['eventFigures', 'eventStatus']),
 
     activeKeyFigures() {
       if (!this.eventFigures) return null;
-      var result = this.eventFigures.keyFigures.filter(item => {
-        return item.status == this.eventStatus;
-      });
+      const result = this.eventFigures.keyFigures.filter(item => item.status == this.eventStatus);
       return result[0];
     },
     displayKeyFigures() {
       if (!_.isEmpty(this.activeKeyFigures)) {
         return this.activeKeyFigures;
-      } else {
-        return null;
       }
+      return null;
     },
     allowEdit() {
       if (!_.isEmpty(this.displayKeyFigures)) {
         return this.displayKeyFigures.status == this.activeKeyFigures.status;
-      } else {
-        return (
-          this.eventStatus != 'monitoring' && this.eventStatus != 'complete'
-        );
       }
+      return (
+        this.eventStatus != 'monitoring' && this.eventStatus != 'complete'
+      );
     },
     totalBeneficiaries() {
       if (!this.displayKeyFigures) return;
-      return _.sumBy(this.displayKeyFigures.figures, 'value'); /// TODO: parseInt first on the values;
+      return _.sumBy(this.displayKeyFigures.figures, 'value'); // / TODO: parseInt first on the values;
     },
     totalServices() {
       if (!this.displayKeyFigures) return;
       return this.displayKeyFigures.figures.length;
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss">

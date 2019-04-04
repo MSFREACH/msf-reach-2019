@@ -1,7 +1,7 @@
 const marked = require('marked');
 const removeMd = require('remove-markdown');
 
-/*eslint no-debugger: off*/
+/* eslint no-debugger: off */
 
 export default {
   capitalize(value) {
@@ -13,9 +13,7 @@ export default {
     return value.replace(/_/g, ' ');
   },
   removeSnakeCase(value) {
-    return value.replace(/_/g, ' ').replace(/(?: |\b)(\w)/g, function(key) {
-      return key.toUpperCase();
-    });
+    return value.replace(/_/g, ' ').replace(/(?: |\b)(\w)/g, key => key.toUpperCase());
   },
   toArray(value) {
     return value.split(',');
@@ -24,7 +22,7 @@ export default {
     return marked(value);
   },
   snippetNoMarkdown(value) {
-    var plainText = removeMd(value);
+    const plainText = removeMd(value);
     return plainText.substring(0, 100);
-  }
+  },
 };

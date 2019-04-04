@@ -63,18 +63,26 @@
                 :items="displayEvents"
                 label="ASSIGN to Event"
               />
-              <v-btn @click="editReport()">save</v-btn>
+              <v-btn @click="editReport()">
+                save
+              </v-btn>
             </v-card-title>
             <v-card-title v-else primary-title>
               <small> {{ props.item.created | relativeTime }} </small>
-              <v-chip small> {{ props.item.status }} </v-chip>
+              <v-chip small>
+                {{ props.item.status }}
+              </v-chip>
               <v-chip v-if="props.item.content.report_tag" small outline>
                 {{ props.item.content.report_tag }}
               </v-chip>
               <v-spacer />
               <v-icon> bookmark_border </v-icon>
-              <v-icon @click="toggleEdit(props.item)">edit</v-icon>
-              <v-icon @click="deleteReport()">delete</v-icon>
+              <v-icon @click="toggleEdit(props.item)">
+                edit
+              </v-icon>
+              <v-icon @click="deleteReport()">
+                delete
+              </v-icon>
             </v-card-title>
 
             <v-img
@@ -105,9 +113,9 @@
   </v-layout>
 </template>
 <script>
-/*eslint no-debugger: off*/
-/*eslint no-console: off*/
-/*eslint no-unused-vars: off*/
+/* eslint no-debugger: off */
+/* eslint no-console: off */
+/* eslint no-unused-vars: off */
 import { mapGetters } from 'vuex';
 import { FETCH_EVENTS, FETCH_REPORTS, EDIT_REPORT } from '@/store/actions.type';
 import { REPORT_TYPES, REPORT_STATUSES } from '@/common/common';
@@ -117,25 +125,25 @@ import NewReportCard from '@/views/New/NewReport.vue';
 export default {
   name: 'ReportList',
   components: {
-    NewReportCard
+    NewReportCard,
   },
   props: {
     private: {
       // This is My reports
       type: Boolean,
-      required: false
+      required: false,
     },
     assigned: {
       // This is Assigned to me
       type: Boolean,
-      required: false
-    }
+      required: false,
+    },
   },
   data() {
     return {
       rowsPerPageItems: [4, 8, 12],
       pagination: {
-        rowsPerPage: 4
+        rowsPerPage: 4,
       },
       search: '',
       editingID: null,
@@ -143,7 +151,7 @@ export default {
       tags: REPORT_TYPES,
       confirmed: null,
       tmpReport: DEFAULT_EDIT_REPORT_CARD_FIELDS,
-      displayEvents: []
+      displayEvents: [],
     };
   },
   computed: {
@@ -153,15 +161,15 @@ export default {
       'reports',
       'fetchReportsError',
       'events',
-      'fetchEventsError'
-    ])
+      'fetchEventsError',
+    ]),
   },
   watch: {
     events(newValue) {
       // eslint-disable-line no-unused-vars
       this.displayEvents = this.events.map(item => ({
         text: item.metadata.name,
-        value: item.id
+        value: item.id,
       }));
     },
     confirmed(newVal) {
@@ -170,7 +178,7 @@ export default {
       } else {
         this.tmpReport.status = 'unconfirmed';
       }
-    }
+    },
   },
   mounted() {
     this.fetchReports();
@@ -179,7 +187,7 @@ export default {
     } else {
       this.displayEvents = this.events.map(item => ({
         text: item.metadata.name,
-        value: parseInt(item.id)
+        value: parseInt(item.id),
       }));
     }
   },
@@ -189,21 +197,21 @@ export default {
     },
     toggleEdit(item) {
       this.editingID = item.id;
-      this.confirmed = item.status == 'confirmed' ? true : false;
+      this.confirmed = item.status == 'confirmed';
       this.tmpReport.content.report_tag = item.content.report_tag;
     },
     editReport() {
       this.$store
         .dispatch(EDIT_REPORT, [this.editingID, this.tmpReport])
-        .then(payload => {
+        .then((payload) => {
           this.tmpReport = DEFAULT_EDIT_REPORT_CARD_FIELDS;
         });
     },
     deleteReport(report) {
       this.tmpReport.status = 'ignored';
       this.editReport();
-    }
-  }
+    },
+  },
 };
 </script>
 

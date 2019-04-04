@@ -21,23 +21,23 @@ import { getFeatures, getFeaturesFromArcs } from '@/lib/geojson-util';
 import { EVENT_STATUSES } from '@/common/common';
 import moment from 'moment';
 
-var map;
+let map;
 export default {
   name: 'MapAnnotation',
   props: {
     coordinates: {
-      type: Array
+      type: Array,
     },
     mapId: {
       type: String,
-      required: true
+      required: true,
     },
     geocoding: {
-      type: Boolean
+      type: Boolean,
     },
     address: {
-      type: Object
-    }
+      type: Object,
+    },
   },
   data() {
     return {
@@ -48,14 +48,14 @@ export default {
           id: 0,
           name: 'areas',
           active: false,
-          features: [{}]
-        }
+          features: [{}],
+        },
       ],
-      styleLoaded: false
+      styleLoaded: false,
     };
   },
   computed: {
-    ...mapGetters(['eventBoundary', 'responsesGeoJson', 'relatedEventsGeoJson'])
+    ...mapGetters(['eventBoundary', 'responsesGeoJson', 'relatedEventsGeoJson']),
   },
   watch: {
     address() {
@@ -68,7 +68,7 @@ export default {
       if (newVal) this.addBoundaryLayer();
     },
     $route(to, from) {
-      var oldLayer = this.mapId + from.params.slug;
+      const oldLayer = this.mapId + from.params.slug;
       if (from.params.slug != to.params.slug) {
         if (map.getLayer(oldLayer)) map.removeLayer(oldLayer);
       }
@@ -78,7 +78,7 @@ export default {
     },
     relatedEventsGeoJson(val) {
       if (val) this.addRelatedEventsLayer();
-    }
+    },
   },
   mounted() {
     this.initMap();
@@ -90,17 +90,17 @@ export default {
   },
   methods: {
     initMap() {
-      var mapID = this.mapId;
-      var vm = this;
+      const mapID = this.mapId;
+      const vm = this;
       map = new mapboxgl.Map({
         container: mapID,
         style: MAPBOX_STYLES.thematic,
         center: this.coordinates,
         zoom: 10,
-        minZoom: 4
+        minZoom: 4,
       });
 
-      map.on('style.load', _ => {
+      map.on('style.load', (_) => {
         vm.styleLoaded;
         if (vm.mapId == 'responsesAnnotation') {
           vm.addBoundaryLayer(true);
@@ -141,24 +141,24 @@ export default {
         var fillStyle = {
           'fill-outline-color': '#0374c7',
           'fill-color': 'transparent',
-          'fill-opacity': 1
+          'fill-opacity': 1,
         };
       } else {
         var fillStyle = {
           'fill-color': '#0374c7',
-          'fill-opacity': 0.35
+          'fill-opacity': 0.35,
         };
       }
-      var tmpLayerId = this.mapId + this.$route.params.slug;
-      var sourceId = 'event-boundary-' + this.$route.params.slug;
+      const tmpLayerId = this.mapId + this.$route.params.slug;
+      const sourceId = `event-boundary-${this.$route.params.slug}`;
 
       if (!map.getSource(sourceId)) {
         map.addSource(sourceId, {
           type: 'geojson',
           data: {
             type: 'Feature',
-            geometry: this.eventBoundary.geojson
-          }
+            geometry: this.eventBoundary.geojson,
+          },
         });
       }
       if (!map.getLayer(tmpLayerId)) {
@@ -167,7 +167,7 @@ export default {
           type: 'fill',
           source: sourceId,
           layout: {},
-          paint: fillStyle
+          paint: fillStyle,
         });
       }
     },
@@ -182,57 +182,57 @@ export default {
       this.$store.dispatch(FETCH_GEOJSON_POLYGON, query);
     },
     addResponseAreasLayer() {
-      var formatedJson = getFeaturesFromArcs(this.responsesGeoJson, 'output');
+      const formatedJson = getFeaturesFromArcs(this.responsesGeoJson, 'output');
       map.addSource('event-responses', {
         type: 'geojson',
         data: {
           type: 'FeatureCollection',
-          features: formatedJson
-        }
+          features: formatedJson,
+        },
       });
 
       map.addLayer({
-        id: `responses-boundary`,
+        id: 'responses-boundary',
         type: 'fill',
         source: 'event-responses',
         paint: {
           'fill-color': '#FFB677',
-          'fill-opacity': 0.35
+          'fill-opacity': 0.35,
         },
-        filter: ['==', '$type', 'Polygon']
+        filter: ['==', '$type', 'Polygon'],
       });
     },
     addRelatedEventsLayer() {
-      var geojsonEvents = this.relatedEventsGeoJson.objects.output;
+      const geojsonEvents = this.relatedEventsGeoJson.objects.output;
 
-      var relatedEventFeatureCollection = getFeatures(
+      const relatedEventFeatureCollection = getFeatures(
         this.relatedEventsGeoJson,
-        'output'
+        'output',
       );
       if (!_.isEmpty(this.recentCoordinates)) {
         var gotoCoordinates = this.recentCoordinates; // to not lose center when refreshing
       } else {
         var gotoCoordinates = geojsonEvents.geometries[0].coordinates;
       }
-      var vm = this;
-      map.on('load', function() {
-        var imageId = 'event-marker';
-        var imageKey = '/resources/new_icons/event_open.png';
-        map.loadImage(imageKey, function(error, image) {
+      const vm = this;
+      map.on('load', () => {
+        const imageId = 'event-marker';
+        const imageKey = '/resources/new_icons/event_open.png';
+        map.loadImage(imageKey, (error, image) => {
           if (!map.hasImage(imageId)) {
             if (error) throw error;
             map.addImage(imageId, image);
           }
         });
 
-        var sourceId = `related-events-${vm.$route.params.slug}`;
+        const sourceId = `related-events-${vm.$route.params.slug}`;
         if (!map.getSource(sourceId)) {
           map.addSource(sourceId, {
             type: 'geojson',
             data: {
               type: 'FeatureCollection',
-              features: relatedEventFeatureCollection
-            }
+              features: relatedEventFeatureCollection,
+            },
           });
         }
 
@@ -241,47 +241,45 @@ export default {
           type: 'symbol',
           source: sourceId,
           layout: {
-            'icon-image': 'event-marker'
+            'icon-image': 'event-marker',
             // "icon-size": 1
           },
-          filter: ['==', '$type', 'Point']
+          filter: ['==', '$type', 'Point'],
         });
       });
 
       // Create a popup, but don't add it to the map yet.
-      var popup = new mapboxgl.Popup({
+      const popup = new mapboxgl.Popup({
         closeButton: true,
-        closeOnClick: false
+        closeOnClick: false,
       });
 
-      map.on('mouseenter', 'related-event-epicenter', function(e) {
+      map.on('mouseenter', 'related-event-epicenter', (e) => {
         // Change the cursor style as a UI indicator.
         map.getCanvas().style.cursor = 'pointer';
-        var coordinates = e.features[0].geometry.coordinates.slice();
+        const coordinates = e.features[0].geometry.coordinates.slice();
 
-        var evMeta = JSON.parse(e.features[0].properties.metadata);
-        var description = evMeta.description; // <<< missing feature.properties, need to convert GeometryCollection to FeatureCollection
-        var evName = evMeta.name;
+        const evMeta = JSON.parse(e.features[0].properties.metadata);
+        const description = evMeta.description; // <<< missing feature.properties, need to convert GeometryCollection to FeatureCollection
+        const evName = evMeta.name;
         // var evType = evMeta.types.join(',');
-        var evStatus = evMeta.event_status;
+        const evStatus = evMeta.event_status;
 
-        var cleanAreas = _.compact(evMeta.areas);
-        var evPlace;
+        const cleanAreas = _.compact(evMeta.areas);
+        let evPlace;
         if (!evMeta.areas || _.isEmpty(cleanAreas)) {
           evPlace = evMeta.country;
+        } else if (cleanAreas[0].region) {
+          evPlace = cleanAreas[0].region + cleanAreas[0].country_code;
         } else {
-          if (cleanAreas[0].region) {
-            evPlace = cleanAreas[0].region + cleanAreas[0].country_code;
-          } else {
-            evPlace = cleanAreas[0].country;
-          }
+          evPlace = cleanAreas[0].country;
         }
 
-        var evLastUpdate = moment(
-          e.features[0].properties.updated_at
+        const evLastUpdate = moment(
+          e.features[0].properties.updated_at,
         ).fromNow();
 
-        var contentStr = `<a href="#/events/${e.features[0].properties.id}">
+        const contentStr = `<a href="#/events/${e.features[0].properties.id}">
                      <div class="secondary-text">${evName}</div>
                      <div class="specified-text">${evStatus} - \n ${evPlace} </div>
                      <label>${evLastUpdate} </label>
@@ -306,8 +304,8 @@ export default {
       //     map.getCanvas().style.cursor = '';
       //     popup.remove();
       // });
-    }
-  }
+    },
+  },
 };
 </script>
 

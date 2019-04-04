@@ -11,8 +11,9 @@
         flat
         small
         @click="switchStatus(item)"
-        >{{ item.status }}</v-btn
       >
+        {{ item.status }}
+      </v-btn>
     </nav>
     <div
       :class="editing ? 'edit-wrapper full-text-fields' : 'full-text-fields'"
@@ -21,9 +22,7 @@
       <div v-if="displayResource">
         <v-layout v-if="allowEdit" row wrap class="actions">
           <v-switch v-model="editing" :label="editing ? `save` : `edit`" />
-          <span v-if="editing" class="cancel" @click="cancelEdit()"
-            ><v-icon>close</v-icon></span
-          >
+          <span v-if="editing" class="cancel" @click="cancelEdit()"><v-icon>close</v-icon></span>
         </v-layout>
 
         <v-layout v-if="editing" row wrap dark>
@@ -50,9 +49,11 @@
             />
           </v-flex>
           <v-flex xs4 />
-          <hr class="row-divider" />
+          <hr class="row-divider">
           <div ref="visa-requirements">
-            <div class="primary-text">Nationalities that requires Visa</div>
+            <div class="primary-text">
+              Nationalities that requires Visa
+            </div>
             <v-autocomplete
               v-model="editResources.visa_requirement"
               :disabled="autoNationality.isUpdating"
@@ -80,9 +81,11 @@
             </v-autocomplete>
           </div>
 
-          <hr class="row-divider" />
+          <hr class="row-divider">
           <div ref="vaccination-requirements">
-            <div class="primary-text">Health and vaccination requirements</div>
+            <div class="primary-text">
+              Health and vaccination requirements
+            </div>
             <!-- <v-text-field label="Required" v-model="editResources.vaccination_requirement.required"></v-text-field> -->
             <v-autocomplete
               v-model="editResources.vaccination_requirement.required"
@@ -127,7 +130,7 @@
               </template>
             </v-autocomplete>
           </div>
-          <hr class="row-divider" />
+          <hr class="row-divider">
           <div class="one-half">
             <v-text-field
               ref="total-budget"
@@ -186,16 +189,12 @@
               <v-spacer />
               <div ref="expatriates" class="one-half">
                 <label>Number of Expatriate</label>
-                <span v-if="!displayStatusResources.staff.expatriateCount"
-                  >--</span
-                >
+                <span v-if="!displayStatusResources.staff.expatriateCount">--</span>
                 {{ displayStatusResources.staff.expatriateCount }}
               </div>
               <div ref="national-staff" class="one-half">
                 <label>Number of National staff</label>
-                <span v-if="!displayStatusResources.staff.nationalStaffCount"
-                  >--</span
-                >
+                <span v-if="!displayStatusResources.staff.nationalStaffCount">--</span>
                 {{ displayStatusResources.staff.nationalStaffCount }}
               </div>
             </div>
@@ -221,17 +220,21 @@
               </div>
             </div>
           </div>
-          <hr class="row-divider" />
+          <hr class="row-divider">
 
           <div ref="visa-requirements">
-            <div class="primary-text">Nationalities that requires Visa</div>
+            <div class="primary-text">
+              Nationalities that requires Visa
+            </div>
             <label>Nationalities</label>
             <span v-if="displayResource.visa_requirement.length == 0">--</span>
             {{ displayResource.visa_requirement.toString() }}
           </div>
-          <hr class="row-divider" />
+          <hr class="row-divider">
           <div ref="vaccination-requirements">
-            <div class="primary-text">Health and vaccination requirements</div>
+            <div class="primary-text">
+              Health and vaccination requirements
+            </div>
             <label>Required</label>
             <span
               v-if="
@@ -252,18 +255,15 @@
             </span>
             {{ displayResource.vaccination_requirement.recommended.toString() }}
           </div>
-          <hr class="row-divider" />
+          <hr class="row-divider">
           <div ref="institutional-donors">
             <label>Institutional Donors</label>
-            <span v-if="displayResource.institutional_donors.length == 0"
-              >--</span
-            >
+            <span v-if="displayResource.institutional_donors.length == 0">--</span>
             <span
               v-for="(item, i) in displayResource.institutional_donors"
               v-else
               :key="i"
-              >{{ item.from_who }} : {{ item.amount }}</span
-            >
+            >{{ item.from_who }} : {{ item.amount }}</span>
           </div>
         </v-layout>
       </div>
@@ -288,19 +288,19 @@ import VACCINATION from '@/common/WHO_vaccinations.json';
 import {
   DEFAULT_RESOURCES_FIELDS,
   SUPPLY_CHAIN_SPECIALITIES,
-  DEFAULT_STATUS_RESOURCES_FIELDS
+  DEFAULT_STATUS_RESOURCES_FIELDS,
 } from '@/common/resource-fields';
 
 export default {
   name: 'REventResources',
   components: {
-    //TODO: add + edit
+    // TODO: add + edit
   },
   filters: {},
   props: {
     reviewFields: {
-      type: Array
-    }
+      type: Array,
+    },
   },
   data() {
     return {
@@ -315,47 +315,47 @@ export default {
       requiredNationalities: [],
       autoNationality: {
         autoUpdate: true,
-        isUpdating: false
+        isUpdating: false,
       },
       requireVaccinations: [],
       allSupplyChains: SUPPLY_CHAIN_SPECIALITIES,
       autoVaccinationRequired: {
         autoUpdate: true,
-        isUpdating: false
+        isUpdating: false,
       },
       recommendedVaccination: [],
       autoVaccinationRecommended: {
         autoUpdate: true,
-        isUpdating: false
+        isUpdating: false,
       },
       allSelections: {
         countries: COUNTRIES,
         currencies: CURRENCIES,
-        vaccinations: VACCINATION
-      }
+        vaccinations: VACCINATION,
+      },
     };
   },
   watch: {
     editing(val) {
       if (val) {
         this.editResources = this._beforeEditingCache = _.clone(
-          this.displayResource
+          this.displayResource,
         );
         this.editStatusResource = this._beforeEditPerStatusCache = _.clone(
-          this.displayStatusResources
+          this.displayStatusResources,
         );
       } else {
         this.save();
       }
 
       if (this.reviewFields) {
-        var vm = this;
+        const vm = this;
         if (val) {
-          setTimeout(function() {
+          setTimeout(() => {
             vm.highlightReview(true);
           }, 500);
         } else {
-          setTimeout(function() {
+          setTimeout(() => {
             vm.removeHighlight();
           }, 500);
         }
@@ -365,23 +365,23 @@ export default {
       if (val.isUpdating) {
         setTimeout(() => (this.autoNationality.isUpdating = false), 3000);
       }
-    }
+    },
   },
   mounted() {
     if (this.reviewFields) this.highlightReview();
   },
   methods: {
     highlightReview(isEdit) {
-      var vm = this;
-      this.reviewFields.forEach(function(field) {
+      const vm = this;
+      this.reviewFields.forEach((field) => {
         vm.$refs[field].style.background = isEdit
           ? 'rgba(255,255,255, .25)'
           : '#E5F0F9';
       });
     },
     removeHighlight() {
-      var vm = this;
-      this.reviewFields.forEach(function(field) {
+      const vm = this;
+      this.reviewFields.forEach((field) => {
         vm.$refs[field].style.background = 'none';
       });
     },
@@ -392,14 +392,14 @@ export default {
       Object.assign(this.eventResources, this._beforeEditingCache);
       Object.assign(
         this.displayStatusResources,
-        this._beforeEditPerStatusCache
+        this._beforeEditPerStatusCache,
       );
 
       this.editResources = this._beforeEditingCache = _.clone(
-        this.defaultResources
+        this.defaultResources,
       );
       this.editStatusResource = this._beforeEditPerStatusCache = _.clone(
-        this.defaultStatusResource
+        this.defaultStatusResource,
       );
       this.editing = false;
     },
@@ -409,28 +409,26 @@ export default {
         this.activeStatusIndex
       ] = this.editStatusResource;
       this.$store.commit(UPDATE_EVENT_RESOURCES, this.editResources);
-      this.$store.dispatch(EDIT_EVENT_RESOURCES).then(data => {});
+      this.$store.dispatch(EDIT_EVENT_RESOURCES).then((data) => {});
     },
     removeNationality(item) {
       const index = this.editResources.visa_requirement.indexOf(
-        item.nationality
+        item.nationality,
       );
       if (index >= 0) this.editResources.visa_requirement.splice(index, 1);
     },
     removeVaccinRequired(item) {
       const index = this.editResources.vaccination_requirement.required.indexOf(
-        item.value
+        item.value,
       );
-      if (index >= 0)
-        this.editResources.vaccination_requirement.required.splice(index, 1);
+      if (index >= 0) this.editResources.vaccination_requirement.required.splice(index, 1);
     },
     removeVaccinRec(item) {
       const index = this.editResources.vaccination_requirement.recommended.indexOf(
-        item.nationality
+        item.nationality,
       );
-      if (index >= 0)
-        this.editResources.vaccination_requirement.recommended.splice(index, 1);
-    }
+      if (index >= 0) this.editResources.vaccination_requirement.recommended.splice(index, 1);
+    },
   },
   computed: {
     ...mapGetters(['eventResources', 'eventStatus']),
@@ -441,23 +439,21 @@ export default {
     displayStatusResources() {
       if (!this.eventResources) return this.defaultStatusResource;
 
-      var result = this.eventResources.perStatus.filter(item => {
-        return item.status == this.eventStatus;
-      });
+      const result = this.eventResources.perStatus.filter(item => item.status == this.eventStatus);
       this.activeStatusIndex = this.eventResources.perStatus.indexOf(result[0]);
       return result[0];
     },
     allowEdit() {
       if (!_.isEqual(this.displayStatusResources, this.defaultStatusResource)) {
         return this.displayStatusResources.status == this.eventStatus;
-      } else {
-        return (
-          this.eventStatus != 'monitoring' && this.eventStatus != 'complete'
-        );
       }
+      return (
+        this.eventStatus != 'monitoring' && this.eventStatus != 'complete'
+      );
+
       return this.eventStatus != 'monitoring';
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss">

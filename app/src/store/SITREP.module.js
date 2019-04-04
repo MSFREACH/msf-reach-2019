@@ -1,7 +1,7 @@
-/*eslint no-debugger: off*/
-/*eslint no-console: off*/
+/* eslint no-debugger: off */
+/* eslint no-console: off */
 
-//**** MSF jargon  SITREP >> SITuation REPorts ***
+//* *** MSF jargon  SITREP >> SITuation REPorts ***
 
 import Vue from 'vue';
 import { SITREPService } from '@/common/api.service';
@@ -10,14 +10,14 @@ import {
   FETCH_SITREPS,
   CREATE_SITREP,
   EDIT_SITREP,
-  DELETE_SITREP
+  DELETE_SITREP,
 } from './actions.type';
 import {
   FETCH_SITREPS_START,
   FETCH_SITREPS_END,
   SET_ERROR,
   RESET_STATE,
-  UPDATE_SITREP_SIGNEDURLS
+  UPDATE_SITREP_SIGNEDURLS,
 } from './mutations.type';
 
 const initialState = {
@@ -32,8 +32,8 @@ const initialState = {
     updated: null,
     description: '',
     username: '',
-    files: []
-  }
+    files: [],
+  },
 };
 
 const state = Object.assign({}, initialState);
@@ -49,7 +49,7 @@ const getters = {
   },
   fetchSitrepError(state) {
     return state.error;
-  }
+  },
 };
 
 const actions = {
@@ -60,7 +60,7 @@ const actions = {
       .then(({ data }) => {
         commit(FETCH_SITREPS_END, data.result);
       })
-      .catch(error => {
+      .catch((error) => {
         commit(SET_ERROR, error);
       });
   },
@@ -72,10 +72,10 @@ const actions = {
   },
   [EDIT_SITREP](context, params) {
     console.log('[EDIT_SITREP] ---- ', params);
-    var slug = params.id;
+    const slug = params.id;
     delete params.id;
     return SITREPService.update(slug, params);
-  }
+  },
 };
 
 /* eslint no-param-reassign: ["error", { "props": false }] */
@@ -95,18 +95,18 @@ const mutations = {
     state.isLoadingSitReps = false;
   },
   [RESET_STATE]() {
-    for (let f in state) {
+    for (const f in state) {
       Vue.set(state, f, initialState[f]);
     }
   },
   [UPDATE_SITREP_SIGNEDURLS](state, data) {
     state.sitreps[data.index].signedFiles = data.signedUrls;
-  }
+  },
 };
 
 export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

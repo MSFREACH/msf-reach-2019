@@ -1,6 +1,6 @@
-/*eslint no-debugger: off*/
-/*eslint no-unused-vars :off*/
-/*eslint no-console :off*/
+/* eslint no-debugger: off */
+/* eslint no-unused-vars :off */
+/* eslint no-console :off */
 import _ from 'lodash';
 import { EventsService } from '@/common/api.service';
 import { FETCH_EVENTS, FETCH_RELATED_EVENTS } from './actions.type';
@@ -10,7 +10,7 @@ import {
   FETCH_RELATED_EVENT_START,
   FETCH_RELATED_EVENTS_END,
   UPDATE_EVENT_IN_LIST,
-  SET_ERROR
+  SET_ERROR,
 } from './mutations.type';
 
 const state = {
@@ -23,7 +23,7 @@ const state = {
   isLoadingRelatedEvents: false,
   relatedEvents: [],
   relatedEventsGeoJson: [],
-  relatedEventsError: false
+  relatedEventsError: false,
 };
 
 const getters = {
@@ -56,7 +56,7 @@ const getters = {
   },
   fetchRelatedEventsError(state) {
     return state.relatedEventsError;
-  }
+  },
 };
 
 const actions = {
@@ -66,7 +66,7 @@ const actions = {
       .then(({ data }) => {
         commit(FETCH_EVENTS_END, data.result);
       })
-      .catch(error => {
+      .catch((error) => {
         commit(SET_ERROR, error);
       });
   },
@@ -76,10 +76,10 @@ const actions = {
       .then(({ data }) => {
         commit(FETCH_RELATED_EVENTS_END, data.result);
       })
-      .catch(error => {
+      .catch((error) => {
         commit(SET_ERROR, error);
       });
-  }
+  },
 };
 
 /* eslint no-param-reassign: ["error", { "props": false }] */
@@ -92,28 +92,22 @@ const mutations = {
   },
   [FETCH_EVENTS_END](state, payload) {
     // TODO: // // Add popups see: [mapAllEvents] parse GeoJSON here
-    console.log(payload); //eslint-disable-line no-console
+    console.log(payload); // eslint-disable-line no-console
 
     state.eventsGeoJson = payload;
-    state.events = _.map(payload.objects.output.geometries, function(item) {
-      return item.properties;
-    });
+    state.events = _.map(payload.objects.output.geometries, item => item.properties);
     state.eventsCount = payload.objects.output.geometries.length;
     state.isLoadingEvent = false;
   },
   [FETCH_RELATED_EVENTS_END](state, payload) {
     console.log(payload);
     state.relatedEventsGeoJson = payload;
-    state.relatedEvents = _.map(payload.objects.output.geometries, function(
-      item
-    ) {
-      return item.properties;
-    });
+    state.relatedEvents = _.map(payload.objects.output.geometries, item => item.properties);
     state.relatedEventsCount = payload.objects.output.geometries.length;
     state.isLoadingRelatedEvents = false;
   },
   [UPDATE_EVENT_IN_LIST](state, data) {
-    state.events = state.events.map(event => {
+    state.events = state.events.map((event) => {
       if (event.slug !== data.slug) {
         return event;
       }
@@ -125,12 +119,12 @@ const mutations = {
   [SET_ERROR](state, error) {
     state.errors = error;
     state.isLoadingEvent = false;
-  }
+  },
 };
 
 export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

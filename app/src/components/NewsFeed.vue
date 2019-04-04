@@ -21,9 +21,9 @@
 </template>
 
 <script>
-/*eslint no-debugger: off*/
-/*eslint no-console: off*/
-/*eslint no-unused-vars: off*/
+/* eslint no-debugger: off */
+/* eslint no-console: off */
+/* eslint no-unused-vars: off */
 
 import { FETCH_RELATED_EVENTS } from '@/store/actions.type';
 import { EVENT_NEWSFEED_NAVIGATIONS } from '@/common/navigational-fields.js';
@@ -33,23 +33,23 @@ export default {
   components: {},
   props: {
     slug: {
-      type: String
-    }
+      type: String,
+    },
   },
   data() {
     return {
-      newsFeedTabs: EVENT_NEWSFEED_NAVIGATIONS
+      newsFeedTabs: EVENT_NEWSFEED_NAVIGATIONS,
     };
   },
   computed: {},
   watch: {},
   mounted() {
-    var params = {
-      types: this.eventTypes
+    const params = {
+      types: this.eventTypes,
     };
     this.$store.dispatch(FETCH_RELATED_EVENTS, params);
   },
-  methods: {}
+  methods: {},
 };
 </script>
 

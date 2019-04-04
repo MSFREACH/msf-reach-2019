@@ -11,9 +11,9 @@ import RHeader from '@/components/RHeader';
 export default {
   name: 'App',
   components: {
-    RHeader
+    RHeader,
   },
-  message: 'Hello Vue!'
+  message: 'Hello Vue!',
 };
 </script>
 

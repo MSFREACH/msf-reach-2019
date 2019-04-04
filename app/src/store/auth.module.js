@@ -7,20 +7,22 @@ import {
   LOGOUT,
   REGISTER,
   CHECK_AUTH,
-  UPDATE_USER
+  UPDATE_USER,
 } from './actions.type';
-import { SET_AUTH, PURGE_AUTH, SET_ERROR, SET_TOKEN } from './mutations.type';
+import {
+  SET_AUTH, PURGE_AUTH, SET_ERROR, SET_TOKEN,
+} from './mutations.type';
 import { Auth } from 'aws-amplify';
 
-/*eslint no-console: off*/
-/*eslint no-unused-vars: off*/
-/*eslint no-debugger: off*/
+/* eslint no-console: off */
+/* eslint no-unused-vars: off */
+/* eslint no-debugger: off */
 
 const state = {
   errors: null,
   user: {},
   username: '',
-  isAuthenticated: !!JwtService.getToken()
+  isAuthenticated: !!JwtService.getToken(),
 };
 
 const getters = {
@@ -32,18 +34,18 @@ const getters = {
   },
   isAuthenticated(state) {
     return state.isAuthenticated;
-  }
+  },
 };
 
 const actions = {
   [LOGIN](context, credentials) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       Auth.signIn(credentials.username, credentials.password)
-        .then(payload => {
+        .then((payload) => {
           context.commit(SET_AUTH, payload);
           resolve(payload);
         })
-        .catch(err => {
+        .catch((err) => {
           context.commit(SET_ERROR, err);
           context.commit(PURGE_AUTH);
           if (router.history.pending.path !== '/cognito-login') {
@@ -53,29 +55,29 @@ const actions = {
     });
   },
   [PASSWORD_CHALLENGE](context, newPassword) {
-    return new Promise(resolve => {
-      var userAttributes = state.user.challengeParam.userAttributes;
+    return new Promise((resolve) => {
+      const userAttributes = state.user.challengeParam.userAttributes;
 
       delete userAttributes.email_verified;
       delete userAttributes.phone_number_verified;
 
       state.user.completeNewPasswordChallenge(newPassword, userAttributes, {
-        onSuccess: function(session) {
+        onSuccess(session) {
           console.log('[completeNewPasswordChallenge] success ', session);
           context.commit(SET_TOKEN, session);
           resolve(data);
         },
-        onFailure: function(err) {
+        onFailure(err) {
           console.log('completeNewPassword failure', err);
           context.commit(SET_ERROR, err);
-        }
+        },
       });
     });
   },
   [LOGOUT](context) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       Auth.signOut()
-        .then(data => {
+        .then((data) => {
           context.commit(PURGE_AUTH);
           resolve(data);
         })
@@ -97,28 +99,32 @@ const actions = {
     // });
   },
   [CHECK_AUTH](context) {
-    let session = Auth.currentSession();
+    const session = Auth.currentSession();
     if (JwtService.getToken()) {
       ApiService.setHeader();
       Auth.currentAuthenticatedUser()
-        .then(user => {
+        .then((user) => {
           context.commit(SET_AUTH, user);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           context.commit(SET_ERROR, err);
         });
     } else {
       context.commit(PURGE_AUTH);
       if (router.history.pending.path !== '/cognito-login') {
-        //TODO:  still buggy when you type in /events
+        // TODO:  still buggy when you type in /events
         router.push({ name: 'cognito-login' });
       }
     }
   },
   [UPDATE_USER](context, payload) {
-    const { email, username, password, image, bio } = payload;
-    const user = { email, username, bio, image };
+    const {
+      email, username, password, image, bio,
+    } = payload;
+    const user = {
+      email, username, bio, image,
+    };
     if (password) {
       user.password = password;
     }
@@ -126,7 +132,7 @@ const actions = {
       context.commit(SET_AUTH, data.user);
       return data;
     });
-  }
+  },
 };
 
 const mutations = {
@@ -151,12 +157,12 @@ const mutations = {
     state.user = {}; // will have an USER OBJECT one day
     state.errors = {};
     JwtService.destroyToken();
-  }
+  },
 };
 
 export default {
   state,
   actions,
   mutations,
-  getters
+  getters,
 };

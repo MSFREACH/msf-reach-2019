@@ -22,8 +22,8 @@ export default {
   props: {
     link: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
     copyLink() {
@@ -36,13 +36,13 @@ export default {
       el.select();
       document.execCommand('copy');
       document.body.removeChild(el);
-      var tooltip = this.$refs.sharepoint_link;
-      tooltip.innerHTML = 'Copied: ' + el.value;
+      const tooltip = this.$refs.sharepoint_link;
+      tooltip.innerHTML = `Copied: ${el.value}`;
     },
     outFunc() {
-      var tooltip = this.$refs.sharepoint_link;
+      const tooltip = this.$refs.sharepoint_link;
       tooltip.innerHTML = 'Copy sharepoint link';
-    }
-  }
+    },
+  },
 };
 </script>

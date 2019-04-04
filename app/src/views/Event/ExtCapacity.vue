@@ -16,12 +16,14 @@
         clearable
       />
       <v-dialog v-model="dialog" max-width="880px">
-        <v-btn slot="activator" class="mb-2" small fab flat
-          ><v-icon>add</v-icon></v-btn
-        >
+        <v-btn slot="activator" class="mb-2" small fab flat>
+          <v-icon>add</v-icon>
+        </v-btn>
         <v-card class="create-wrapper">
           <v-flex right>
-            <v-icon class="action-link" @click="close">close</v-icon>
+            <v-icon class="action-link" @click="close">
+              close
+            </v-icon>
           </v-flex>
           <v-card-text>
             <v-container grid-list-md>
@@ -77,7 +79,9 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn color="grey" @click="add"> add </v-btn>
+            <v-btn color="grey" @click="add">
+              add
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -88,11 +92,11 @@
     >
       <div class="actions">
         <v-switch v-model="editing" :label="editing ? `save` : `edit`" />
-        <span v-if="editing" class="cancel" @click="cancelEdit()"
-          ><v-icon>close</v-icon></span
-        >
+        <span v-if="editing" class="cancel" @click="cancelEdit()"><v-icon>close</v-icon></span>
       </div>
-      <div class="primary-text">External capacity Analysis</div>
+      <div class="primary-text">
+        External capacity Analysis
+      </div>
       <v-data-table
         :headers="headers"
         :items="displayCapacities"
@@ -117,12 +121,10 @@
                 <span v-if="!props.item.type"> -- </span>{{ props.item.type }}
               </td>
               <td>
-                <span v-if="!props.item.arrival_date"> -- </span
-                >{{ props.item.arrival_date }}
+                <span v-if="!props.item.arrival_date"> -- </span>{{ props.item.arrival_date }}
               </td>
               <td width="40%">
-                <span v-if="!props.item.deployment"> -- </span
-                >{{ props.item.deployment }}
+                <span v-if="!props.item.deployment"> -- </span>{{ props.item.deployment }}
               </td>
               <td>
                 <span
@@ -203,17 +205,18 @@ import _ from 'lodash';
 import { DEFAULT_EXT_CAPACITY_HEADERS } from '@/common/common';
 import {
   EXTERNAL_CAPACITY_FIELDS,
-  EXTERNAL_CAPACITY_TYPES
+  EXTERNAL_CAPACITY_TYPES,
 } from '@/common/form-fields';
 import { EDIT_EVENT_EXT_CAPACITY } from '@/store/actions.type';
 import {
   ADD_EVENT_EXT_CAPACITY,
-  UPDATE_EVENT_EXT_CAPACITY
+  UPDATE_EVENT_EXT_CAPACITY,
 } from '@/store/mutations.type';
+
 export default {
   name: 'REventExtCapacity',
   components: {
-    //TODO: add + edit
+    // TODO: add + edit
   },
   filters: {},
   data() {
@@ -226,14 +229,14 @@ export default {
       dialog: false,
       allCapacityTypes: EXTERNAL_CAPACITY_TYPES,
       editMode: {
-        offset: -1
+        offset: -1,
       },
       createDateSelected: false,
       editDateSelected: false,
       newItem: EXTERNAL_CAPACITY_FIELDS,
       editedItem: EXTERNAL_CAPACITY_FIELDS,
       defaultItem: EXTERNAL_CAPACITY_FIELDS,
-      headers: DEFAULT_EXT_CAPACITY_HEADERS
+      headers: DEFAULT_EXT_CAPACITY_HEADERS,
     };
   },
   watch: {
@@ -241,27 +244,25 @@ export default {
       if (val) {
         this._beforeEditingCache = _.clone(this.displayCapacities);
       } else if (!val && this.editMode.offset != -1) {
-        confirm('Are you sure you want to continue and discard the changes?') &&
-          this.clearEdit();
+        confirm('Are you sure you want to continue and discard the changes?')
+          && this.clearEdit();
       } else {
         this.updateCapacity();
       }
     },
     selectedType(val) {
-      this.displayCapacities = this.eventExtCapacity.filter(item => {
+      this.displayCapacities = this.eventExtCapacity.filter((item) => {
         if (val) return item.type == val;
         return item;
       });
-    }
+    },
   },
   mounted() {
     // Not the best place to call this inside mounted
-    this.displayCapacities = this.eventExtCapacity.sort(function(a, b) {
-      return b.arrival_date - a.arrival_date;
-    });
+    this.displayCapacities = this.eventExtCapacity.sort((a, b) => b.arrival_date - a.arrival_date);
   },
   computed: {
-    ...mapGetters(['eventExtCapacity'])
+    ...mapGetters(['eventExtCapacity']),
   },
   methods: {
     add(type) {
@@ -286,20 +287,20 @@ export default {
 
     delete(item) {
       const index = this.eventExtCapacity.indexOf(item);
-      confirm('Are you sure you want to delete this item?') &&
-        this.eventExtCapacity.splice(index, 1);
+      confirm('Are you sure you want to delete this item?')
+        && this.eventExtCapacity.splice(index, 1);
     },
     localSave() {
-      var payload = {
+      const payload = {
         index: this.editMode.offset,
-        item: this.editedItem
+        item: this.editedItem,
       };
       this.$store.commit(UPDATE_EVENT_EXT_CAPACITY, payload);
       this.clearEdit();
       this.updateCapacity();
     },
     updateCapacity() {
-      this.$store.dispatch(EDIT_EVENT_EXT_CAPACITY).then(data => {
+      this.$store.dispatch(EDIT_EVENT_EXT_CAPACITY).then((data) => {
         // TODO:// refresh or reload state
       });
     },
@@ -308,8 +309,8 @@ export default {
       setTimeout(() => {
         this.newItem = Object.assign({}, this.defaultItem);
       }, 300);
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss">

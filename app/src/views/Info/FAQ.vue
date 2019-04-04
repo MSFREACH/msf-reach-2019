@@ -4,7 +4,9 @@
       <!-- <v-btn slot="activator" color="red lighten-2" dark >
                 FAQ
             </v-btn> -->
-      <v-list-tile-title slot="activator">FAQ</v-list-tile-title>
+      <v-list-tile-title slot="activator">
+        FAQ
+      </v-list-tile-title>
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>
           Privacy Policy
@@ -81,7 +83,9 @@
         <v-divider />
         <v-card-actions>
           <v-spacer />
-          <v-btn color="primary" flat @click="dialog = false"> I accept </v-btn>
+          <v-btn color="primary" flat @click="dialog = false">
+            I accept
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -93,8 +97,8 @@ export default {
   name: 'InfoFAQ',
   data() {
     return {
-      dialog: false
+      dialog: false,
     };
-  }
+  },
 };
 </script>

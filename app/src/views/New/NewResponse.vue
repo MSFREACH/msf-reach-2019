@@ -7,15 +7,17 @@
       <template>
         <v-stepper v-model="r1">
           <v-stepper-header flat>
-            <v-stepper-step :complete="r1 > 1" step="1"
-              >Response area <small>map</small></v-stepper-step
-            >
+            <v-stepper-step :complete="r1 > 1" step="1">
+              Response area <small>map</small>
+            </v-stepper-step>
             <v-divider />
-            <v-stepper-step :complete="r1 > 2" step="2"
-              >Information <small>metadata</small></v-stepper-step
-            >
+            <v-stepper-step :complete="r1 > 2" step="2">
+              Information <small>metadata</small>
+            </v-stepper-step>
             <v-spacer />
-            <v-icon class="action-link" @click="close">close</v-icon>
+            <v-icon class="action-link" @click="close">
+              close
+            </v-icon>
           </v-stepper-header>
           <v-stepper-items>
             <v-stepper-content step="1">
@@ -23,7 +25,9 @@
                 ref="responseMapEntry"
                 :coordinates="eventCoordinates"
               />
-              <v-btn class="right" round flat @click="r1 = 2"> Continue</v-btn>
+              <v-btn class="right" round flat @click="r1 = 2">
+                Continue
+              </v-btn>
             </v-stepper-content>
             <v-stepper-content step="2">
               <v-container grid-list-md class="create-wrapper">
@@ -40,11 +44,11 @@
                         v-model="newResponse.project_code"
                         type="text"
                         placeholder="######"
-                      />
+                      >
                     </div>
                   </div>
                   <response-programmes />
-                  <hr class="row-divider" />
+                  <hr class="row-divider">
                   <div class="one-half">
                     <label>Response</label>
                     <v-flex d-flex>
@@ -127,11 +131,13 @@
                   />
                 </v-layout>
               </v-container>
-              <v-btn round flat @click="r1 = 1">back</v-btn>
+              <v-btn round flat @click="r1 = 1">
+                back
+              </v-btn>
               <v-progress-circular v-if="inProgress" :indeterminate="true" />
-              <v-btn class="right" round flat @click.native="save"
-                >Create</v-btn
-              >
+              <v-btn class="right" round flat @click.native="save">
+                Create
+              </v-btn>
             </v-stepper-content>
           </v-stepper-items>
         </v-stepper>
@@ -151,7 +157,7 @@ import {
   DEFAULT_RESPONSE_PROGRAMME,
   RESPONSE_INFECTIOUS_DISEASE_PROGRAMMES,
   RESPONSE_NCDS_PROGRAMMES,
-  OPERATIONAL_CENTERS
+  OPERATIONAL_CENTERS,
 } from '@/common/response-fields';
 import { DEFAULT_MSF_RESPONSE } from '@/common/form-fields';
 import MapInput from '@/views/Map/MapInput.vue';
@@ -161,7 +167,7 @@ export default {
   name: 'NewResponse',
   components: {
     MapInput,
-    ResponseProgrammes
+    ResponseProgrammes,
   },
   data: () => ({
     r1: 0,
@@ -171,7 +177,7 @@ export default {
     allResponseTypes: RESPONSE_TYPES,
     subProgrammes: {
       infectious_diseases: RESPONSE_INFECTIOUS_DISEASE_PROGRAMMES,
-      ncds: RESPONSE_NCDS_PROGRAMMES
+      ncds: RESPONSE_NCDS_PROGRAMMES,
     },
     allOperationalCenters: OPERATIONAL_CENTERS,
     defaultResponse: DEFAULT_MSF_RESPONSE,
@@ -181,15 +187,15 @@ export default {
       start: false,
       startValue: null,
       end: false,
-      endValue: null
+      endValue: null,
     },
-    inProgress: false
+    inProgress: false,
   }),
   watch: {
     dialog(val) {
       if (val) {
-        var vm = this;
-        setTimeout(function() {
+        const vm = this;
+        setTimeout(() => {
           vm.$refs.responseMapEntry.resizeMap();
         }, 300);
         this.e1 = 1;
@@ -200,27 +206,27 @@ export default {
       if (val == 1) {
         this.$refs.responseMapEntry.resizeMap();
       }
-    }
+    },
   },
   methods: {
     save() {
       this.lintDates();
-      var tmp = {
+      const tmp = {
         event_id: parseInt(this.$route.params.slug),
         event_status: this.eventStatus,
         area: this.response.area,
-        programmes: this.response.programmes
+        programmes: this.response.programmes,
       };
 
-      var params = _.merge(this.newResponse, tmp);
+      const params = _.merge(this.newResponse, tmp);
 
       this.inProgress = true;
-      var vm = this;
-      this.$store.dispatch(CREATE_MSF_RESPONSE, params).then(payload => {
+      const vm = this;
+      this.$store.dispatch(CREATE_MSF_RESPONSE, params).then((payload) => {
         this.inProgress = false;
         this.$router.push({
           name: 'event-responses',
-          params: { slug: vm.$route.params.slug }
+          params: { slug: vm.$route.params.slug },
         });
         setTimeout(() => vm.close(), 1000);
       });
@@ -232,18 +238,18 @@ export default {
     },
     lintDates() {
       if (this.selectedDate.startValue) {
-        var startDate = new Date(this.selectedDate.startValue);
+        const startDate = new Date(this.selectedDate.startValue);
         this.newResponse.metadata.start_date = startDate.toISOString();
       }
       if (this.selectedDate.endValue) {
-        var endDate = new Date(this.selectedDate.endValue);
+        const endDate = new Date(this.selectedDate.endValue);
         this.newResponse.metadata.end_date = endDate.toISOString();
       }
-    }
+    },
   },
   computed: {
-    ...mapGetters(['response', 'eventStatus', 'eventCoordinates'])
-  }
+    ...mapGetters(['response', 'eventStatus', 'eventCoordinates']),
+  },
 };
 </script>
 

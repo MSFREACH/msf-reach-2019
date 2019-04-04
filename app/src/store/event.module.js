@@ -1,12 +1,12 @@
-/*eslint no-debugger: off*/
-/*eslint no-console: off*/
+/* eslint no-debugger: off */
+/* eslint no-console: off */
 
 import _ from 'lodash';
 import Vue from 'vue';
 import {
   EventsService,
   RssService,
-  TwitterService
+  TwitterService,
 } from '@/common/api.service';
 import {
   FETCH_RSS,
@@ -21,7 +21,7 @@ import {
   EDIT_EVENT_RESPONSES,
   EDIT_EVENT_EXT_CAPACITY,
   EDIT_EVENT_FIGURES,
-  EDIT_EVENT_RESOURCES
+  EDIT_EVENT_RESOURCES,
 } from './actions.type';
 import {
   RESET_STATE,
@@ -30,7 +30,7 @@ import {
   UPDATE_EVENT_EXT_CAPACITY,
   UPDATE_EVENT_FIGURES,
   UPDATE_EVENT_RESOURCES,
-  UPDATE_KEY_FIGURES
+  UPDATE_KEY_FIGURES,
 } from './mutations.type';
 
 const initialState = {
@@ -41,17 +41,17 @@ const initialState = {
     type: '',
     coordinates: {},
     metadata: {
-      areas: []
+      areas: [],
     },
     properties: {},
     responses: {},
     extCapacity: [],
     figures: {},
-    resources: {}
+    resources: {},
   },
   keyFigures: [],
   tweets: [],
-  rssFeedItems: []
+  rssFeedItems: [],
 };
 
 const state = Object.assign({}, initialState);
@@ -88,38 +88,36 @@ const actions = {
     return EventsService.update(state.eventId, payload);
   },
   [EDIT_EVENT_RESPONSES]({ state }) {
-    var payload = {
-      responses: state.event.responses
+    const payload = {
+      responses: state.event.responses,
     };
     return EventsService.updateResponses(state.eventId, payload);
   },
   [EDIT_EVENT_EXT_CAPACITY]({ state }) {
-    var payload = {
-      extCapacity: state.event.extCapacity
+    const payload = {
+      extCapacity: state.event.extCapacity,
     };
     return EventsService.updateExtCapacity(state.eventId, payload);
   },
   [EDIT_EVENT_FIGURES]({ state }) {
-    var currentKeyFigures = state.event.figures.keyFigures.filter(item => {
-      return item.status == state.event.status;
-    });
-    var kfIndex = state.event.figures.keyFigures.indexOf(currentKeyFigures);
+    const currentKeyFigures = state.event.figures.keyFigures.filter(item => item.status == state.event.status);
+    let kfIndex = state.event.figures.keyFigures.indexOf(currentKeyFigures);
     if (!_.isEmpty(state.keyFigures)) {
       if (kfIndex < 0) kfIndex = 0;
       state.event.figures.keyFigures[kfIndex] = {
         status: state.event.status,
-        figures: state.keyFigures
+        figures: state.keyFigures,
       };
     }
-    var payload = {
-      figures: state.event.figures
+    const payload = {
+      figures: state.event.figures,
     };
 
     return EventsService.updateFigures(state.eventId, payload);
   },
   [EDIT_EVENT_RESOURCES]({ state }) {
-    var payload = {
-      resources: state.event.resources
+    const payload = {
+      resources: state.event.resources,
     };
     return EventsService.updateResources(state.eventId, payload);
   },
@@ -130,7 +128,7 @@ const actions = {
   [ARCHIVE_EVENT]({ state }) {
     // TODO: trigger missions table
     return EventsService.archive(state.event.slug, state.event);
-  }
+  },
 };
 
 /* eslint no-param-reassign: ["error", { "props": false }] */
@@ -141,27 +139,19 @@ const mutations = {
   [SET_EVENT](state, payload) {
     // state.event = payload.result.objects.output.geometries[0];
     state.eventId = payload.result.objects.output.geometries[0].properties.id;
-    state.eventProperties =
-      payload.result.objects.output.geometries[0].properties;
-    state.event.metadata =
-      payload.result.objects.output.geometries[0].properties.metadata;
-    state.event.coordinates =
-      payload.result.objects.output.geometries[0].coordinates;
-    state.event.status =
-      payload.result.objects.output.geometries[0].properties.metadata.event_status;
-    //------ future proof, when sub-content objs becomes available
-    state.event.responses =
-      payload.result.objects.output.geometries[0].properties.responses;
-    state.event.extCapacity =
-      payload.result.objects.output.geometries[0].properties.extcapacity;
-    state.event.resources =
-      payload.result.objects.output.geometries[0].properties.resources;
-    state.event.figures =
-      payload.result.objects.output.geometries[0].properties.figures;
-    ///------/------/------/------/------/------
+    state.eventProperties = payload.result.objects.output.geometries[0].properties;
+    state.event.metadata = payload.result.objects.output.geometries[0].properties.metadata;
+    state.event.coordinates = payload.result.objects.output.geometries[0].coordinates;
+    state.event.status = payload.result.objects.output.geometries[0].properties.metadata.event_status;
+    // ------ future proof, when sub-content objs becomes available
+    state.event.responses = payload.result.objects.output.geometries[0].properties.responses;
+    state.event.extCapacity = payload.result.objects.output.geometries[0].properties.extcapacity;
+    state.event.resources = payload.result.objects.output.geometries[0].properties.resources;
+    state.event.figures = payload.result.objects.output.geometries[0].properties.figures;
+    // /------/------/------/------/------/------
   },
   [RESET_STATE]() {
-    for (let f in state) {
+    for (const f in state) {
       Vue.set(state, f, initialState[f]);
     }
   },
@@ -183,7 +173,7 @@ const mutations = {
   },
   [UPDATE_KEY_FIGURES](state, data) {
     state.keyFigures = data.keyFigures;
-  }
+  },
 };
 
 const getters = {
@@ -209,50 +199,47 @@ const getters = {
     return state.event.coordinates;
   },
   oldEventNotifications(state) {
-    var currentNotifications = state.event.metadata.notification;
+    const currentNotifications = state.event.metadata.notification;
     if (currentNotifications) {
-      return currentNotifications.map(item => {
-        var currentFiles = item.notificationFileUrl
+      return currentNotifications.map((item) => {
+        const currentFiles = item.notificationFileUrl
           ? [item.notificationFileUrl]
           : [];
-        var newSchema = {
+        const newSchema = {
           eventId: state.eventId,
           category: null,
           description: item.notification,
           created: new Date(item.notification_time * 1000).toISOString(), // units in exisitng db is different
           username: item.username,
-          files: currentFiles
+          files: currentFiles,
         };
         return newSchema;
       });
-    } else {
-      return [];
     }
+    return [];
   },
   eventTypes(state) {
     if (state.event.metadata.types) {
-      var compactTypes = _.compact(state.event.metadata.types);
-      var compactSubTypes = _.compact(state.event.metadata.sub_types);
+      const compactTypes = _.compact(state.event.metadata.types);
+      const compactSubTypes = _.compact(state.event.metadata.sub_types);
       return compactTypes.concat(compactSubTypes);
     }
 
     if (state.eventProperties && state.eventProperties.type) {
-      var types = state.eventProperties.type.replace(/other:/g, '').split(',');
-      var cTypes = _.compact(types);
-      _.remove(cTypes, function(t) {
-        return (
-          t.indexOf('disease_outbreak') > -1 ||
-          t.indexOf('natural_disaster') > -1
-        );
-      });
+      const types = state.eventProperties.type.replace(/other:/g, '').split(',');
+      const cTypes = _.compact(types);
+      _.remove(cTypes, t => (
+        t.indexOf('disease_outbreak') > -1
+          || t.indexOf('natural_disaster') > -1
+      ));
 
-      var subTypes = state.event.metadata.sub_type
+      const subTypes = state.event.metadata.sub_type
         ? state.event.metadata.sub_type
-            .replace(/other_disease_outbreak:/g, '')
-            .replace(/other_natural_disaster:/g, '')
-            .split(',')
+          .replace(/other_disease_outbreak:/g, '')
+          .replace(/other_natural_disaster:/g, '')
+          .split(',')
         : '';
-      var cSubTypes = _.compact(subTypes);
+      const cSubTypes = _.compact(subTypes);
 
       return cTypes.concat(cSubTypes);
     }
@@ -261,20 +248,20 @@ const getters = {
     if (!state.event.responses && state.event.metadata) {
       // then we fallback & map out the keys
 
-      var payload = state.event.metadata;
+      const payload = state.event.metadata;
       if (!payload.msf_response) {
         return null;
       }
 
-      var programmes = [];
-      var currentPrograms = payload.msf_response_types_of_programmes;
+      const programmes = [];
+      const currentPrograms = payload.msf_response_types_of_programmes;
       if (currentPrograms && currentPrograms.length > 0) {
-        for (var i = 0; i < currentPrograms.length; i++) {
+        for (let i = 0; i < currentPrograms.length; i++) {
           programmes.push({
             name: currentPrograms[i],
             value: currentPrograms[i].toLowerCase().replace(/ /g, '_'),
             deployment: null,
-            notes: ''
+            notes: '',
           });
         }
       }
@@ -288,42 +275,39 @@ const getters = {
           end_date: payload.end_date_msf_response,
           response: {
             type: null,
-            description: payload.msf_response
+            description: payload.msf_response,
           },
           total_days: payload.total_days_msf_response,
           location: payload.msf_response_location, // check if object keys are copied
           operational_center: payload.operational_center,
           type_of_programmes: programmes,
-          sharepoint_link: ''
-        }
+          sharepoint_link: '',
+        },
       ];
-    } else {
-      return state.event.responses;
     }
+    return state.event.responses;
   },
   eventExtCapacity(state) {
     if (!state.event.extCapacity && state.event.metadata) {
-      var payload = state.event.metadata;
-      var cap = payload.capacity ? payload.capacity : null;
-      var action = payload.ext_capacity_action_plan
+      const payload = state.event.metadata;
+      const cap = payload.capacity ? payload.capacity : null;
+      const action = payload.ext_capacity_action_plan
         ? `Action plan: \n ${payload.ext_capacity_action_plan}`
         : null;
-      var human = payload.ext_capacity_by_humanitarian
+      const human = payload.ext_capacity_by_humanitarian
         ? `Humanitarian: \n  ${payload.ext_capacity_by_humanitarian}`
         : null;
-      var ground = payload.ext_capacity_type_in_ground
+      const ground = payload.ext_capacity_type_in_ground
         ? `On Ground: \n ${payload.ext_capacity_type_in_ground}:`
         : null;
-      var combined = [cap, action, human, ground].filter(function(el) {
-        return el != null;
-      });
-      var capacities = [];
+      const combined = [cap, action, human, ground].filter(el => el != null);
+      let capacities = [];
 
       if (
-        payload.ext_other_organizations &&
-        payload.ext_other_organizations.length > 0
+        payload.ext_other_organizations
+        && payload.ext_other_organizations.length > 0
       ) {
-        capacities = payload.ext_other_organizations.map(function(item) {
+        capacities = payload.ext_other_organizations.map((item) => {
           if (!!item.name && !!item.deployment) {
             item.type = 'other';
             return item;
@@ -332,32 +316,31 @@ const getters = {
       }
 
       if (combined.length > 0) {
-        var govCapacity = {
+        const govCapacity = {
           type: 'governmental',
           name: null,
           arrival_date: null,
-          deployment: combined.join('\n')
+          deployment: combined.join('\n'),
         };
 
         capacities.push(govCapacity);
       }
-      var cleanCapacities = capacities.filter(Boolean);
+      const cleanCapacities = capacities.filter(Boolean);
 
       return cleanCapacities;
-    } else {
-      return state.event.extCapacity;
     }
+    return state.event.extCapacity;
   },
   eventFigures(state) {
     if (!state.event.figures && state.event.metadata) {
-      var payload = state.event.metadata;
-      var currentKeyFigures = [];
+      const payload = state.event.metadata;
+      let currentKeyFigures = [];
       if (!_.isEmpty(payload.keyMSFFigures)) {
         currentKeyFigures = [
           {
             status: payload.event_status,
-            figures: payload.keyMSFFigures
-          }
+            figures: payload.keyMSFFigures,
+          },
         ];
       }
 
@@ -369,31 +352,30 @@ const getters = {
           mortality: {
             rate: null,
             population: null,
-            period: null
+            period: null,
           },
           morbidity: {
             rate: null,
             population: null,
-            period: null
-          }
+            period: null,
+          },
         },
         statistics: {
           collection: null,
-          source: null
-        }
+          source: null,
+        },
       };
-    } else {
-      return state.event.figures;
     }
+    return state.event.figures;
   },
   eventResources(state) {
     return state.event.resources;
   },
   oldEventReflection(state) {
-    var payload = state.event.metadata;
+    const payload = state.event.metadata;
     return {
       recommendations: payload.msf_ref_com_practical_details_recomm,
-      comments: payload.msf_ref_com_reflection_comments
+      comments: payload.msf_ref_com_reflection_comments,
     };
   },
   eventCreatedAt(state) {
@@ -409,12 +391,12 @@ const getters = {
   },
   rssFeedItems(state) {
     return state.rssFeedItems;
-  }
+  },
 };
 
 export default {
   state,
   actions,
   mutations,
-  getters
+  getters,
 };

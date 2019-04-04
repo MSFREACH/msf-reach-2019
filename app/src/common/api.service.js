@@ -1,5 +1,5 @@
-/*eslint no-debugger: off*/
-/*eslint no-console: off*/
+/* eslint no-debugger: off */
+/* eslint no-console: off */
 
 import Vue from 'vue';
 import axios from 'axios';
@@ -9,6 +9,7 @@ import VueAxios from 'vue-axios';
 import JwtService from '@/common/jwt.service';
 import { API_URL } from '@/common/config';
 import { GEOFORMAT } from './common';
+
 const ApiService = {
   init() {
     Vue.use(VueAxios, axios);
@@ -28,18 +29,16 @@ const ApiService = {
   },
 
   setHeader() {
-    Vue.axios.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${JwtService.getToken()}`;
+    Vue.axios.defaults.headers.common.Authorization = `Bearer ${JwtService.getToken()}`;
   },
   query(resource, params) {
     console.log('query ------- ', params);
-    return Vue.axios.get(resource, params).catch(error => {
+    return Vue.axios.get(resource, params).catch((error) => {
       throw new Error(`[ApiService] ${error}`);
     });
   },
   get(resource, slug = '') {
-    return Vue.axios.get(`${resource}/${slug}`).catch(error => {
+    return Vue.axios.get(`${resource}/${slug}`).catch((error) => {
       throw new Error(`[ApiService] ${error}`);
     });
   },
@@ -58,10 +57,10 @@ const ApiService = {
     return Vue.axios.put(`${resource}`, params);
   },
   delete(resource) {
-    return Vue.axios.delete(resource).catch(error => {
+    return Vue.axios.delete(resource).catch((error) => {
       throw new Error(`[ApiService] ${error}`);
     });
-  }
+  },
 };
 
 export default ApiService;
@@ -100,11 +99,11 @@ export const EventsService = {
     return ApiService.updateSection(`events/${slug}/resources`, params);
   },
   archive(slug, params) {
-    return ApiService.update('events', slug, params); //TODO: // check API endpoints
+    return ApiService.update('events', slug, params); // TODO: // check API endpoints
   },
   destroy(slug) {
     return ApiService.delete(`events/${slug}`);
-  }
+  },
 };
 
 export const ResponsesService = {
@@ -122,7 +121,7 @@ export const ResponsesService = {
   },
   destroy(slug) {
     return ApiService.delete(`msfResponses/${slug}`);
-  }
+  },
 };
 
 export const EventNotificationService = {
@@ -137,7 +136,7 @@ export const EventNotificationService = {
   },
   destroy(slug) {
     return ApiService.delete(`eventNotifications/${slug}`);
-  }
+  },
 };
 
 export const SITREPService = {
@@ -152,13 +151,13 @@ export const SITREPService = {
   },
   destroy(slug) {
     return ApiService.delete(`sitreps/${slug}`);
-  }
+  },
 };
 
 export const ReportsService = {
   query() {
     const params = {
-      geoformat: GEOFORMAT
+      geoformat: GEOFORMAT,
     };
     return ApiService.query('reports', params);
   },
@@ -173,13 +172,13 @@ export const ReportsService = {
   },
   destroy(slug) {
     return ApiService.delete(`reports/${slug}`);
-  }
+  },
 };
 
 export const ContactsService = {
   query() {
     const params = {
-      geoformat: GEOFORMAT
+      geoformat: GEOFORMAT,
     };
     return ApiService.query('contacts', params);
   },
@@ -194,7 +193,7 @@ export const ContactsService = {
   },
   destroy(slug) {
     return ApiService.delete(`contacts/${slug}`);
-  }
+  },
 };
 
 export const CountryDetailsService = {
@@ -209,32 +208,32 @@ export const CountryDetailsService = {
   },
   destroy(slug) {
     return ApiService.delete(`countryDetails/${slug}`);
-  }
+  },
 };
 
 export const UtilService = {
   getUpload(payload) {
-    var cleanFilename = payload.filename.replace(/ /g, '_');
+    let cleanFilename = payload.filename.replace(/ /g, '_');
     cleanFilename = cleanFilename.replace(/[^a-zA-Z0-9\-.]/gi, '');
 
     const params = {
       key: payload.key,
       filename: cleanFilename,
-      index: payload.index
+      index: payload.index,
     };
-    return ApiService.query('utils/uploadurl', { params: params });
+    return ApiService.query('utils/uploadurl', { params });
   },
   getDownload(url) {
     const params = {
-      url: url
+      url,
     };
-    return ApiService.query('utils/downloadurl', { params: params });
+    return ApiService.query('utils/downloadurl', { params });
   },
   getBucketFiles(key) {
     const params = {
-      folderKey: key
+      folderKey: key,
     };
-    return ApiService.query('utils/bucketFiles', { params: params });
+    return ApiService.query('utils/bucketFiles', { params });
   },
   signedUpdate(params) {
     return $.ajax({
@@ -244,9 +243,9 @@ export const UtilService = {
       dataType: 'text',
       cache: false,
       processData: false,
-      success: function(data) {
+      success(data) {
         return data;
-      }
+      },
     });
 
     // return axios.put(params.url, {data: params.file}, { // CORRUPTION, axios PUT doesn't upload the file properly
@@ -264,37 +263,37 @@ export const UtilService = {
     // });
   },
   getGeojsonPolygon(params) {
-    var url = 'https://nominatim.openstreetmap.org/search.php';
+    const url = 'https://nominatim.openstreetmap.org/search.php';
     return axios.get(url, {
-      params: params,
+      params,
       withCredentials: false,
       transformRequest: [
         (data, headers) => {
           delete headers.common.Authorization;
           return data;
-        }
-      ]
+        },
+      ],
     });
   },
   getReverseGeocoder(coors) {
-    var url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${coors[0]},${
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${coors[0]},${
       coors[1]
     }.json`;
     return axios.get(url, {
       params: { access_token: mapboxgl.accessToken },
-      withCredentials: false
+      withCredentials: false,
     });
-  }
+  },
 };
 
 export const TwitterService = {
   searchTweets(params) {
     return ApiService.query('twitter', { params });
-  }
+  },
 };
 
 export const RssService = {
   fetchFeed(params) {
     return ApiService.query('rss', { params });
-  }
+  },
 };

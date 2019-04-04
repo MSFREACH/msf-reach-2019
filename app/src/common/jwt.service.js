@@ -11,5 +11,5 @@ export default {
 
   destroyToken() {
     window.localStorage.removeItem(ID_TOKEN_KEY);
-  }
+  },
 };

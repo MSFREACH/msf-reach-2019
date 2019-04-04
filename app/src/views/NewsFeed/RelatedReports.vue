@@ -9,8 +9,8 @@ export default {
   name: 'EventRelatedReports',
   data() {
     return {
-      dialog: false
+      dialog: false,
     };
-  }
+  },
 };
 </script>

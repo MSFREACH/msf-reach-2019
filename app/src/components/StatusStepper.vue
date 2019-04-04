@@ -16,8 +16,8 @@
               }"
               @click.native="eb = i"
             >
-              {{ item.section }} {{ item.fields.length }}</router-link
-            >
+              {{ item.section }} {{ item.fields.length }}
+            </router-link>
           </v-stepper-step>
           <v-divider v-if="i < statusRoute.length - 1" />
         </v-flex>
@@ -30,22 +30,22 @@
 <script>
 import { EVENT_STATUSES } from '@/common/common';
 import { STATUS_CHANGE_STEPPERS } from '@/common/navigational-fields.js';
-/*eslint no-debugger: off*/
-/*eslint no-console: off*/
+/* eslint no-debugger: off */
+/* eslint no-console: off */
 
 export default {
   name: 'StatusStepper',
   props: {
     currentStatus: {
-      type: String
-    }
+      type: String,
+    },
   },
   data() {
     return {
       eb: 0,
       allRoutes: STATUS_CHANGE_STEPPERS,
       allEventStatuses: EVENT_STATUSES,
-      reviewedSection: {}
+      reviewedSection: {},
     };
   },
   computed: {
@@ -54,29 +54,29 @@ export default {
     },
     statusLabel() {
       return this.allEventStatuses.filter(
-        item => item.value == this.currentStatus
+        item => item.value == this.currentStatus,
       )[0].text;
-    }
+    },
   },
   watch: {
     currentStatus(val) {
       this.mapSectionsToReview();
-    }
+    },
   },
   mounted() {
     this.mapSectionsToReview();
   },
   methods: {
     mapSectionsToReview() {
-      var sectionKeys = this.allRoutes[this.currentStatus].map(
-        item => item.section
+      const sectionKeys = this.allRoutes[this.currentStatus].map(
+        item => item.section,
       );
-      var vm = this;
-      sectionKeys.forEach(function(item) {
+      const vm = this;
+      sectionKeys.forEach((item) => {
         vm.reviewedSection[item] = [];
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

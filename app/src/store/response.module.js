@@ -1,6 +1,6 @@
-/*eslint no-debugger: off*/
-/*eslint no-unused-vars :off*/
-/*eslint no-console :off*/
+/* eslint no-debugger: off */
+/* eslint no-unused-vars :off */
+/* eslint no-console :off */
 
 import _ from 'lodash';
 import { ResponsesService } from '@/common/api.service';
@@ -9,7 +9,7 @@ import {
   CREATE_MSF_RESPONSE,
   EDIT_MSF_RESPONSE,
   EDIT_MSF_RESPONSE_AREA,
-  DELETE_MSF_RESPONSE
+  DELETE_MSF_RESPONSE,
 } from './actions.type';
 import {
   FETCH_RESPONSES_START,
@@ -18,7 +18,7 @@ import {
   UPDATE_RESPONSE_AREA_GEOMETRY,
   UPDATE_RESPONSE_PROGRAMMES,
   SET_ERROR,
-  RESET_STATE
+  RESET_STATE,
 } from './mutations.type';
 
 const initialState = {
@@ -29,8 +29,8 @@ const initialState = {
   responsesGeoJson: [],
   response: {
     area: {},
-    programmes: []
-  }
+    programmes: [],
+  },
 };
 
 const state = Object.assign({}, initialState);
@@ -53,7 +53,7 @@ const getters = {
   },
   fetchResponsesError(state) {
     return state.error;
-  }
+  },
 };
 
 const actions = {
@@ -63,7 +63,7 @@ const actions = {
       .then(({ data }) => {
         commit(FETCH_RESPONSES_END, data.result);
       })
-      .catch(error => {
+      .catch((error) => {
         commit(SET_ERROR, error);
       });
   },
@@ -73,18 +73,18 @@ const actions = {
   },
   [EDIT_MSF_RESPONSE](context, params) {
     console.log('[EDIT_MSF_RESPONSE] --- -', params);
-    var slug = params.id;
+    const slug = params.id;
     delete params.id;
     return ResponsesService.update(slug, params);
   },
   [EDIT_MSF_RESPONSE_AREA](context, params) {
-    var slug = params.id;
+    const slug = params.id;
     delete params.id;
     return ResponsesService.updateArea(slug, params);
   },
   [DELETE_MSF_RESPONSE](context, slug) {
     return ResponsesService.destroy(slug);
-  }
+  },
 };
 
 /* eslint no-param-reassign: ["error", { "props": false }] */
@@ -93,16 +93,14 @@ const mutations = {
     state.isLoadingResponse = true;
   },
   [FETCH_RESPONSES_END](state, payload) {
-    console.log(payload); //eslint-disable-line no-console
+    console.log(payload); // eslint-disable-line no-console
     state.responsesGeoJson = payload;
-    state.responses = _.map(payload.objects.output.geometries, function(item) {
-      return item.properties;
-    });
+    state.responses = _.map(payload.objects.output.geometries, item => item.properties);
     state.responsesCount = payload.objects.output.geometries.length;
     state.isLoadingResponse = false;
   },
   [UPDATE_RESPONSE_IN_LIST](state, data) {
-    state.responses = state.responses.map(response => {
+    state.responses = state.responses.map((response) => {
       if (response.slug !== data.slug) {
         return response;
       }
@@ -122,15 +120,15 @@ const mutations = {
     state.isLoadingResponse = false;
   },
   [RESET_STATE]() {
-    for (let f in state) {
+    for (const f in state) {
       Vue.set(state, f, initialState[f]);
     }
-  }
+  },
 };
 
 export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

@@ -1,3 +1,21 @@
 .v-toolbar{
-    z-index: 8; 
+    z-index: 8;
+}
+
+
+.result-list.v-list{
+    width: 100%;
+    border-radius: 5px;
+    margin: 5px;
+    box-sizing: border-box;
+    border: 2px transparent solid;
+    padding: 0;
+}
+.result-list.v-list:hover{
+    border: 2px #0374C7 solid;
+    background: #fff;
+}
+
+.v-list__tile__action--stack{
+    display: inline-block;
 }
