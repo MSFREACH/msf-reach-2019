@@ -1,24 +1,22 @@
 <template>
-    <v-app id="app">
-        <r-header> </r-header>
-        <router-view></router-view>
-        <!-- <r-footer></r-footer> -->
-    </v-app>
+  <v-app id="app">
+    <r-header />
+    <router-view />
+  </v-app>
 </template>
 
 <script>
 import RHeader from '@/components/RHeader';
-import RFooter from '@/components/RFooter';
 
 export default {
-    name: 'App',
-    components:{
-        RHeader, RFooter
-    },
-    message: 'Hello Vue!'
+  name: 'App',
+  components: {
+    RHeader
+  },
+  message: 'Hello Vue!'
 };
 </script>
 
 <style lang="scss">
-    @import '@/assets/css/main.scss';
+@import '@/assets/css/main.scss';
 </style>

@@ -1,162 +1,174 @@
 export const DEFAULT_EVENT_METADATA = {
-    name: null,
-    description: null,
-    event_datetime: null,
-    areas:[],
-    status_updates: [{
-        status: null,
-        timestamp: null
-    }],
-    types: [],
-    sub_types: [],
-    incharge_contact: {
-        local: {
-            name: '',
-            position: ''
-        },
-        operator: {
-            name: '',
-            position: ''
-        }
+  name: null,
+  description: null,
+  event_datetime: null,
+  areas: [],
+  status_updates: [
+    {
+      status: null,
+      timestamp: null
+    }
+  ],
+  types: [],
+  sub_types: [],
+  incharge_contact: {
+    local: {
+      name: '',
+      position: ''
     },
-    sharepoint_link: null,
-    severity_measures: []
+    operator: {
+      name: '',
+      position: ''
+    }
+  },
+  sharepoint_link: null,
+  severity_measures: []
 };
 
 export const DEFAULT_REPORT_CARD_FIELDS = {
-    status: null,
-    eventId: null,
-    location: {
-        lat: null,
-        lng: null
-    },
-    content: {
-        description: null,
-        image_link: null,
-        report_tag: null,
-        username: null
-    }
+  status: null,
+  eventId: null,
+  location: {
+    lat: null,
+    lng: null
+  },
+  content: {
+    description: null,
+    image_link: null,
+    report_tag: null,
+    username: null
+  }
 };
 
 export const DEFAULT_EDIT_REPORT_CARD_FIELDS = {
-    status: null,
-    eventId: null,
-    content: {
-        report_tag: null,
-    }
+  status: null,
+  eventId: null,
+  content: {
+    report_tag: null
+  }
 };
 
 export const DEFAULT_EVENT_NOTIFICATION_FIELDS = {
-    category: '',
-    description: '',
-    eventId: null,
-    created: null,
-    updated: null,
-    files: []
+  category: '',
+  description: '',
+  eventId: null,
+  created: null,
+  updated: null,
+  files: []
 };
 
 export const DEFAULT_MSF_RESPONSE = {
-    event_id: null,
-    event_status: null,
-    project_code: null,
-    metadata: {
-        type: null,
-        start_date: null,
-        end_date: null,
-        total_days : null,
-        description: null,
-        sharepoint_link: null
-    },
-    programmes:[{
-        value: null,
-        sub_program: null,
-        open_date: null,
-        deployment_scale: null,
-        notes: null
-    }]
-
+  event_id: null,
+  event_status: null,
+  project_code: null,
+  metadata: {
+    type: null,
+    start_date: null,
+    end_date: null,
+    total_days: null,
+    description: null,
+    sharepoint_link: null
+  },
+  programmes: [
+    {
+      value: null,
+      sub_program: null,
+      open_date: null,
+      deployment_scale: null,
+      notes: null
+    }
+  ]
 };
 
 export const EXTERNAL_CAPACITY_FIELDS = {
-    type: null,
-    name: '',
-    arrival_date: '',
-    deployment: ''
+  type: null,
+  name: '',
+  arrival_date: '',
+  deployment: ''
 };
 
-export const EXTERNAL_CAPACITY_TYPES = ['governmental','other'];
-
+export const EXTERNAL_CAPACITY_TYPES = ['governmental', 'other'];
 
 export const DEFAULT_EVENT_FIGURES = {
-    keyFigures : [{
-        status: '',
-        figures: []
-    }],
-    population: {
-        total: null,
-        impacted: null,
-        mortality: {
-            rate: null,
-            population: null,
-            period: null
-        },
-        morbidity: {
-            rate: null,
-            population: null,
-            period: null
-        }
-    },
-    statistics:{
-        collection: null,
-        source: null
+  keyFigures: [
+    {
+      status: '',
+      figures: []
     }
+  ],
+  population: {
+    total: null,
+    impacted: null,
+    mortality: {
+      rate: null,
+      population: null,
+      period: null
+    },
+    morbidity: {
+      rate: null,
+      population: null,
+      period: null
+    }
+  },
+  statistics: {
+    collection: null,
+    source: null
+  }
 };
 
 export const DEFAULT_KEY_FIGURES = {
-    category: null,
-    subCategory: null,
-    value: null
+  category: null,
+  subCategory: null,
+  value: null
 };
 
-
 export const DEFAULT_SITREP_FIELDS = {
-    description: '',
-    eventId: null,
-    created: null,
-    updated: null,
-    files: []
+  description: '',
+  eventId: null,
+  created: null,
+  updated: null,
+  files: []
 };
 
 export const DEFAULT_CONTACT = {
-    address: null,
-    title: null,
-    otherNames: null,
-    name: null,
-    speciality: null,
-    type: null,
-    employer: null,
-    job_title: null,
-    division: null,
-    web: null,
-    OC: null,
-    msf_employment: null,
-    msf_additional: null,
-    cell: null,
-    work: null,
-    home: null,
-    fax: null,
-    msf_associate: false,
-    msf_peer: false,
-    email: null, // required
-    email2: null,
-    sharepoint: null,
-    WhatsApp: null,
-    Facebook: null,
-    Twitter: null,
-    Instagram: null,
-    Telegram: null,
-    Skype: null,
-    msf_entered: null // required
+  address: null,
+  title: null,
+  otherNames: null,
+  name: null,
+  speciality: null,
+  type: null,
+  employer: null,
+  job_title: null,
+  division: null,
+  web: null,
+  OC: null,
+  msf_employment: null,
+  msf_additional: null,
+  cell: null,
+  work: null,
+  home: null,
+  fax: null,
+  msf_associate: false,
+  msf_peer: false,
+  email: null, // required
+  email2: null,
+  sharepoint: null,
+  WhatsApp: null,
+  Facebook: null,
+  Twitter: null,
+  Instagram: null,
+  Telegram: null,
+  Skype: null,
+  msf_entered: null // required
 };
 
-export const CONTACT_TITLES = ['Mr', 'Mrs', 'Ms', 'Miss', 'Dr', 'Prof', 'MD', 'other'];
+export const CONTACT_TITLES = [
+  'Mr',
+  'Mrs',
+  'Ms',
+  'Miss',
+  'Dr',
+  'Prof',
+  'MD',
+  'other'
+];
