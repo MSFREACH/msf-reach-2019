@@ -1,10 +1,12 @@
 <template>
   <v-container class="rssFeed" grid-list-md>
-       <map-annotation v-if="selectedRssItem.geometry"
-          :coordinates="selectedRssItem.geometry.coordinates"
-          map-id="generalAnnotation"
-        />
-      <div v-else>no rss item is currently selected</div>
+    <map-annotation v-if="selectedRssItem.geometry"
+                    :coordinates="selectedRssItem.geometry.coordinates"
+                    map-id="generalAnnotation"
+    />
+    <div v-else>
+      no rss item is currently selected
+    </div>
   </v-container>
 </template>
 
