@@ -10,6 +10,7 @@ import {
 } from '@/common/api.service';
 import {
   FETCH_RSS,
+  SELECT_RSS_ITEM,
   SEARCH_TWEETS,
   APPEND_TWEETS,
   FETCH_EVENT,
@@ -52,6 +53,7 @@ const initialState = {
   keyFigures: [],
   tweets: [],
   rssFeedItems: [],
+  selectedRssItem: {},
 };
 
 const state = Object.assign({}, initialState);
@@ -67,6 +69,9 @@ const actions = {
     return RssService.fetchFeed(params).then(({ data }) => {
       state.rssFeedItems = data.result;
     });
+  },
+  [SELECT_RSS_ITEM](context, rssItem) {
+    state.selectedRssItem = rssItem;
   },
   [FETCH_EVENT](context, eventSlug, prevEvent) {
     // avoid duplicate network call if event was already set from list
@@ -391,6 +396,9 @@ const getters = {
   },
   rssFeedItems(state) {
     return state.rssFeedItems;
+  },
+  selectedRssItem(state) {
+    return state.selectedRssItem;
   },
 };
 
