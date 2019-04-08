@@ -30,8 +30,7 @@
 import { mapGetters } from 'vuex';
 import _ from 'lodash';
 
-import { SELECT_RSS_ITEM } from '@/store/actions.type';
-import { FETCH_RSS } from '@/store/actions.type';
+import { SELECT_RSS_ITEM, FETCH_RSS } from '@/store/actions.type';
 
 export default {
   name: 'RssFeedList',
@@ -60,7 +59,6 @@ export default {
     },
     clickRssItem(rssItem) {
       this.$store.dispatch(SELECT_RSS_ITEM, rssItem);
-      console.log(rssItem);
     },
   },
 };

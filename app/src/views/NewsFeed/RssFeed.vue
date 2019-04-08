@@ -23,7 +23,7 @@ export default {
   },
   components: {
     RssFeedList,
-    RssFeedItemDetail
+    RssFeedItemDetail,
   },
 };
 </script>

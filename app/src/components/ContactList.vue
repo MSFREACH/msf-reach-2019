@@ -283,7 +283,7 @@ export default {
       return orderedInitials;
     },
   },
-  mounted(){
+  mounted() {
     this.fetchContacts();
   },
   watch: {
