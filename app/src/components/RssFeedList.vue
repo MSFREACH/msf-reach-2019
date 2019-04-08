@@ -16,8 +16,7 @@
         clearable
       />
     </div>
-    <v-layout v-if="feedItems.length" class="rssFeedListItems">
-      0" row wrap>
+    <v-layout v-if="feedItems.length > 0" class="rssFeedListItems" row wrap>
       <v-flex v-for="(item, i) in feedItems" :key="i" class="rssLeftPane" xs6 md6>
         <v-card class="rssFeedCard" @click="clickRssItem(item)">
           {{ item.properties.title }}
