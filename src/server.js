@@ -80,6 +80,13 @@ const init = (config, initializeDb, routes, logger) => new Promise((resolve, rej
         next();
     });
 
+    // debug page for sanity
+    app.get('/debug', (req, res) => {
+        logger.warn('++ test debug');
+        res.send('WORKING!');
+    });
+
+
     // Trust proxy header
     app.enable('trust proxy');
 
