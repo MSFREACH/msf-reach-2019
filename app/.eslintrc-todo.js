@@ -38,7 +38,7 @@ module.exports = {
         "src/common/date.filter.js",
         "src/components/CountryDetails.vue",
         "src/components/EventList.vue",
-        "src/components/MapLeaflet.vue",
+
         "src/components/RowEntries/KeyFigures.vue",
         "src/store/event.module.js",
         "src/views/Event/Figures.vue",
@@ -129,7 +129,7 @@ module.exports = {
         "src/components/Event.vue",
         "src/components/EventList.vue",
         "src/components/EventMeta.vue",
-        "src/components/MapLeaflet.vue",
+
         "src/components/MapMain.vue",
         "src/components/NewsFeed.vue",
         "src/components/RHeader.vue",
@@ -189,7 +189,7 @@ module.exports = {
         "src/components/ContactList.vue",
         "src/components/CountryDetails.vue",
         "src/components/EventList.vue",
-        "src/components/MapLeaflet.vue",
+
         "src/components/MapMain.vue",
         "src/components/RHeader.vue",
         "src/components/RowEntries/KeyFigures.vue",
@@ -228,14 +228,6 @@ module.exports = {
     },
     {
       "rules": {
-        "import/named": "off"
-      },
-      "files": [
-        "src/components/MapLeaflet.vue",
-      ]
-    },
-    {
-      "rules": {
         "import/order": "off"
       },
       "files": [
@@ -259,7 +251,7 @@ module.exports = {
       "files": [
         "src/common/api.service.js",
         "src/components/EventMeta.vue",
-        "src/components/MapLeaflet.vue",
+
         "src/components/MapMain.vue",
         "src/store/event.module.js",
         "src/views/Event/Figures.vue",
@@ -287,7 +279,7 @@ module.exports = {
         "build/check-versions.js",
         "build/dev-server.js",
         "src/components/ContactList.vue",
-        "src/components/MapLeaflet.vue",
+
         "src/components/MapMain.vue",
         "src/components/RowEntries/KeyFigures.vue",
         "src/views/Event/General.vue",
@@ -344,7 +336,7 @@ module.exports = {
         "src/common/text.filter.js",
         "src/components/Event.vue",
         "src/components/EventList.vue",
-        "src/components/MapLeaflet.vue",
+
         "src/lib/geojson-util.js",
         "src/store/auth.module.js",
         "src/store/profile.module.js",
@@ -426,7 +418,6 @@ module.exports = {
       "files": [
         "build/build.js",
         "build/vue-loader.config.js",
-        "src/components/MapLeaflet.vue",
         "src/store/SITREP.module.js",
         "src/store/auth.module.js",
         "src/store/contact.module.js",
@@ -452,7 +443,6 @@ module.exports = {
       "files": [
         "src/common/api.service.js",
         "src/components/EventList.vue",
-        "src/components/MapLeaflet.vue",
         "src/components/MapMain.vue",
         "src/store/auth.module.js",
         "src/store/response.module.js",
@@ -508,7 +498,6 @@ module.exports = {
         "src/components/CountryDetails.test.js",
         "src/components/CountryDetails.vue",
         "src/components/EventList.vue",
-        "src/components/MapLeaflet.vue",
         "src/components/MapMain.vue",
         "src/components/RHeader.vue",
         "src/components/StatusStepper.vue",
@@ -671,7 +660,7 @@ module.exports = {
       },
       "files": [
         "src/components/Event.vue",
-        "src/components/MapLeaflet.vue",
+
         "src/components/MapMain.vue",
         "src/views/Event/ExtCapacity.vue",
         "src/views/Event/Figures.vue",
@@ -691,7 +680,6 @@ module.exports = {
       "files": [
         "src/components/Event.vue",
         "src/components/EventList.vue",
-        "src/components/MapLeaflet.vue",
         "src/components/MapMain.vue",
         "src/components/NewsFeed.vue",
         "src/components/RowEntries/KeyFigures.vue",
