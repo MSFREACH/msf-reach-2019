@@ -43,5 +43,8 @@ jspm_packages
 /dist
 .DS_Store
 
-#SSL 
+#SSL
 src/cert/
+
+#misc
+run.md

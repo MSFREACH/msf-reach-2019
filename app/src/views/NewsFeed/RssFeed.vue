@@ -1,46 +1,29 @@
 <template>
   <v-container class="rssFeed" grid-list-md>
-    <div class="rssHeader">
-      rss Header
-    </div>
-    <v-layout v-if="feedItems.length > 0" row wrap>
-      <v-flex v-for="(item, i) in feedItems" :key="i" xs12 md6>
-        <v-card class="rssFeedCard">
-          {{ item.properties.title }}
-        </v-card>
+    <v-layout row wrap>
+      <v-flex class="rssLeftPane" xs6>
+        <rss-feed-list />
+      </v-flex>
+      <v-flex class="rssRightPane" xs6>
+        <rss-feed-item-detail />
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import _ from 'lodash';
 
-import { FETCH_RSS } from '@/store/actions.type';
+import RssFeedList from '@/components/RssFeedList.vue';
+import RssFeedItemDetail from '@/components/RssFeedItemDetail.vue';
 
 export default {
   name: 'EventRss',
   data() {
-    return {
-      feedItems: [],
-    };
+    return {};
   },
-  mounted() {
-    this.fetchRss();
-  },
-  methods: {
-    fetchRss() {
-      this.$store.dispatch(FETCH_RSS, {});
-    },
-  },
-  computed: {
-    ...mapGetters(['rssFeedItems']),
-  },
-  watch: {
-    rssFeedItems() {
-      this.feedItems = _.map(this.rssFeedItems, _.clone);
-    },
+  components: {
+    RssFeedList,
+    RssFeedItemDetail,
   },
 };
 </script>

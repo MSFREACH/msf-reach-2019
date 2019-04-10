@@ -283,9 +283,6 @@ export default {
       return orderedInitials;
     },
   },
-  mounted(){
-    this.fetchContacts();
-  },
   watch: {
     contacts(val) {
       val.forEach((i) => {
@@ -296,6 +293,9 @@ export default {
         'properties.properties.name',
       ]);
     },
+  },
+  mounted() {
+    this.fetchContacts();
   },
   checkEqual(one, two) {
     return one.replace(/[^0-9]/gi, '') == two.replace(/[^0-9]/gi, '');
